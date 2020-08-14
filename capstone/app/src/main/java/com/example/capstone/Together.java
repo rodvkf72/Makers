@@ -1,0 +1,363 @@
+package com.example.capstone;
+
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+public class Together extends Fragment {
+    View view;
+
+    String notice_board = "";
+    String id = "";
+    String area_t = "";
+    String time_t = "";
+    String sex_t = "";
+    String contents_title = "";
+    String contents_text = "";
+    String authority = "";
+
+    String phone_main = "";
+    String name_main = "";
+    String email_main = "";
+    String sex_main = "";
+    String contents_title_main = "";
+    String contents_main = "";
+    String area_main = "";
+    String time_main = "";
+
+    //ArrayList<String> contents = new ArrayList<String>(Arrays.asList("테스트용 1", "테스트용 2")); //이거 테스트용이니 수정할 것
+    ArrayList<String> contents = new ArrayList<String>();
+    ListView contents_listview;
+    ArrayAdapter contents_adapter;
+
+    Intent gintent;
+    String gphonenum = "";
+    int result = 0;
+
+    TextView tv;
+    //Intent gintent = getActivity().getIntent();
+    //String gid = gintent.getExtras().getString("phone_num");
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == result) {
+            refresh();
+        } else {
+            
+        }
+    }
+
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        view = inflater.inflate(R.layout.together, container, false);
+
+        gintent = getActivity().getIntent();
+        gphonenum = gintent.getExtras().getString("phone_num");
+
+        Button write_button = (Button) view.findViewById(R.id.Write);
+
+        contents_adapter = new ArrayAdapter(getActivity(), R.layout.simpleitem, contents);
+        contents_listview = (ListView) view.findViewById(R.id.together_listview);
+
+        CheckDB chkDB = new CheckDB();
+        chkDB.execute();
+
+        write_button.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                if(authority == null || authority.equals("")) {
+                    Toast.makeText(getActivity(), "권한이 없습니다. 관리자에게 문의하세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent writeintent = new Intent(getActivity(), WriteContents.class);
+                    writeintent.putExtra("phone_num", gphonenum);
+                    //startActivity(writeintent);
+                    startActivityForResult(writeintent, result);
+                    getActivity().overridePendingTransition(R.anim.rightin_activity, R.anim.leftout_activity);
+                }
+            }
+        });
+        return view;
+    }
+
+    public class CheckDB extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            // 인풋 파라메터값 생성
+            String param = "chkphonenum=" + gphonenum + "";
+            Log.e("POST",param);
+            try {
+                // 서버연결
+                URL url = new URL("http://172.30.1.56/capstone/notice_board_check.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                // 안드로이드 -> 서버 파라메터값 전달
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                // 서버 -> 안드로이드 파라메터값 전달
+                InputStream is = null;
+                BufferedReader in = null;
+                String data = "";
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ( ( line = in.readLine() ) != null )
+                {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                // 서버에서 응답
+                return data;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            try{
+                contents.clear();
+                JSONObject root = new JSONObject(data);
+                JSONArray results = new JSONArray(root.getString("results"));
+                for (int i = 0; i < results.length(); i++){
+                    JSONObject content = results.getJSONObject(i);
+                    //여기서 필요한 부분만 가져오고 조건식 입력
+                    area_t = content.getString("area");
+                    time_t = content.getString("time_t");
+                    sex_t = content.getString("sex");
+                    authority = content.getString("authority");
+
+                    if (authority == null || authority.equals("")){
+                        contents_text = "권한이 없습니다. 관리자에게 문의하세요.";
+                        TextView tv = (TextView) view.findViewById(R.id.together_text);
+                        tv.setText(contents_text);
+                    } else {
+                        if (area_t == null || area_t.equals("") || time_t == null || time_t.equals("") || sex_t == null || sex_t.equals("")) {
+                            contents_text = "설정창에서 다모임 설정을 지정해주세요.";
+                            TextView tv = (TextView) view.findViewById(R.id.together_text);
+                            tv.setText(contents_text);
+                        } else {
+                            SettingDB setDB = new SettingDB();
+                            setDB.execute();
+
+                            contents_listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                                    contents_text = (String)parent.getItemAtPosition(position);
+                                    SelectDB selDB = new SelectDB();
+                                    selDB.execute();
+                                }
+                            });
+                        }
+                    }
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public class SettingDB extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            // 인풋 파라메터값 생성
+            String param = "area_text=" + area_t + "&time_text=" + time_t + "&sex_text=" + sex_t + ""; //"phone_num=" + id + ""; 추가
+            Log.e("POST",param);
+            try {
+                // 서버연결
+                URL url = new URL("http://172.30.1.56/capstone/notice_board_find.php"); //이거 바꿔라!
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                // 안드로이드 -> 서버 파라메터값 전달
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                // 서버 -> 안드로이드 파라메터값 전달
+                InputStream is = null;
+                BufferedReader in = null;
+                String data = "";
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ( ( line = in.readLine() ) != null )
+                {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                // 서버에서 응답
+                return data;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            try{
+                contents.clear();
+                JSONObject root = new JSONObject(data);
+                JSONArray results = new JSONArray(root.getString("results"));
+                for (int i = 0; i < results.length(); i++){
+                    JSONObject content = results.getJSONObject(i);
+                    //여기서 필요한 부분만 가져오고 조건식 입력
+                    notice_board = content.getString("contents_title");
+                    contents.add(notice_board.toString());
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            contents_listview.setAdapter(contents_adapter);
+            //contents_adapter.notifyDataSetChanged();
+        }
+    }
+
+    public class SelectDB extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            // 인풋 파라메터값 생성
+            String param = "u_contents_title=" + contents_text + "";
+            Log.e("POST",param);
+            try {
+                // 서버연결
+                URL url = new URL("http://172.30.1.56/capstone/notice_board_contents.php");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                // 안드로이드 -> 서버 파라메터값 전달
+                OutputStream outs = conn.getOutputStream();
+                outs.write(param.getBytes("UTF-8"));
+                outs.flush();
+                outs.close();
+
+                // 서버 -> 안드로이드 파라메터값 전달
+                InputStream is = null;
+                BufferedReader in = null;
+                String data = "";
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ( ( line = in.readLine() ) != null )
+                {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                // 서버에서 응답
+                return data;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            try{
+                JSONObject root = new JSONObject(data);
+                JSONArray results = new JSONArray(root.getString("results"));
+                for (int i = 0; i < results.length(); i++){
+                    JSONObject content = results.getJSONObject(i);
+                    phone_main = content.getString("phone_num");
+                    name_main = content.getString("name");
+                    email_main = content.getString("email");
+                    sex_main = content.getString("sex");
+                    contents_title_main = content.getString("contents_title");
+                    contents_main = content.getString("contents");
+                    area_main = content.getString("area");
+                    time_main = content.getString("time_t");
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            Intent tintent = new Intent(getActivity(), TogetherContents.class);
+            tintent.putExtra("phone_num", phone_main);
+            tintent.putExtra("name", name_main);
+            tintent.putExtra("email", email_main);
+            tintent.putExtra("sex", sex_main);
+            tintent.putExtra("contents_title", contents_title_main);
+            tintent.putExtra("contents", contents_main);
+            tintent.putExtra("area", area_main);
+            tintent.putExtra("time_t", time_main);
+            startActivity(tintent);
+            //startActivityForResult(tintent, result);
+        }
+    }
+
+    //프래그먼트 갱신 시 필요한 부분에 호출하여 사용
+    private void refresh(){
+        FragmentTransaction transcation = getFragmentManager().beginTransaction();
+        transcation.detach(this).attach(this).commit();
+    }
+}
