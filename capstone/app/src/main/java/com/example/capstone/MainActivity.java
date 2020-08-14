@@ -9,14 +9,27 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class MainActivity extends AppCompatActivity {
     private ImageView mImageVIew;
     private int nBefore = 0;
+
+    Intent foregroundServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*
+        memory over run..
+        if want only once subscribed remark(//) the subscribeToTopic(~) line
+        and go onNewToken of MyFirebaseMessagingService.class
+         */
+        FirebaseMessaging.getInstance().subscribeToTopic("newcomers_fcm");
+        FirebaseInstanceId.getInstance().getToken();
 
         final ConstraintLayout CL = (ConstraintLayout)findViewById(R.id.constraintLayout);
         CL.setOnTouchListener(new View.OnTouchListener() {
@@ -33,5 +46,34 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        if (null == UndeadService.serviceIntent) {
+            foregroundServiceIntent = new Intent(this, UndeadService.class);
+            startService(foregroundServiceIntent);
+
+        } else {
+            foregroundServiceIntent = UndeadService.serviceIntent;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
+    @Override
+    protected  void onDestroy() {
+        super.onDestroy();
+
+        if (null != foregroundServiceIntent) {
+            stopService(foregroundServiceIntent);
+            foregroundServiceIntent = null;
+        }
     }
 }

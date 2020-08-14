@@ -51,20 +51,18 @@ public class Tourpass extends Fragment {
         TourpassCheckDB TCDB = new TourpassCheckDB();
         TCDB.execute();
 
-        if(tourpass.equals("TRUE")){
+        if (getArguments() != null) {
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-            try{
-                BitMatrix bitMatrix = multiFormatWriter.encode(ID, BarcodeFormat.QR_CODE,200,200);
+            try {
+                //String param1 = getArgument().getString("param 1");
+                BitMatrix bitMatrix = multiFormatWriter.encode(ID, BarcodeFormat.QR_CODE, 200, 200);
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                 iv.setImageBitmap(bitmap);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
-
         }
-
         return view;
     }
 
@@ -77,7 +75,7 @@ public class Tourpass extends Fragment {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://172.30.1.56/capstone/TourpassCheck.php"); //이거 바꿔라
+                URL url = new URL("http://192.168.0.53/capstone/TourpassCheck.php"); //이거 바꿔라
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -125,6 +123,18 @@ public class Tourpass extends Fragment {
                 for (int i = 0; i < results.length(); i++){
                     JSONObject content = results.getJSONObject(i);
                     tourpass = content.getString("tourpass");
+                }
+
+                if(tourpass.equals("TRUE")){
+                    MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                    try{
+                        BitMatrix bitMatrix = multiFormatWriter.encode(ID, BarcodeFormat.QR_CODE,200,200);
+                        BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                        Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                        iv.setImageBitmap(bitmap);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             } catch (Exception e){
                 e.printStackTrace();

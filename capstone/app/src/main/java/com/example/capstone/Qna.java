@@ -94,7 +94,7 @@ public class Qna extends Fragment {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://172.30.1.56/capstone/TourpassSetting.php"); //이거 바꿔라
+                URL url = new URL("http://192.168.0.53/capstone/TourpassSetting.php"); //이거 바꿔라
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -138,7 +138,11 @@ public class Qna extends Fragment {
         protected void onPostExecute(String data) {
             try{
                 if(data.equals("buy")){
+                    Fragment fragment = new Tourpass();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("param 1", "buy");
                     Toast.makeText(getActivity(), "투어패스 구매가 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    fragment.setArguments(bundle);
                 }
             } catch (Exception e){
                 e.printStackTrace();

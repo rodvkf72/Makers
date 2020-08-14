@@ -120,7 +120,7 @@ public class Together extends Fragment {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://172.30.1.56/capstone/notice_board_check.php");
+                URL url = new URL("http://192.168.0.53/capstone/notice_board_check.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -213,7 +213,7 @@ public class Together extends Fragment {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://172.30.1.56/capstone/notice_board_find.php"); //이거 바꿔라!
+                URL url = new URL("http://192.168.0.53/capstone/notice_board_find.php"); //이거 바꿔라!
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -282,7 +282,7 @@ public class Together extends Fragment {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://172.30.1.56/capstone/notice_board_contents.php");
+                URL url = new URL("http://192.168.0.53/capstone/notice_board_contents.php");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
