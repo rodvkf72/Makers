@@ -18,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
 
     Intent foregroundServiceIntent;
 
+    /*
+    애플리케이션 시작 시 첫 화면 및
+    백그라운드에서의 푸시알림 기능을 위한 코드
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

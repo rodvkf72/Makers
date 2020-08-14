@@ -49,6 +49,11 @@ public class Area extends AppCompatActivity {
     String id = "";
     String idt = "";
 
+    /*
+    지역 설정란 입니다.
+    임시로 어레이 리스트에 데이터를 직접 입력하였으며
+    데이터베이스에서 가져와서 사용할 수도 있습니다.
+    */
     @Override
     protected  void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -75,6 +80,9 @@ public class Area extends AppCompatActivity {
 
         area_listview.setAdapter(area_adapter);
 
+        /*
+        지역과 같은 아이템을 클릭했을 시 다음 어레이 리스트가 보이도록 함
+         */
         area_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -118,6 +126,10 @@ public class Area extends AppCompatActivity {
         });
 
     }
+
+    /*
+    사용자 설정에 대한 데이터베이스 연결
+     */
     public class SettingDB extends AsyncTask<String, Integer, String> {
 
         @Override

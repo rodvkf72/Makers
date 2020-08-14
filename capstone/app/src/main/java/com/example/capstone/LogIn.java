@@ -34,6 +34,13 @@ public class LogIn extends AppCompatActivity {
 
     EditText etid, etpw;
 
+    /*
+    로그인 입니다.
+    전역변수로 아이디와 비밀번호를 설정하고
+    로그인 버튼을 눌렀을 시 에디트 박스에 있는
+    아이디와 비밀번호의 내용을 가져와서
+    데이터베이스와 통신합니다.
+     */
     @Override
     protected  void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
