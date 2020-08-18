@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Recommend extends Fragment implements OnMapReadyCallback {
+    CustomInfoWindowAdapter adapter;
+
     View view;
     TextView recommend_text;
     private MapView mapView = null;
@@ -123,30 +125,29 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         markerItemList.add(new MarkerItem(35.063311, 129.019297, "암남 공원", 84));
 
         //Marker
-        for(int i = 0; i < 10; i++){
-            LatLng location = new LatLng( markerItemList.get(i).getLat(), markerItemList.get(i).getLon());
+        for(int i = 0; i < 10; i++) {
+            LatLng location = new LatLng(markerItemList.get(i).getLat(), markerItemList.get(i).getLon());
 
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(location);
             markerOptions.title(markerItemList.get(i).getPlaceTitle());
             markerOptions.snippet("선호율 : " + String.valueOf(markerItemList.get(i).getPreferenceRatio()) + "%");
 
-            int drawableId = getResources().getIdentifier("pic"+ (i+1), "drawable", "com.example.capstone");
+            int drawableId = getResources().getIdentifier("pic" + (i + 1), "drawable", "com.example.capstone");
 
-            BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable(drawableId);
-            Bitmap b=bitmapdraw.getBitmap();
+            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(drawableId);
+            Bitmap b = bitmapdraw.getBitmap();
             Bitmap smallMarker = Bitmap.createScaledBitmap(b, 150, 150, false);
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
 
             mMap.addMarker(markerOptions);
         }
 
-
-        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(this);
+        adapter = new CustomInfoWindowAdapter(this);
         mMap.setInfoWindowAdapter(adapter);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(35.078280, 129.045331)));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(5));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
     }
 
 }
