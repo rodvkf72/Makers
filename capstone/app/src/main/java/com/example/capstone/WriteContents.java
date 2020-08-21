@@ -131,6 +131,7 @@ public class WriteContents extends AppCompatActivity {
             try {
                 // 서버연결
                 URL url = new URL("http://192.168.0.53/capstone/write_contents_check.php");
+                //URL url = new URL("http://192.168.0.53:9090/noticeboard_insert/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -196,7 +197,8 @@ public class WriteContents extends AppCompatActivity {
             Log.e("POST", param);
             try {
                 // 서버연결
-                URL url = new URL("http://192.168.0.53/capstone/write_contents_enrollment.php");
+                //URL url = new URL("http://192.168.0.53/capstone/write_contents_enrollment.php");
+                URL url = new URL("http://192.168.0.53:9090/noticeboard_insert/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -238,8 +240,10 @@ public class WriteContents extends AppCompatActivity {
         @Override
         protected void onPostExecute(String data) {
             try {
-                if(data.equals("complete")){
+                if((!data.equals("fail") && (!data.equals(null)))){
                     //Toast.makeText(getApplicationContext(), "게시글 등록 완료 !", Toast.LENGTH_SHORT).show();
+                    PushSendDB psdb = new PushSendDB();
+                    psdb.execute();
                     Intent writeintent = new Intent();
                     writeintent.putExtra("1", "result");
                     setResult(RESULT_OK, writeintent);
@@ -250,6 +254,51 @@ public class WriteContents extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public class PushSendDB extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                // 서버연결
+                //URL url = new URL("http://192.168.0.53/capstone/write_contents_enrollment.php");
+                URL url = new URL("http://192.168.0.53:9090/send_alarm/");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                // 서버 -> 안드로이드 파라메터값 전달
+                InputStream is = null;
+                BufferedReader in = null;
+                String data = "";
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                // 서버에서 응답
+                return data;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
         }
     }
 }

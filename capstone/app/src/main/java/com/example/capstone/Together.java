@@ -87,6 +87,7 @@ public class Together extends Fragment {
         gphonenum = gintent.getExtras().getString("phone_num");
 
         Button write_button = (Button) view.findViewById(R.id.Write);
+        Button delete_button = (Button) view.findViewById(R.id.Delete);
 
         contents_adapter = new ArrayAdapter(getActivity(), R.layout.simpleitem, contents);
         contents_listview = (ListView) view.findViewById(R.id.together_listview);
@@ -108,6 +109,17 @@ public class Together extends Fragment {
                 }
             }
         });
+
+        delete_button.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                Intent deleteintent = new Intent(getActivity(), DeleteContents.class);
+                deleteintent.putExtra("phone_num", gphonenum);
+                startActivityForResult(deleteintent, result);
+                getActivity().overridePendingTransition(R.anim.rightin_activity, R.anim.leftout_activity);
+            }
+        });
+
         return view;
     }
 
@@ -209,7 +221,7 @@ public class Together extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             // 인풋 파라메터값 생성
-            String param = "area_text=" + area_t + "&time_text=" + time_t + "&sex_text=" + sex_t + ""; //"phone_num=" + id + ""; 추가
+            String param = "phone_num=" + gphonenum + "&area_text=" + area_t + "&time_text=" + time_t + "&sex_text=" + sex_t + ""; //"phone_num=" + id + ""; 추가
             Log.e("POST",param);
             try {
                 // 서버연결
@@ -262,7 +274,7 @@ public class Together extends Fragment {
                 for (int i = 0; i < results.length(); i++){
                     JSONObject content = results.getJSONObject(i);
                     //여기서 필요한 부분만 가져오고 조건식 입력
-                    notice_board = content.getString("contents_title");
+                    notice_board = content.getString("title");
                     contents.add(notice_board.toString());
                 }
             } catch (Exception e){
@@ -333,8 +345,8 @@ public class Together extends Fragment {
                     name_main = content.getString("name");
                     email_main = content.getString("email");
                     sex_main = content.getString("sex");
-                    contents_title_main = content.getString("contents_title");
-                    contents_main = content.getString("contents");
+                    contents_title_main = content.getString("title");
+                    contents_main = content.getString("content");
                     area_main = content.getString("area");
                     time_main = content.getString("time_t");
                 }
@@ -346,8 +358,8 @@ public class Together extends Fragment {
             tintent.putExtra("name", name_main);
             tintent.putExtra("email", email_main);
             tintent.putExtra("sex", sex_main);
-            tintent.putExtra("contents_title", contents_title_main);
-            tintent.putExtra("contents", contents_main);
+            tintent.putExtra("title", contents_title_main);
+            tintent.putExtra("content", contents_main);
             tintent.putExtra("area", area_main);
             tintent.putExtra("time_t", time_main);
             startActivity(tintent);

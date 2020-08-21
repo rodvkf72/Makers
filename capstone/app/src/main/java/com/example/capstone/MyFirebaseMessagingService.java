@@ -90,6 +90,6 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
             NotificationChannel channel = new NotificationChannel(channelId, "Default alarm_channel_id", NotificationManager.IMPORTANCE_DEFAULT);
             manager.createNotificationChannel(channel);
         }
-        manager.notify(0, builder.build());
+        manager.notify(20, builder.build());
     }
 }

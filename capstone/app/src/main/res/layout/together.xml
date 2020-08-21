@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.972" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/Delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="게시글 삭제"

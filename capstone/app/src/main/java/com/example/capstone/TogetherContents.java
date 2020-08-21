@@ -37,8 +37,8 @@ public class TogetherContents extends AppCompatActivity {
         name_main = getIntent().getExtras().getString("name");
         email_main = getIntent().getExtras().getString("email");
         sex_main = getIntent().getExtras().getString("sex");
-        contents_title_main = getIntent().getExtras().getString("contents_title");
-        contents_main = getIntent().getExtras().getString("contents");
+        contents_title_main = getIntent().getExtras().getString("title");
+        contents_main = getIntent().getExtras().getString("content");
         area_main = getIntent().getExtras().getString("area");
         time_main = getIntent().getExtras().getString("time_t");
 

@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,6 +136,8 @@ public class LogIn extends AppCompatActivity {
                     //여기서 인텐트를 통해서 로그인 후 메인페이지로 이동시키면 됨
                     Intent dbintent = new Intent(LogIn.this, MainPage.class);
                     dbintent.putExtra("phone_num", id);
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("newcomers_fcm");
+                    FirebaseMessaging.getInstance().subscribeToTopic("busan");
                     startActivity(dbintent);
                     overridePendingTransition(R.anim.alphain_activity, R.anim.alphaout_activity);
                 } else {

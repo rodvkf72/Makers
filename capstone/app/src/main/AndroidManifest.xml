@@ -44,6 +44,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".WriteContents"
             android:screenOrientation="portrait" />
+        <activity android:name=".DeleteContents"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".MyFirebaseMessagingService">
