@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"encoding/json"
 )
 
 var db = dbInfo{"root", "1463", "localhost:3306", "mysql", "makers"}
@@ -14,6 +15,18 @@ type dbInfo struct {
 	url      string
 	engine   string
 	database string
+}
+
+type Noticeboard struct {
+	No int			`json:"no"`
+	Phone_num int	`json:"phone_num"`
+	Name string		`json:"name"`
+	Email string	`json:"email"`
+	Sex string		`json:"sex"`
+	Title string	`json:"title"`
+	Content string	`json:"content"`
+	Area string		`json:"area"`
+	Time_t string	`json:"time_t"`
 }
 
 func SelectQuery(db dbInfo, query string) string {
@@ -36,9 +49,9 @@ func SelectQuery(db dbInfo, query string) string {
 	return area
 }
 
-func FindQuery(db dbInfo, query string) (string, string, string, string, string, string, string, string, string) {
-	var no string
-	var phone_num string
+func FindsQuery(db dbInfo, query string) []byte {
+	var no int
+	var phone_num int
 	var name string
 	var email string
 	var sex string
@@ -46,6 +59,8 @@ func FindQuery(db dbInfo, query string) (string, string, string, string, string,
 	var content string
 	var area string
 	var time_t string
+
+	var returnjsondata []byte
 
 	dataSource := db.user + ":" + db.pwd + "@tcp(" + db.url + ")/" + db.database
 	conn, err := sql.Open(db.engine, dataSource)
@@ -60,9 +75,15 @@ func FindQuery(db dbInfo, query string) (string, string, string, string, string,
 		err := rows.Scan(&no, &phone_num, &name, &email, &sex, &title, &content, &area, &time_t)
 		if err != nil {
 			log.Fatal(err)
+		} else {
+			structdata := Noticeboard {no, phone_num, name, email, sex, title, content, area, time_t}
+
+			returnjsondata, _ = json.MarshalIndent(structdata, "", "	")
+
+			fmt.Println(string(returnjsondata))
 		}
 	}
-	return no, phone_num, name, email, sex, title, content, area, time_t
+	return returnjsondata
 }
 
 func InsertQuery(db dbInfo, query string) {

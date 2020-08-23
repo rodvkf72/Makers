@@ -1,11 +1,8 @@
 package backend
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 )
 
@@ -13,17 +10,6 @@ func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	var query string
-
-	//구조체로 바꿀 것
-	var no string
-	var phone_num string
-	var name string
-	var email string
-	var sex string
-	var title string
-	var content string
-	var area string
-	var time_t string
 
 	//go lang json 방식(marshal) 참고
 	if r.Method == "POST" {
@@ -39,10 +25,17 @@ func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.MarshalIndent(query, "", "\t")
-		no, phone_num, name, email, sex, title, content, area, time_t = FindQuery(db, query)
-		fmt.Fprintf(w, no, phone_num, name, email, sex, title, content, area, time_t)
-		fmt.Println(no, phone_num, name, email, sex, title, content, area, time_t)
+		jsondata := FindsQuery(db, query)
+		fmt.Fprintf(w, string(jsondata))
+		fmt.Println(jsondata)
 	} else {
+		//테스트용 쿼리. 주소에 직접 접속하여 POST가 아니더라도 값을 확인하기 위해
+		query = "SELECT * FROM noticeboard WHERE phone_num=1234;"
+
+		jsondata := FindsQuery(db, query)
+
+		fmt.Fprintf(w, string(jsondata))
+	/*
 		body, _ := ioutil.ReadAll(r.Body)
 		var prettyJSON bytes.Buffer
 		error := json.Indent(&prettyJSON, body, "", "\t")
@@ -53,6 +46,6 @@ func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Println("results", string(prettyJSON.Bytes()))
 
+	}*/
 	}
-
 }
