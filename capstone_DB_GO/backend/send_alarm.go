@@ -16,7 +16,7 @@ func SendPushAlarm(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		//var topicselectquery = "SELECT topic FROM info;"
 		var areaselectquery = "SELECT area FROM noticeboard ORDER BY no DESC LIMIT 1"
-		areaselect := SelectQuery(db, areaselectquery)
+		areaselect := SelectQuery(db, areaselectquery, "area")
 		opt := option.WithCredentialsFile("newcomers-521cb-firebase-adminsdk-ggg4x-09b1c5355c.json")
 		app, _ := firebase.NewApp(context.Background(), nil, opt)
 		ctx := context.Background()
