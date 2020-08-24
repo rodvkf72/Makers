@@ -1,7 +1,6 @@
 package backend
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -24,10 +23,8 @@ func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 			query = "SELECT * FROM noticeboard WHERE area = " + "'" + resarea + "'" + "AND sex = " + "'" + ressex + "'" + "ORDER BY no DESC;"
 		}
 
-		json.MarshalIndent(query, "", "\t")
 		jsondata := FindsQuery(db, query)
 		fmt.Fprintf(w, string(jsondata))
-		fmt.Println(jsondata)
 	} else {
 		//테스트용 쿼리. 주소에 직접 접속하여 POST가 아니더라도 값을 확인하기 위해
 		query = "SELECT * FROM noticeboard WHERE phone_num=1234;"
@@ -35,17 +32,7 @@ func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 		jsondata := FindsQuery(db, query)
 
 		fmt.Fprintf(w, string(jsondata))
-	/*
-		body, _ := ioutil.ReadAll(r.Body)
-		var prettyJSON bytes.Buffer
-		error := json.Indent(&prettyJSON, body, "", "\t")
 
-		if error != nil {
-			log.Println("JSON parse error: ", error)
-			return
-		}
-		log.Println("results", string(prettyJSON.Bytes()))
-
-	}*/
 	}
+
 }

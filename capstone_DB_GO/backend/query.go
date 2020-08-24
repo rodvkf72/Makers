@@ -2,9 +2,9 @@ package backend
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
-	"encoding/json"
 )
 
 var db = dbInfo{"root", "1463", "localhost:3306", "mysql", "makers"}
@@ -17,16 +17,20 @@ type dbInfo struct {
 	database string
 }
 
+type Noticeboards struct {
+	Result []Noticeboard `json:"results"`
+}
+
 type Noticeboard struct {
-	No int			`json:"no"`
-	Phone_num int	`json:"phone_num"`
-	Name string		`json:"name"`
-	Email string	`json:"email"`
-	Sex string		`json:"sex"`
-	Title string	`json:"title"`
-	Content string	`json:"content"`
-	Area string		`json:"area"`
-	Time_t string	`json:"time_t"`
+	No        string `json:"no"`
+	Phone_num string `json:"phone_num"`
+	Name      string `json:"name"`
+	Email     string `json:"email"`
+	Sex       string `json:"sex"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
+	Area      string `json:"area"`
+	Time_t    string `json:"time_t"`
 }
 
 func SelectQuery(db dbInfo, query string) string {
@@ -50,8 +54,8 @@ func SelectQuery(db dbInfo, query string) string {
 }
 
 func FindsQuery(db dbInfo, query string) []byte {
-	var no int
-	var phone_num int
+	var no string
+	var phone_num string
 	var name string
 	var email string
 	var sex string
@@ -60,7 +64,8 @@ func FindsQuery(db dbInfo, query string) []byte {
 	var area string
 	var time_t string
 
-	var returnjsondata []byte
+	//Noticeboard 구조체 배열 선언
+	var n []Noticeboard
 
 	dataSource := db.user + ":" + db.pwd + "@tcp(" + db.url + ")/" + db.database
 	conn, err := sql.Open(db.engine, dataSource)
@@ -76,14 +81,22 @@ func FindsQuery(db dbInfo, query string) []byte {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			structdata := Noticeboard {no, phone_num, name, email, sex, title, content, area, time_t}
+			structdata := Noticeboard{no, phone_num, name, email, sex, title, content, area, time_t}
 
-			returnjsondata, _ = json.MarshalIndent(structdata, "", "	")
-
-			fmt.Println(string(returnjsondata))
+			n = append(n, structdata)
 		}
 	}
-	return returnjsondata
+
+	//result로 구조체 묶기
+	result := Noticeboards{n}
+	/*
+		result 변수는 Noticeboard 구조체 이므로 []byte 형식의 전달이 불가함
+		따라서 마샬링을 통해 json으로 변환하고 []byte 타입으로 리턴
+	*/
+	returnresult, _ := json.Marshal(result)
+
+	//마샬링 된 변수값 리턴
+	return returnresult
 }
 
 func InsertQuery(db dbInfo, query string) {
