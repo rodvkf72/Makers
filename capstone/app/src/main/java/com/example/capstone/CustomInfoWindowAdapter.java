@@ -1,11 +1,27 @@
 package com.example.capstone;
 
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     private Recommend context;
@@ -13,6 +29,11 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     private TextView placeInfo;
     private TextView preferenceRatio;
     private ImageView placeImage;
+
+    private String[] title;
+    private String[] contents;
+    private String[] image;
+    private String[] preference;
 
     private int test;
 
@@ -34,6 +55,20 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         placeImage = (ImageView) view.findViewById(R.id.imageView1) ;
         preferenceRatio = (TextView) view.findViewById(R.id.tv_sunho);
 
+        AverageDB adb = new AverageDB();
+        adb.execute();
+
+        /*
+        DB랑 서버 구현 시 주석처리 된 아래와 같이 사용할 것
+
+        if (marker.getTitle().equals(title[0])) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(contents[0]);
+            preferenceRatio.setText("\n선호율 : " + preference[0]);
+            placeImage.setImageResource(R.drawable.pic1); //이미지를 주소화 할 것
+        }
+
+         */
         if (marker.getTitle().equals("해운대 해수욕장")){
             placeTitle.setText(marker.getTitle());
             placeInfo.setText("해운대해수욕장은 주변의 빼어난 자연경관과 어우러져 전국 제일의 해수욕장으로 각광받고 있으며 매년 7월 1일부터 8월 31일까지 2개월동안 해수욕이 가능하다.");
@@ -88,4 +123,60 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         return view;
     }
 
+    private class AverageDB extends AsyncTask<String, Integer, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                // 서버연결
+                //URL url = new URL("http://192.168.0.53/capstone/Signup.php");
+                URL url = new URL("http:/192.168,0.53:9090/area_average/");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                // 서버 -> 안드로이드 파라메터값 전달
+                InputStream is = null;
+                BufferedReader in = null;
+                String data = "";
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                // 서버에서 응답
+                return data;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            try {
+                JSONObject root = new JSONObject(data);
+                JSONArray results = new JSONArray(root.getString("results"));
+                for (int i = 0; i < results.length(); i++){
+                    JSONObject content = results.getJSONObject(i);
+                    title[i] = content.getString("title");
+                    contents[i] = content.getString("content");
+                    image[i] = content.getString("image");
+                    preference[i] = content.getString("preference");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //overridePendingTransition(R.anim.alphain_activity, R.anim.alphaout_activity);
+        }
+    }
 }

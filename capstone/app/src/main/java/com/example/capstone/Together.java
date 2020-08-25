@@ -132,7 +132,8 @@ public class Together extends Fragment {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://192.168.0.53/capstone/notice_board_check.php");
+                //URL url = new URL("http://192.168.0.53/capstone/notice_board_check.php");
+                URL url = new URL("http://192.168.0.53/noticeboard_check/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -225,8 +226,8 @@ public class Together extends Fragment {
             Log.e("POST",param);
             try {
                 // 서버연결
-                //URL url = new URL("http://192.168.0.53/capstone/notice_board_find.php"); //이거 바꿔라!
-                URL url = new URL("http://192.168.0.53:9090/noticeboard_find/");
+                //URL url = new URL("http://192.168.0.53/capstone/notice_board_find.php"); //PHP 코드
+                URL url = new URL("http://192.168.0.53:9090/noticeboard_find/");    //GO 코드
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -296,7 +297,8 @@ public class Together extends Fragment {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://192.168.0.53/capstone/notice_board_contents.php");
+                //URL url = new URL("http://192.168.0.53/capstone/notice_board_contents.php");
+                URL url = new URL("http://192.168.0.53:9090/noticeboard_contents/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

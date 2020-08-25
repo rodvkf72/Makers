@@ -92,7 +92,8 @@ public class DeleteContents extends AppCompatActivity {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://192.168.0.53/capstone/notice_board_find.php"); //이거 바꿔라!
+                //URL url = new URL("http://192.168.0.53/capstone/notice_board_find.php"); //이거 바꿔라!
+                URL url = new URL("http://192.168.0.53:9090/noticeboard_find/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -163,7 +164,8 @@ public class DeleteContents extends AppCompatActivity {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://192.168.0.53/capstone/notice_board_delete.php"); //이거 바꿔라!
+                //URL url = new URL("http://192.168.0.53/capstone/notice_board_delete.php"); //이거 바꿔라!
+                URL url = new URL("http://192.168.0.53:9090/noticeboard_delete/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

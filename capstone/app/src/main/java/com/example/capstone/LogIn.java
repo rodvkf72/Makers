@@ -89,7 +89,8 @@ public class LogIn extends AppCompatActivity {
             Log.e("POST",param);
             try {
                 // 서버연결
-                URL url = new URL("http://192.168.0.53/capstone/Login.php");
+                //URL url = new URL("http://192.168.0.53/capstone/Login.php");
+                URL url = new URL("http://192.168.0.53:9090/login/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
