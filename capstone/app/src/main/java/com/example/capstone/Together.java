@@ -133,7 +133,7 @@ public class Together extends Fragment {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/notice_board_check.php");
-                URL url = new URL("http://192.168.0.53/noticeboard_check/");
+                URL url = new URL("http://192.168.0.53:9090/noticeboard_check/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
