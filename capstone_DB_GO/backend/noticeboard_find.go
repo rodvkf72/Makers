@@ -17,6 +17,10 @@ func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 		resarea := r.FormValue("area_text")
 		restime := r.FormValue("time_text")
 
+		/*
+			게시글을 삭제할 때는 전화번호 값만 가져와서 검색하고
+			게시글을 볼 때는 지역, 시간, 성별을 확인함
+		*/
 		if restime == "" || ressex == "" {
 			query = "SELECT * FROM noticeboard WHERE phone_num = " + "'" + resphonenum + "'" + "ORDER BY no DESC;"
 		} else {

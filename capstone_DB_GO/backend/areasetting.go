@@ -12,12 +12,12 @@ func AreaSetting(w http.ResponseWriter, r *http.Request) {
 
 	//go lang json 방식(marshal) 참고
 	if r.Method == "POST" {
-		resphonenum := r.FormValue("phone_num")
+		resphonenum := r.FormValue("phone_text")
 		resarea := r.FormValue("area_text")
 		restime := r.FormValue("time_text")
 		ressex := r.FormValue("sex_text")
 
-		selectquery := "SELECT * FROM noticeboard_setting WHERE phone_num = " + "'" + resphonenum + "'" + ";"
+		selectquery := "SELECT phone_num FROM noticeboard_setting WHERE phone_num = " + "'" + resphonenum + "'" + ";"
 		queryphonenum := SelectQuery(db, selectquery, "phone_num")
 
 		if resphonenum == "" || resarea == "" || restime == "" || ressex == "" {
