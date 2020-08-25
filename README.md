@@ -9,4 +9,6 @@
 
  But this is the development stage
 
+ When the conversion to php -> go is finished, the php file will be deleted.
+
 # looooooooooool
