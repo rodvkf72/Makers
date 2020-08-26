@@ -18,7 +18,6 @@ func main() {
 	http.HandleFunc("/signup/", backend.SingUp)
 	http.HandleFunc("/area_setting/", backend.AreaSetting)
 	http.HandleFunc("/area_info/", backend.AreaInfo)
-	http.HandleFunc("/area_average/", backend.AreaAverage)
 	http.HandleFunc("/noticeboard_check/", backend.NoticeboardCheck)
 	http.HandleFunc("/noticeboard_find/", backend.NoticeboardFind)
 	http.HandleFunc("/noticeboard_insert/", backend.NoticeboardInsert)

@@ -69,22 +69,14 @@ type ContentChecks struct {
 }
 
 type Area struct {
-	Title   string `json:"title"`
-	Content string `json:"content"`
-	Image   string `json:"image"`
+	Title      string `json:"title"`
+	Content    string `json:"content"`
+	Image      string `json:"image"`
+	Preference string `json:"preference"`
 }
 
 type Areas struct {
 	Result []Area `json:"results"`
-}
-
-type Average struct {
-	Area_detail string `json:"area_detail"`
-	Preference  string `json:"preference"`
-}
-
-type Averages struct {
-	Result []Average `json:"result"`
 }
 
 func SelectQuery(db dbInfo, query string, choose string) string {
@@ -340,7 +332,7 @@ func ContentCheckQuery(db dbInfo, query string) []byte {
 	구조체 추가해서 results로 묶어서 보낼 것
 */
 func AreaQuery(db dbInfo, query string) []byte {
-	var title, content, image string
+	var title, content, image, preference string
 
 	//Contentcheck 구조체 배열 선언
 	var n []Area
@@ -355,11 +347,11 @@ func AreaQuery(db dbInfo, query string) []byte {
 	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(&title, &content, &image)
+		err := rows.Scan(&title, &content, &image, &preference)
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			structdata := Area{title, content, image}
+			structdata := Area{title, content, image, preference}
 
 			n = append(n, structdata)
 		}
@@ -367,44 +359,6 @@ func AreaQuery(db dbInfo, query string) []byte {
 
 	//ContentChecks로 구조체 묶기
 	result := Areas{n}
-	/*
-		result 변수는 Contentcheck 구조체 이므로 []byte 형식의 전달이 불가함
-		따라서 마샬링을 통해 json으로 변환하고 []byte 타입으로 리턴
-	*/
-	returnresult, _ := json.Marshal(result)
-
-	//마샬링 된 변수값 리턴
-	return returnresult
-}
-
-func AverageQuery(db dbInfo, query string) []byte {
-	var area_detail, preference string
-
-	//Contentcheck 구조체 배열 선언
-	var n []Average
-
-	dataSource := db.user + ":" + db.pwd + "@tcp(" + db.url + ")/" + db.database
-	conn, err := sql.Open(db.engine, dataSource)
-	if err != nil {
-		log.Fatal(err)
-	}
-	rows, err := conn.Query(query)
-
-	defer rows.Close()
-
-	for rows.Next() {
-		err := rows.Scan(&area_detail, &preference)
-		if err != nil {
-			log.Fatal(err)
-		} else {
-			structdata := Average{area_detail, preference}
-
-			n = append(n, structdata)
-		}
-	}
-
-	//ContentChecks로 구조체 묶기
-	result := Averages{n}
 	/*
 		result 변수는 Contentcheck 구조체 이므로 []byte 형식의 전달이 불가함
 		따라서 마샬링을 통해 json으로 변환하고 []byte 타입으로 리턴
