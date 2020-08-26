@@ -4,12 +4,14 @@ public class MarkerItem {
     private double lat;
     private double lon;
     private String placeTitle;
-    private int preferenceRatio;
+    private String placeInfo;
+    private String preferenceRatio;
 
-    public MarkerItem(double lat, double lon, String placeTitle, int preferenceRatio) {
+    public MarkerItem(double lat, double lon, String placeTitle, String placeInfo, String preferenceRatio) {
         this.lat = lat;
         this.lon = lon;
         this.placeTitle = placeTitle;
+        this.placeInfo = placeInfo;
         this.preferenceRatio = preferenceRatio;
     }
 
@@ -37,11 +39,15 @@ public class MarkerItem {
         this.placeTitle = placeTitle;
     }
 
-    public int getPreferenceRatio() {
+    public String getPlaceInfo() { return placeInfo; }
+
+    public void setPlaceInfo(String placeInfo) { this.placeInfo = placeInfo; }
+
+    public String getPreferenceRatio() {
         return preferenceRatio;
     }
 
-    public void setPreferenceRatio(int preferenceRatio) {
+    public void setPreferenceRatio(String preferenceRatio) {
         this.preferenceRatio = preferenceRatio;
     }
 

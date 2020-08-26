@@ -144,6 +144,8 @@ public class Qna extends Fragment {
                     bundle.putString("param 1", "buy");
                     Toast.makeText(getActivity(), "투어패스 구매가 완료되었습니다.", Toast.LENGTH_SHORT).show();
                     fragment.setArguments(bundle);
+                } else {
+                    Toast.makeText(getActivity(), "투어패스 구매에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e){
                 e.printStackTrace();

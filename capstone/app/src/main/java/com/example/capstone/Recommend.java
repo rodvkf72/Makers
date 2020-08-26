@@ -2,6 +2,7 @@ package com.example.capstone;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,16 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +40,12 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
     TextView recommend_text;
     private MapView mapView = null;
     private GoogleMap mMap = null;
+
+    String[] title = new String[100];
+    String[] contents = new String[100];
+    String[] image = new String[100];
+    String[] area_detail = new String[100];
+    String[] preferenceratio = new String[100];
 
     public Recommend()
     {
@@ -47,6 +64,12 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         view = inflater.inflate(R.layout.recommend, container, false);
         mapView = (MapView)view.findViewById(R.id.map);
         //recommend_text = (TextView) view.findViewById(R.id.recommend_tv);
+
+        AreaInfoDB aidb = new AreaInfoDB();
+        AreaAverageDB aadb = new AreaAverageDB();
+
+        aidb.execute();
+        aadb.execute();
 
         mapView.getMapAsync(this);
 
@@ -113,16 +136,16 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         List<MarkerItem> markerItemList = new ArrayList<MarkerItem>();
-        markerItemList.add(new MarkerItem(35.158065, 129.160727, "해운대 해수욕장", 89));
-        markerItemList.add(new MarkerItem(35.101667, 129.033787, "부산 영화체험 박물관", 87));
-        markerItemList.add(new MarkerItem(35.153040, 129.118603, "광안리 해수욕장", 81));
-        markerItemList.add(new MarkerItem(35.153040, 129.010592, "감천 문화마을", 82));
-        markerItemList.add(new MarkerItem(35.104863, 129.034844, "40계단 문화관광테마거리", 72));
-        markerItemList.add(new MarkerItem(35.078280, 129.045331, "흰여울 문화마을", 81));
-        markerItemList.add(new MarkerItem(35.046908, 128.966439, "다대포 해수욕장", 83));
-        markerItemList.add(new MarkerItem(35.078443, 129.080377, "국립 해양박물관", 85));
-        markerItemList.add(new MarkerItem(35.052593, 128.960761, "아미산 전망대", 89));
-        markerItemList.add(new MarkerItem(35.063311, 129.019297, "암남 공원", 84));
+        markerItemList.add(new MarkerItem(35.158065, 129.160727, title[0], contents[0], preferenceratio[0]));
+        markerItemList.add(new MarkerItem(35.101667, 129.033787, title[1], contents[1], preferenceratio[1]));
+        markerItemList.add(new MarkerItem(35.153040, 129.118603, title[2], contents[2], "81"));
+        markerItemList.add(new MarkerItem(35.153040, 129.010592, title[3], contents[3], "82"));
+        markerItemList.add(new MarkerItem(35.104863, 129.034844, title[4], contents[4], "72"));
+        markerItemList.add(new MarkerItem(35.078280, 129.045331, title[5], contents[5], "81"));
+        markerItemList.add(new MarkerItem(35.046908, 128.966439, title[6], contents[6], "83"));
+        markerItemList.add(new MarkerItem(35.078443, 129.080377, title[7], contents[7], "85"));
+        markerItemList.add(new MarkerItem(35.052593, 128.960761, title[8], contents[8], "89"));
+        markerItemList.add(new MarkerItem(35.063311, 129.019297, title[9], contents[9], "84"));
 
         //Marker
         for(int i = 0; i < 10; i++) {
@@ -131,7 +154,9 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(location);
             markerOptions.title(markerItemList.get(i).getPlaceTitle());
-            markerOptions.snippet("선호율 : " + String.valueOf(markerItemList.get(i).getPreferenceRatio()) + "%");
+            markerOptions.snippet(markerItemList.get(i).getPlaceInfo());
+            markerOptions.snippet(markerItemList.get(i).getPreferenceRatio());
+            //markerOptions.snippet("선호율 : " + String.valueOf(markerItemList.get(i).getPreferenceRatio()) + "%");
 
             int drawableId = getResources().getIdentifier("pic" + (i + 1), "drawable", "com.example.capstone");
 
@@ -142,7 +167,6 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
 
             mMap.addMarker(markerOptions);
         }
-
         adapter = new CustomInfoWindowAdapter(this);
         mMap.setInfoWindowAdapter(adapter);
 
@@ -150,4 +174,117 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
     }
 
+    private class AreaInfoDB extends AsyncTask<String, Integer, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                // 서버연결
+                //URL url = new URL("http://192.168.0.53/capstone/Signup.php");
+                URL url = new URL("http:/192.168.0.53:9090/area_info/");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                // 서버 -> 안드로이드 파라메터값 전달
+                InputStream is = null;
+                BufferedReader in = null;
+                String data = "";
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                // 서버에서 응답
+                return data;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            try {
+                JSONObject root = new JSONObject(data);
+                JSONArray results = new JSONArray(root.getString("results"));
+                for (int i = 0; i < results.length(); i++){
+                    JSONObject content = results.getJSONObject(i);
+                    title[i] = content.getString("title");
+                    contents[i] = content.getString("content");
+                    image[i] = content.getString("image");
+
+                    //preference[i] = content.getString("preference");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //overridePendingTransition(R.anim.alphain_activity, R.anim.alphaout_activity);
+        }
+    }
+
+    private class AreaAverageDB extends AsyncTask<String, Integer, String> {
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                // 서버연결
+                //URL url = new URL("http://192.168.0.53/capstone/Signup.php");
+                URL url = new URL("http:/192.168.0.53:9090/area_average/");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+
+                // 서버 -> 안드로이드 파라메터값 전달
+                InputStream is = null;
+                BufferedReader in = null;
+                String data = "";
+
+                is = conn.getInputStream();
+                in = new BufferedReader(new InputStreamReader(is), 8 * 1024);
+                String line = null;
+                StringBuffer buff = new StringBuffer();
+                while ((line = in.readLine()) != null) {
+                    buff.append(line + "\n");
+                }
+                data = buff.toString().trim();
+
+                // 서버에서 응답
+                return data;
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String data) {
+            try {
+                JSONObject root = new JSONObject(data);
+                JSONArray results = new JSONArray(root.getString("results"));
+                for (int i = 0; i < results.length(); i++){
+                    JSONObject content = results.getJSONObject(i);
+                    area_detail[i] = content.getString("area_detail");
+                    preferenceratio[i] = content.getString("preferenceratio");
+                    //preference[i] = content.getString("preference");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //overridePendingTransition(R.anim.alphain_activity, R.anim.alphaout_activity);
+        }
+    }
 }
