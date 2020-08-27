@@ -351,7 +351,8 @@ func AreaQuery(db dbInfo, query string) []byte {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			structdata := Area{title, content, image, preference}
+			slicepref := preference[:2]
+			structdata := Area{title, content, image, slicepref}
 
 			n = append(n, structdata)
 		}

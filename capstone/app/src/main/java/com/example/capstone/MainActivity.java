@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseInstanceId.getInstance().getToken();
 
         final ConstraintLayout CL = (ConstraintLayout)findViewById(R.id.constraintLayout);
+
+        //화면 터치 시 다음 페이지로 이동하도록 함
         CL.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event){

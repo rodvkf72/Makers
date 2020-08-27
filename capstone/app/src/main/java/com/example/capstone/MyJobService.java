@@ -5,6 +5,7 @@ import android.util.Log;
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
+//이거 왜 만들었는지 기억 안남
 public class MyJobService extends JobService {
     private static final String TAG = "MyJobService";
 

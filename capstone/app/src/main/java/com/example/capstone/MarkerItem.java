@@ -1,5 +1,6 @@
 package com.example.capstone;
 
+//마커부분. Getter Setter 라고 보면 됨
 public class MarkerItem {
     private double lat;
     private double lon;

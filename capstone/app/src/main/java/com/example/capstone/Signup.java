@@ -22,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+//회원가입
 public class Signup extends AppCompatActivity {
     String sign_name, sign_phone, sign_pass, sign_address, sign_email, sign_sex;
     EditText et_name, et_phone, et_pass, et_address, et_email;
@@ -42,6 +43,7 @@ public class Signup extends AppCompatActivity {
 
         rg = (RadioGroup) findViewById(R.id.radio_button_group);
 
+        //성별은 남/여 둘 뿐이므로 라디오 버튼으로 생성
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -55,6 +57,7 @@ public class Signup extends AppCompatActivity {
 
         signbutton = (Button) findViewById(R.id.signup_signup);
 
+        //회원가입 버튼 클릭 시 작성된 정보를 데이터베이스에 전송
         signbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -70,7 +73,7 @@ public class Signup extends AppCompatActivity {
         });
     }
 
-    // DB연동. DB 안 만들어놔서 주석처리 함 (로그인만 만들어 둠. 회원가입 DB 코드 추가해야 함)
+    // DB연동
     private class SignupDB extends AsyncTask<String, Integer, String> {
         @Override
         protected String doInBackground(String... strings){

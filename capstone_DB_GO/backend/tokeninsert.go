@@ -12,3 +12,5 @@ func TokenInsert(w http.ResponseWriter, r *http.Request) {
 		InsertQuery(db, query)
 	}
 }
+
+//현재는 안 쓰이는 파일

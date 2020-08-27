@@ -28,6 +28,7 @@ public class TogetherContents extends AppCompatActivity {
 
 
 
+    //intent로 받은 게시글 내용 출력
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

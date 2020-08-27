@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+//게시글 삭제
 public class DeleteContents extends AppCompatActivity {
     Intent gintent;
     String phone_num = "";
@@ -49,20 +50,23 @@ public class DeleteContents extends AppCompatActivity {
         gintent = getIntent();
         phone_num = gintent.getStringExtra("phone_num");
 
+        //로그인 된 사용자가 작성한 게시글을 모두 불러옴
         DeleteFindDB dfdb = new DeleteFindDB();
         dfdb.execute();
 
+        //게시글 클릭 시 삭제 알림을 띄움
         contents_listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 contents_text = (String)parent.getItemAtPosition(position);
                 no = nos.get(position);
 
-                show();
+                show(); //show함수를 부름(알림창 띄움)
             }
         });
     }
 
+    //알림 설정 내용
     void show(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("게시글 삭제");
@@ -70,6 +74,7 @@ public class DeleteContents extends AppCompatActivity {
         builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //클릭된 데이터 삭제
                 DeleteDB ddb = new DeleteDB();
                 ddb.execute();
             }
@@ -83,6 +88,7 @@ public class DeleteContents extends AppCompatActivity {
         builder.show();
     }
 
+    //로그인 한 사용자의 모든 게시글을 불러옴
     public class DeleteFindDB extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -155,6 +161,7 @@ public class DeleteContents extends AppCompatActivity {
         }
     }
 
+    //선택된 게시글을 삭제함
     public class DeleteDB extends AsyncTask<String, Integer, String> {
 
         @Override

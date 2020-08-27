@@ -36,6 +36,7 @@ public class MainPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainpage);
 
+        //다른 액티비티에서의 변화가 있을 경우 즉시 반영시키기 위함
         onActivityResult(requestCode, resultCode, data);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
@@ -72,6 +73,8 @@ public class MainPage extends AppCompatActivity {
                 return true;
             }
         });
+
+        //로그아웃 버튼 클릭 시
         LogO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

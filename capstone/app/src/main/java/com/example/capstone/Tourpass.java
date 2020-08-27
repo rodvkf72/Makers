@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+//QR코드
 public class Tourpass extends Fragment {
     private View view;
     private ImageView iv;
@@ -48,9 +49,11 @@ public class Tourpass extends Fragment {
         iv = (ImageView)view.findViewById(R.id.qrcode);
         ID = id + "님 환영합니다.";
 
+        //투어패스 구매자인지 확인
         TourpassCheckDB TCDB = new TourpassCheckDB();
         TCDB.execute();
 
+        /*
         if (getArguments() != null) {
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             try {
@@ -63,6 +66,7 @@ public class Tourpass extends Fragment {
                 e.printStackTrace();
             }
         }
+        */
         return view;
     }
 
@@ -126,6 +130,7 @@ public class Tourpass extends Fragment {
                     tourpass = content.getString("tourpass");
                 }
 
+                //QR코드 생성
                 if(tourpass.equals("TRUE")){
                     MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                     try{

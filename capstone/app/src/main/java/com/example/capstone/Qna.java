@@ -24,6 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+//QnA로 만들었으나 실제로는 설정부분
 public class Qna extends Fragment {
     View view;
     Button buy_button;
@@ -42,10 +43,10 @@ public class Qna extends Fragment {
         id = gintent.getExtras().getString("phone_num");
 
         //프래그먼트끼리 값 전달을 활용해서 해결할 것
-
         buy_button = (Button) view.findViewById(R.id.buy_tourpass);
         setting_button = (Button) view.findViewById(R.id.setting);
 
+        //투어패스 구매 버튼 클릭 시 알림 띄우기
         buy_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -53,6 +54,7 @@ public class Qna extends Fragment {
             }
         });
 
+        //지역, 일정 설정 버튼
         setting_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -64,6 +66,7 @@ public class Qna extends Fragment {
         return view;
     }
 
+    //알림 설정
     void show(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("투어패스 구매");
@@ -135,6 +138,7 @@ public class Qna extends Fragment {
             return null;
         }
 
+        //프래그먼트, 알림 팝업으로 처리하였으므로 Bundle을 사용하여 프래그먼트끼리의 값 전달로 처리
         @Override
         protected void onPostExecute(String data) {
             try{

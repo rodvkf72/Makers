@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -80,9 +82,8 @@ public class Area extends AppCompatActivity {
 
         area_listview.setAdapter(area_adapter);
 
-        /*
-        지역과 같은 아이템을 클릭했을 시 다음 어레이 리스트가 보이도록 함
-         */
+
+        //지역 리스트 클릭 시 일정 리스트가 보이도록 함
         area_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -92,6 +93,7 @@ public class Area extends AppCompatActivity {
                 time_listview.setAdapter(time_adapter);
             }
         });
+
         /*
         gu_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -100,6 +102,8 @@ public class Area extends AppCompatActivity {
             }
         });
         */
+
+        //일정 리스트 클릭 시 성별 리스트가 보이도록 함
         time_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -107,6 +111,8 @@ public class Area extends AppCompatActivity {
                 sex_listview.setAdapter(sex_adapter);
             }
         });
+
+        //성별 리스트 클릭 시 setDB를 시작함
         sex_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
@@ -127,9 +133,7 @@ public class Area extends AppCompatActivity {
 
     }
 
-    /*
-    사용자 설정에 대한 데이터베이스 연결
-     */
+    //사용자 설정에 대한 데이터베이스 연결
     public class SettingDB extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -183,6 +187,18 @@ public class Area extends AppCompatActivity {
         @Override
         protected void onPostExecute(String data) {
             try{
+                //출력된 지역(토픽)을 영어로 변환하여 구독
+                if (area_text.equals("서울")) {
+                    area_text = "seoul";
+                } else if (area_text.equals("부산")) {
+                    area_text = "busan";
+                } else if (area_text.equals("대구")) {
+                    area_text = "daegu";
+                }
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(data);
+                FirebaseMessaging.getInstance().subscribeToTopic(area_text);
+                System.out.println("unsub : " + data);
+                System.out.println("sub : " + area_text);
                 /*area_menu.clear();
 
                 JSONObject root = new JSONObject(data);

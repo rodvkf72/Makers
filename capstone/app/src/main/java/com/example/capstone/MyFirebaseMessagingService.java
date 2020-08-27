@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+//파이어베이스 클라우드 메시지(FCM) 서비스
 public class MyFirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
     private static final String TAG = "FirebaseMsgService";
 
@@ -32,6 +33,7 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
         sendNotification(remoteMessage);
     }
 
+    //개인별 토큰값 저장. 현재는 안쓰임.
     @Override
     public void onNewToken(String token) {
         String token_name = FirebaseInstanceId.getInstance().getToken();

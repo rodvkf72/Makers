@@ -56,6 +56,7 @@ public class LogIn extends AppCompatActivity {
 
         log = (Button)findViewById(R.id.login);
 
+        //회원가입 버튼 클릭 시
         tvsignup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -65,6 +66,7 @@ public class LogIn extends AppCompatActivity {
             }
         });
 
+        //로그인 버튼 클릭 시
         log.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -80,7 +82,7 @@ public class LogIn extends AppCompatActivity {
         });
     }
 
-    // DB연동. DB 안 만들어놔서 주석처리 함 (로그인만 만들어 둠. 회원가입 DB 코드 추가해야 함)
+    //로그인 데이터베이스 연동
     private class LoginDB extends AsyncTask<String, Integer, String>{
         @Override
         protected String doInBackground(String... strings){

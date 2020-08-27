@@ -30,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+//다모임 게시판
 public class Together extends Fragment {
     View view;
 
@@ -51,7 +52,6 @@ public class Together extends Fragment {
     String area_main = "";
     String time_main = "";
 
-    //ArrayList<String> contents = new ArrayList<String>(Arrays.asList("테스트용 1", "테스트용 2")); //이거 테스트용이니 수정할 것
     ArrayList<String> contents = new ArrayList<String>();
     ListView contents_listview;
     ArrayAdapter contents_adapter;
@@ -63,6 +63,8 @@ public class Together extends Fragment {
     TextView tv;
     //Intent gintent = getActivity().getIntent();
     //String gid = gintent.getExtras().getString("phone_num");
+
+    //변화되는 내용을 즉시 반영하기 위함
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -176,38 +178,48 @@ public class Together extends Fragment {
         @Override
         protected void onPostExecute(String data) {
             try{
-                contents.clear();
-                JSONObject root = new JSONObject(data);
-                JSONArray results = new JSONArray(root.getString("results"));
-                for (int i = 0; i < results.length(); i++){
-                    JSONObject content = results.getJSONObject(i);
-                    //여기서 필요한 부분만 가져오고 조건식 입력
-                    area_t = content.getString("area");
-                    time_t = content.getString("time_t");
-                    sex_t = content.getString("sex");
-                    authority = content.getString("authority");
+                //지역 설정 값이 없을 경우.
+                if (data.equals("{\"results\":null}")) {
+                    contents_text = "다모임 설정 값이 없습니다.";
+                    TextView tv = (TextView) view.findViewById(R.id.together_text);
+                    tv.setText(contents_text);
+                } else {
+                    contents.clear();
+                    JSONObject root = new JSONObject(data);
+                    JSONArray results = new JSONArray(root.getString("results"));
+                    for (int i = 0; i < results.length(); i++) {
+                        JSONObject content = results.getJSONObject(i);
+                        //여기서 필요한 부분만 가져오고 조건식 입력
+                        area_t = content.getString("area");
+                        time_t = content.getString("time_t");
+                        sex_t = content.getString("sex");
+                        authority = content.getString("authority");
 
-                    if (authority == null || authority.equals("")){
-                        contents_text = "권한이 없습니다. 관리자에게 문의하세요.";
-                        TextView tv = (TextView) view.findViewById(R.id.together_text);
-                        tv.setText(contents_text);
-                    } else {
-                        if (area_t == null || area_t.equals("") || time_t == null || time_t.equals("") || sex_t == null || sex_t.equals("")) {
-                            contents_text = "설정창에서 다모임 설정을 지정해주세요.";
+                        if (authority == null || authority.equals("")) {
+                            contents_text = "권한이 없습니다. 관리자에게 문의하세요.";
                             TextView tv = (TextView) view.findViewById(R.id.together_text);
                             tv.setText(contents_text);
                         } else {
-                            SettingDB setDB = new SettingDB();
-                            setDB.execute();
+                            if (area_t == null || area_t.equals("") || time_t == null || time_t.equals("") || sex_t == null || sex_t.equals("")) {
+                                contents_text = "설정창에서 다모임 설정을 지정해주세요.";
+                                TextView tv = (TextView) view.findViewById(R.id.together_text);
+                                tv.setText(contents_text);
+                            } else {
+                                //위에서 가져온 area_t, time_t, sex_t, authority를 기반으로 데이터베이스 객체 실행
+                                SettingDB setDB = new SettingDB();
+                                setDB.execute();
 
-                            contents_listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                                    contents_text = (String)parent.getItemAtPosition(position);
-                                    SelectDB selDB = new SelectDB();
-                                    selDB.execute();
-                                }
-                            });
+                                //setDB에서 나온 아이템 리스트를 클릭 시 동작
+                                contents_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                        contents_text = (String) parent.getItemAtPosition(position);
+                                        //선택된 아이템에 대한 내용 출력 데이터베이스 실행
+                                        SelectDB selDB = new SelectDB();
+                                        selDB.execute();
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -217,6 +229,7 @@ public class Together extends Fragment {
         }
     }
 
+    //게시글 리스트 출력
     public class SettingDB extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -276,7 +289,10 @@ public class Together extends Fragment {
                 JSONArray results = new JSONArray(root.getString("results"));
                 for (int i = 0; i < results.length(); i++){
                     JSONObject content = results.getJSONObject(i);
-                    //여기서 필요한 부분만 가져오고 조건식 입력
+                    /*
+                    여기서 필요한 부분만 가져오고 조건식 입력
+                    게시글의 제목만 가지고 와서 보여줌
+                     */
                     notice_board = content.getString("title");
                     contents.add(notice_board.toString());
                 }
@@ -288,6 +304,7 @@ public class Together extends Fragment {
         }
     }
 
+    //출력된 제목 중 하나가 선택되었을 때 실행
     public class SelectDB extends AsyncTask<String, Integer, String> {
 
         @Override
@@ -345,6 +362,7 @@ public class Together extends Fragment {
                 JSONArray results = new JSONArray(root.getString("results"));
                 for (int i = 0; i < results.length(); i++){
                     JSONObject content = results.getJSONObject(i);
+                    //나온 정보들을 각 변수에 저장
                     phone_main = content.getString("phone_num");
                     name_main = content.getString("name");
                     email_main = content.getString("email");
@@ -357,6 +375,7 @@ public class Together extends Fragment {
             } catch (Exception e){
                 e.printStackTrace();
             }
+            //저장된 정보들을 intent로 전송
             Intent tintent = new Intent(getActivity(), TogetherContents.class);
             tintent.putExtra("phone_num", phone_main);
             tintent.putExtra("name", name_main);

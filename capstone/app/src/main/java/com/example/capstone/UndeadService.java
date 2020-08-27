@@ -25,6 +25,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Calendar;
 
+//파이어베이스 푸시 알림(FCM)이 프로그램이 죽었을 때, 재부팅 했을 때 등의 상황에서도 서비스가 실행되도록 함
 public class UndeadService extends Service {
     public static Intent serviceIntent = null;
 

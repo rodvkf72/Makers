@@ -20,19 +20,44 @@ func AreaSetting(w http.ResponseWriter, r *http.Request) {
 		selectquery := "SELECT phone_num FROM noticeboard_setting WHERE phone_num = " + "'" + resphonenum + "'" + ";"
 		queryphonenum := SelectQuery(db, selectquery, "phone_num")
 
+		//이전 지역(토픽)을 찾기 위한 변수
+		select2query := "SELECT area FROM noticeboard_setting WHERE phone_num = " + "'" + resphonenum + "'" + ";"
+		queryarea := SelectQuery(db, select2query, "area")
+
+		if queryarea == "부산" {
+			queryarea = "busan"
+		} else if queryarea == "서울" {
+			queryarea = "seoul"
+		} else if queryarea == "대구" {
+			queryarea = "daegu"
+		}
+		//
+
+		fmt.Println(queryarea)
+
 		if resphonenum == "" || resarea == "" || restime == "" || ressex == "" {
 			fmt.Fprintf(w, "필수 입력사항입니다.")
 		} else {
 			if queryphonenum == resphonenum {
-				fmt.Fprintf(w, "update")
+				fmt.Fprintf(w, queryarea) //이전 지역(토픽) 출력
 				query = "UPDATE noticeboard_setting SET area = " + "'" + resarea + "'" + ", time_t = " + "'" + restime + "'" + ", sex = " + "'" + ressex + "'" + "WHERE phone_num=" + "'" + resphonenum + "'" + ";"
 				UpdateQuery(db, query)
 
 			} else {
-				fmt.Fprintf(w, "insert")
+				fmt.Fprintf(w, queryarea) //이전 지역(토픽) 출력
 				query = "INSERT INTO noticeboard_setting VALUES (" + "'" + resphonenum + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + ressex + "'" + "," + "'" + "'" + ");"
 				InsertQuery(db, query)
 			}
+			//영어로 바꾸어 데이터베이스에 저장
+			if resarea == "부산" {
+				resarea = "busan"
+			} else if resarea == "서울" {
+				resarea = "seoul"
+			} else if resarea == "대구" {
+				resarea = "daegu"
+			}
+			updatequery := "UPDATE info SET topic = " + "'" + resarea + "'" + "WHERE phone_num=" + "'" + resphonenum + "'" + ";"
+			UpdateQuery(db, updatequery)
 		}
 
 	} else {
