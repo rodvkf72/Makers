@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,9 +30,10 @@ public class DeleteContents extends AppCompatActivity {
     Intent gintent;
     String phone_num = "";
     String notice_board = "";
-    String contents_text = "";
     String no = "";
+    //String contents_text = "";
 
+    CustomWord contents_text;
     ArrayList<String> nos = new ArrayList<String>();
     //ArrayList<String> contents = new ArrayList<String>();
     ArrayList<CustomWord> contents = new ArrayList<CustomWord>();
@@ -59,7 +59,8 @@ public class DeleteContents extends AppCompatActivity {
         contents_listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                contents_text = (String)parent.getItemAtPosition(position);
+                //contents_text = (String)parent.getItemAtPosition(position);
+                contents_text = (CustomWord)parent.getItemAtPosition(position);
                 no = nos.get(position);
 
                 show(); //show함수를 부름(알림창 띄움)
@@ -100,7 +101,7 @@ public class DeleteContents extends AppCompatActivity {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/notice_board_find.php"); //이거 바꿔라!
-                URL url = new URL("http://192.168.0.53:9090/noticeboard_find/");
+                URL url = new URL("http://172.30.1.56:9090/noticeboard_find/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -173,7 +174,7 @@ public class DeleteContents extends AppCompatActivity {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/notice_board_delete.php"); //이거 바꿔라!
-                URL url = new URL("http://192.168.0.53:9090/noticeboard_delete/");
+                URL url = new URL("http://172.30.1.56:9090/noticeboard_delete/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

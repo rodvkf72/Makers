@@ -332,7 +332,7 @@ func ContentCheckQuery(db dbInfo, query string) []byte {
 	구조체 추가해서 results로 묶어서 보낼 것
 */
 func AreaQuery(db dbInfo, query string) []byte {
-	var title, content, image, preference string
+	var title, content, image, preference, slicepref string
 
 	//Contentcheck 구조체 배열 선언
 	var n []Area
@@ -351,7 +351,14 @@ func AreaQuery(db dbInfo, query string) []byte {
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			slicepref := preference[:2]
+			fmt.Println(preference[1:2])
+			if preference[1:2] == "." {
+				slicepref = preference[:1]
+			} else if preference[2:3] == "." {
+				slicepref = preference[:2]
+			} else {
+				slicepref = preference[:3]
+			}
 			structdata := Area{title, content, image, slicepref}
 
 			n = append(n, structdata)

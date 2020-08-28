@@ -142,16 +142,16 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         List<MarkerItem> markerItemList = new ArrayList<MarkerItem>();
 
         //뷰가 처음 생성될 때 실행한 데이터베이스의 정보를 가지고 어레이 리스트에 추가
-        markerItemList.add(new MarkerItem(35.158065, 129.160727, title[0], contents[0], preferenceratio[0]));
-        markerItemList.add(new MarkerItem(35.101667, 129.033787, title[1], contents[1], preferenceratio[1]));
-        markerItemList.add(new MarkerItem(35.153040, 129.118603, title[2], contents[2], preferenceratio[2]));
-        markerItemList.add(new MarkerItem(35.153040, 129.010592, title[3], contents[3], preferenceratio[3]));
-        markerItemList.add(new MarkerItem(35.104863, 129.034844, title[4], contents[4], preferenceratio[4]));
-        markerItemList.add(new MarkerItem(35.078280, 129.045331, title[5], contents[5], preferenceratio[5]));
-        markerItemList.add(new MarkerItem(35.046908, 128.966439, title[6], contents[6], preferenceratio[6]));
-        markerItemList.add(new MarkerItem(35.078443, 129.080377, title[7], contents[7], preferenceratio[7]));
-        markerItemList.add(new MarkerItem(35.052593, 128.960761, title[8], contents[8], preferenceratio[8]));
-        markerItemList.add(new MarkerItem(35.063311, 129.019297, title[9], contents[9], preferenceratio[9]));
+        markerItemList.add(new MarkerItem(35.158065, 129.160727, title[0], contents[0], preferenceratio[0]));   //해운대
+        markerItemList.add(new MarkerItem(35.101667, 129.033787, title[1], contents[1], preferenceratio[1]));   //부산 영화체험 박물관
+        markerItemList.add(new MarkerItem(35.153040, 129.118603, title[2], contents[2], preferenceratio[2]));   //광안리 해수욕장
+        markerItemList.add(new MarkerItem(35.153040, 129.010592, title[3], contents[3], preferenceratio[3]));   //감천 문화마을
+        markerItemList.add(new MarkerItem(35.104863, 129.034844, title[4], contents[4], preferenceratio[4]));   //40계단 문화관광테마거리
+        markerItemList.add(new MarkerItem(35.078280, 129.045331, title[5], contents[5], preferenceratio[5]));   //흰여울 문화마을
+        markerItemList.add(new MarkerItem(35.046908, 128.966439, title[6], contents[6], preferenceratio[6]));   //다대포 해수욕장
+        markerItemList.add(new MarkerItem(35.078443, 129.080377, title[7], contents[7], preferenceratio[7]));   //국립 해양박물관
+        markerItemList.add(new MarkerItem(35.052593, 128.960761, title[8], contents[8], preferenceratio[8]));   //아미산 전망대
+        markerItemList.add(new MarkerItem(35.063311, 129.019297, title[9], contents[9], preferenceratio[9]));   //암남 공원
 
         //마커를 생성
         for(int i = 0; i < 10; i++) {
@@ -187,7 +187,7 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/Signup.php");
-                URL url = new URL("http:/192.168.0.53:9090/area_info/");
+                URL url = new URL("http:/172.30.1.56:9090/area_info/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

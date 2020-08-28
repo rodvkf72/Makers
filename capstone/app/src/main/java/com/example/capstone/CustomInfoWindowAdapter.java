@@ -1,31 +1,12 @@
 package com.example.capstone;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 //구글 지도를 xml로 커스텀하는 부분.
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -67,58 +48,68 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         }
 
          */
-        if (marker.getTitle() != null) {
-            if (marker.getTitle().equals("해운대 해수욕장")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText(marker.getSnippet());
-                //preferenceRatio.setText("\n선호율 : 81%");
-                placeImage.setImageResource(R.drawable.pic1);
-            } else if (marker.getTitle().equals("부산 영화체험 박물관")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText(marker.getSnippet());
-                //preferenceRatio.setText("\n선호율 : 77%");
-                placeImage.setImageResource(R.drawable.pic2);
-            } else if (marker.getTitle().equals("광안리 해수욕장")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText("금련산에서 내린 질 좋은 사질(沙質)에 완만한 반월형(半月形)으로 휘어진 사장은 전국적으로 이름난 해수욕장이다.");
-                //preferenceRatio.setText("\n선호율 : 83%");
-                placeImage.setImageResource(R.drawable.pic3);
-            } else if (marker.getTitle().equals("감천 문화마을")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText("산자락을 따라 질서정연하게 늘어선 계단식 집단 주거형태와 모든 길이 통하는 미로미로(美路迷路) 골목길의 경관은 감천만의 독특함을 보여줍니다.");
-                //preferenceRatio.setText("\n선호율 : 83%");
-                placeImage.setImageResource(R.drawable.pic4);
-            } else if (marker.getTitle().equals("40계단 문화관광테마거리")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText("이곳에서는 부산의 역사와 피난민의 생활상, 지역 예술가들의 작품을 둘러볼 수 있다.");
-                //preferenceRatio.setText("\n선호율 : 74%");
-                placeImage.setImageResource(R.drawable.pic5);
-            } else if (marker.getTitle().equals("흰여울 문화마을")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText("절영해안산책로 가파른 담벼락 위로 독특한 마을 풍경이 보인다. 해안가 절벽 끝에 바다를 따라 난 좁은 골목길 안쪽으로 작은 집들이 다닥다닥 붙어 있다.");
-                //preferenceRatio.setText("\n선호율 : 81%");
-                placeImage.setImageResource(R.drawable.pic6);
-            } else if (marker.getTitle().equals("다대포 해수욕장")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText("주차장 등 편의시설이 잘 갖추어져 있어 여름철 가족단위 알뜰 피서지로 각광받고 있다. 주변 횟집의 싱싱한 생선회 맛이 일품이다.");
-                //preferenceRatio.setText("\n선호율 : 79%");
-                placeImage.setImageResource(R.drawable.pic7);
-            } else if (marker.getTitle().equals("국립 해양박물관")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText("대한민국 부산광역시 영도구 동삼동의 해양클러스터에 위치하고 있으며, 대한민국의 유일한 국립해양박물관이다.");
-                //preferenceRatio.setText("\n선호율 : 83%");
-                placeImage.setImageResource(R.drawable.pic8);
-            } else if (marker.getTitle().equals("아미산 전망대")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText("낙동강 하구의 일몰을 볼 수 있는 부산의 명소");
-                //preferenceRatio.setText("\n선호율 : 88%");
-                placeImage.setImageResource(R.drawable.pic9);
-            } else if (marker.getTitle().equals("암남 공원")) {
-                placeTitle.setText(marker.getTitle());
-                placeInfo.setText("암남공원(岩南公園)은 부산광역시 서구 암남동 산193번지 일원 진정산 일대의 자연공원이다.");
-                //preferenceRatio.setText("\n선호율 : 72%");
-                placeImage.setImageResource(R.drawable.pic10);
-            }
+
+        LatLng haeundae = new LatLng(35.158065, 129.160727);    //해운대 해수욕장
+        LatLng busanfilmexperience = new LatLng(35.101667, 129.033787); //부산 영화체험 박물관
+        LatLng gwanganli = new LatLng(35.153040, 129.118603); //광안리 해수욕장
+        LatLng gamcheon = new LatLng(35.153040, 129.010592); //감천 문화마을
+        LatLng fourtysteps = new LatLng(35.104863, 129.034844); //40계단 문화관광테마거리
+        LatLng huinyeoul = new LatLng(35.078280, 129.045331); //흰여울 문화마을
+        LatLng dadaepo = new LatLng(35.046908, 128.966439); //다대포 해수욕장
+        LatLng nationalmaritime = new LatLng(35.078443, 129.080377); //국립 해양박물관
+        LatLng amisan = new LatLng(35.052593, 128.960761); //아미산 전망대
+        LatLng amnam = new LatLng(35.063311, 129.019297); //암남 공원
+
+        if (marker.getPosition().equals(haeundae)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet()); //snippet에서 선호율을 같이 처리함
+            placeImage.setImageResource(R.drawable.pic1);
+            //직관성용 공백
+        } else if (marker.getPosition().equals(busanfilmexperience)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic2);
+
+        } else if (marker.getPosition().equals(gwanganli)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic3);
+
+        } else if (marker.getPosition().equals(gamcheon)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic4);
+
+        } else if (marker.getPosition().equals(fourtysteps)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic5);
+
+        }else if (marker.getPosition().equals(huinyeoul)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic6);
+
+        }else if (marker.getPosition().equals(dadaepo)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic7);
+
+        }else if (marker.getPosition().equals(nationalmaritime)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic8);
+
+        }else if (marker.getPosition().equals(amisan)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic9);
+
+        }else if (marker.getPosition().equals(amnam)) {
+            placeTitle.setText(marker.getTitle());
+            placeInfo.setText(marker.getSnippet());
+            placeImage.setImageResource(R.drawable.pic10);
+
         }
         return view;
     }

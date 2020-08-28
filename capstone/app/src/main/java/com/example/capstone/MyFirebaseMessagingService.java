@@ -9,8 +9,6 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.capstone.MainActivity;
-import com.example.capstone.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -59,7 +57,7 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
         Store token value in url when running app for the first time..
          */
         Request request = new Request.Builder()
-                .url("http://192.168.0.53/running_plus_token_insert.php") //이건 귀찮아서 안바꿈
+                .url("http://172.30.1.56/running_plus_token_insert.php") //이건 귀찮아서 안바꿈
                 .post(body)
                 .build();
 

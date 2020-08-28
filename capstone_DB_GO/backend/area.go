@@ -75,11 +75,12 @@ func AreaInfo(w http.ResponseWriter, r *http.Request) {
 
 	//go lang json 방식(marshal) 참고
 	if r.Method == "POST" {
-		query := "SELECT area.title, area.content, area.image, AVG(evaluation.preference) FROM area, evaluation WHERE area.title = evaluation.area_detail GROUP BY area.title"
+		query := "SELECT area.title, area.content, area.image, COALESCE(AVG(evaluation.preference), 1) FROM area LEFT JOIN evaluation ON area.title = evaluation.area_detail GROUP BY area.title ORDER BY area.no"
 		//query := "SELECT title, content, image FROM area"
 
 		result := AreaQuery(db, query)
 		fmt.Fprintf(w, string(result))
+		fmt.Println(string(result))
 	} else {
 		//테스트용 쿼리. 주소에 직접 접속하여 POST가 아니더라도 값을 확인하기 위해
 	}

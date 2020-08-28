@@ -122,16 +122,17 @@ func NoticeboardInsert(w http.ResponseWriter, r *http.Request) {
 		resarea := r.FormValue("enroll_area")
 		restime := r.FormValue("enroll_time")
 
+		fmt.Println(resphonenum)
+		fmt.Println(resname)
+		fmt.Println(resemail)
+		fmt.Println(ressex)
+		fmt.Println(restitle)
+		fmt.Println(resmain)
+		fmt.Println(resarea)
+		fmt.Println(restime)
+
 		if resphonenum == "" || resname == "" || resemail == "" || ressex == "" || restitle == "" || resmain == "" || resarea == "" || restime == "" {
 			fmt.Fprintf(w, "fail")
-			fmt.Println(resphonenum)
-			fmt.Println(resname)
-			fmt.Println(resemail)
-			fmt.Println(ressex)
-			fmt.Println(restitle)
-			fmt.Println(resmain)
-			fmt.Println(resarea)
-			fmt.Println(restime)
 		} else {
 			insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + ");"
 			InsertQuery(db, insertstring)

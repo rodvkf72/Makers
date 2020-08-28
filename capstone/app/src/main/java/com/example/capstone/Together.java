@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -140,7 +139,7 @@ public class Together extends Fragment {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/notice_board_check.php");
-                URL url = new URL("http://192.168.0.53:9090/noticeboard_check/");
+                URL url = new URL("http://172.30.1.56:9090/noticeboard_check/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -246,7 +245,7 @@ public class Together extends Fragment {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/notice_board_find.php"); //PHP 코드
-                URL url = new URL("http://192.168.0.53:9090/noticeboard_find/");    //GO 코드
+                URL url = new URL("http://172.30.1.56:9090/noticeboard_find/");    //GO 코드
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -323,7 +322,7 @@ public class Together extends Fragment {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/notice_board_contents.php");
-                URL url = new URL("http://192.168.0.53:9090/noticeboard_contents/");
+                URL url = new URL("http://172.30.1.56:9090/noticeboard_contents/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

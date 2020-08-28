@@ -144,7 +144,7 @@ public class Area extends AppCompatActivity {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/AreaSetting.php"); //이거 바꿔라
-                URL url = new URL("http://192.168.0.53:9090/area_setting/");
+                URL url = new URL("http://172.30.1.56:9090/area_setting/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
