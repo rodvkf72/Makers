@@ -35,16 +35,17 @@ public class DeleteContents extends AppCompatActivity {
     String no = "";
 
     ArrayList<String> nos = new ArrayList<String>();
-    ArrayList<String> contents = new ArrayList<String>();
+    //ArrayList<String> contents = new ArrayList<String>();
+    ArrayList<CustomWord> contents = new ArrayList<CustomWord>();
     ListView contents_listview;
-    ArrayAdapter contents_adapter;
+    TogetherAdapter contents_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noticeboard_delete);
 
-        contents_adapter = new ArrayAdapter(this, R.layout.simpleitem, contents);
+        contents_adapter = new TogetherAdapter(this, R.layout.together_simpleitem, contents);
         contents_listview = (ListView) findViewById(R.id.delete_listview);
 
         gintent = getIntent();
@@ -150,7 +151,7 @@ public class DeleteContents extends AppCompatActivity {
                     //여기서 필요한 부분만 가져오고 조건식 입력
                     no = content.getString("no");
                     notice_board = content.getString("title");
-                    contents.add(notice_board.toString());
+                    contents.add(new CustomWord(no, notice_board));
                     nos.add(no.toString());
                 }
             } catch (Exception e){

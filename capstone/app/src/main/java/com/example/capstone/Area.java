@@ -70,10 +70,10 @@ public class Area extends AppCompatActivity {
         time_menu = new ArrayList<String>(Arrays.asList("당일", "1박 2일", "2박 3일", "3박 4일", "4일 이상"));
         sex_menu = new ArrayList<String>(Arrays.asList("남", "여"));
 
-        area_adapter = new ArrayAdapter(this, R.layout.simpleitem, area_menu);
+        area_adapter = new ArrayAdapter(this, R.layout.area_simpleitem, area_menu);
         //gu_adapter = new ArrayAdapter(this, R.layout.simpleitem, gu_menu);
-        time_adapter = new ArrayAdapter(this, R.layout.simpleitem, time_menu);
-        sex_adapter = new ArrayAdapter(this, R.layout.simpleitem, sex_menu);
+        time_adapter = new ArrayAdapter(this, R.layout.area_simpleitem, time_menu);
+        sex_adapter = new ArrayAdapter(this, R.layout.area_simpleitem, sex_menu);
 
         area_listview = (ListView) findViewById(R.id.area);
         //gu_listview = (ListView) findViewById(R.id.gu);

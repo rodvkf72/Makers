@@ -34,7 +34,8 @@ import java.util.ArrayList;
 public class Together extends Fragment {
     View view;
 
-    String notice_board = "";
+    String notice_board_title = "";
+    String notice_board_contents = "";
     String id = "";
     String area_t = "";
     String time_t = "";
@@ -52,9 +53,11 @@ public class Together extends Fragment {
     String area_main = "";
     String time_main = "";
 
-    ArrayList<String> contents = new ArrayList<String>();
+    //ArrayList<String> contents = new ArrayList<String>();
+    ArrayList<CustomWord> contents = new ArrayList<CustomWord>();
     ListView contents_listview;
-    ArrayAdapter contents_adapter;
+    //ArrayAdapter contents_adapter;
+    TogetherAdapter t_adapter;
 
     Intent gintent;
     String gphonenum = "";
@@ -91,7 +94,9 @@ public class Together extends Fragment {
         Button write_button = (Button) view.findViewById(R.id.Write);
         Button delete_button = (Button) view.findViewById(R.id.Delete);
 
-        contents_adapter = new ArrayAdapter(getActivity(), R.layout.simpleitem, contents);
+        //contents_adapter = new ArrayAdapter(getActivity(), R.layout.simpleitem, contents);
+        //contents_adapter = new ArrayAdapter(getActivity(), R.layout.custom_layout, contents);
+        t_adapter = new TogetherAdapter(getActivity(), R.layout.together_simpleitem, contents);
         contents_listview = (ListView) view.findViewById(R.id.together_listview);
 
         CheckDB chkDB = new CheckDB();
@@ -208,12 +213,13 @@ public class Together extends Fragment {
                                 //위에서 가져온 area_t, time_t, sex_t, authority를 기반으로 데이터베이스 객체 실행
                                 SettingDB setDB = new SettingDB();
                                 setDB.execute();
-
                                 //setDB에서 나온 아이템 리스트를 클릭 시 동작
                                 contents_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
                                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        contents_text = (String) parent.getItemAtPosition(position);
+                                        CustomWord word = (CustomWord) parent.getItemAtPosition(position);
+                                        contents_text = word.getTitle();
+                                        //contents_text = (String) parent.getItemAtPosition(position);
                                         //선택된 아이템에 대한 내용 출력 데이터베이스 실행
                                         SelectDB selDB = new SelectDB();
                                         selDB.execute();
@@ -293,13 +299,15 @@ public class Together extends Fragment {
                     여기서 필요한 부분만 가져오고 조건식 입력
                     게시글의 제목만 가지고 와서 보여줌
                      */
-                    notice_board = content.getString("title");
-                    contents.add(notice_board.toString());
+                    notice_board_title = content.getString("title");
+                    notice_board_contents = content.getString("content");
+                    contents.add(new CustomWord(notice_board_title, notice_board_contents));
                 }
             } catch (Exception e){
                 e.printStackTrace();
             }
-            contents_listview.setAdapter(contents_adapter);
+            //contents_listview.setAdapter(contents_adapter);
+            contents_listview.setAdapter(t_adapter);
             //contents_adapter.notifyDataSetChanged();
         }
     }
