@@ -25,29 +25,34 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Area extends AppCompatActivity {
-    CustomAdapter mAdapter;
+    //CustomAdapter mAdapter; //안쓰임
 
+    //지역 메뉴를 어레이 리스트로 출력
     ArrayList<String> area_menu;
     ArrayList<String> gu_menu;
     ArrayList<String> time_menu;
     ArrayList<String> sex_menu;
     //ArrayList<String> sex_menu = new ArrayList<String>();
 
+    //리스트 뷰
     ListView area_listview;
     ListView gu_listview;
     ListView time_listview;
     ListView sex_listview;
 
+    //어댑터
     ArrayAdapter area_adapter;
     ArrayAdapter gu_adapter;
     ArrayAdapter time_adapter;
     ArrayAdapter sex_adapter;
 
+    //선택된 지역, 시간, 성별을 저장하는 변수
     String area_text = "";
     String gu_text = "";
     String time_text = "";
     String sex_text = "";
 
+    //인텐트로 받은 phone_num
     String id = "";
     String idt = "";
 

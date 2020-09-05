@@ -33,7 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-//구글 지도를 설정하는 부분. html에서의 div, 컨테이너와 같은 부분을 설정하는 곳은 CustomInfoWindowAdapter.Class 임!!
+//구글 지도를 설정하는 부분. 디자인(html에서의 div, 컨테이너와 같은 부분)을 설정하는 곳은 CustomInfoWindowAdapter.Class 임!!
 public class Recommend extends Fragment implements OnMapReadyCallback {
     CustomInfoWindowAdapter adapter;
 

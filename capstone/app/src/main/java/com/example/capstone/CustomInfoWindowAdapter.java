@@ -10,12 +10,16 @@ import com.google.android.gms.maps.model.Marker;
 
 //구글 지도를 xml로 커스텀하는 부분.
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    //Recommand 클래스를 context라고 지정
     private Recommend context;
+
+    //TextView, ImageView 이름을 지정
     private TextView placeTitle;
     private TextView placeInfo;
     private TextView preferenceRatio;
     private ImageView placeImage;
 
+    //생성자로 초기화 하는 부분
     public CustomInfoWindowAdapter(Recommend context){
         this.context = context;
     }
@@ -25,6 +29,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         return null;
     }
 
+    //xml id와 일치하는 TextView, ImageView를 맞춤
     @Override
     public View getInfoContents(Marker marker) {
         View view = context.getLayoutInflater().inflate(R.layout.custom_info_window, null);
@@ -34,21 +39,7 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         placeImage = (ImageView) view.findViewById(R.id.imageView1) ;
         //preferenceRatio = (TextView) view.findViewById(R.id.tv_sunho);
 
-        //title[0] = "abc";
-        //contents[0] = "ded";
-
-        /*
-        DB랑 서버 구현 시 주석처리 된 아래와 같이 사용할 것
-
-        if (marker.getTitle().equals(title[0])) {
-            placeTitle.setText(marker.getTitle());
-            placeInfo.setText(contents[0]);
-            preferenceRatio.setText("\n선호율 : " + preference[0]);
-            placeImage.setImageResource(R.drawable.pic1); //이미지를 주소화 할 것
-        }
-
-         */
-
+        //LatLng은 지도좌표에 사용되는 타입(int, String과 같은)
         LatLng haeundae = new LatLng(35.158065, 129.160727);    //해운대 해수욕장
         LatLng busanfilmexperience = new LatLng(35.101667, 129.033787); //부산 영화체험 박물관
         LatLng gwanganli = new LatLng(35.153040, 129.118603); //광안리 해수욕장

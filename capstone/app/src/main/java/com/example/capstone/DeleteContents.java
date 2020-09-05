@@ -25,7 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-//게시글 삭제
+//게시글 삭제. 게시글 번호와 게시글 제목을 출력하기 위해 ArrayList를 <CustomWord>로 설정
 public class DeleteContents extends AppCompatActivity {
     Intent gintent;
     String phone_num = "";
