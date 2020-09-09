@@ -80,7 +80,7 @@ public class Tourpass extends Fragment {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/TourpassCheck.php"); //이거 바꿔라
-                URL url = new URL("http://172.30.1.56:9090/tourpass_check/");
+                URL url = new URL("http://192.168.0.50:9090/tourpass_check/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
