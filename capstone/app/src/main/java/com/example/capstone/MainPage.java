@@ -60,6 +60,11 @@ public class MainPage extends AppCompatActivity {
                         transaction.replace(R.id.frame_layout, mapFragment).commitAllowingStateLoss();
                         break;
                     }
+                    case R.id.navigation_ar: {
+                        //AR이라 프래그먼트로 구현이 어려움
+                        Intent intent = new Intent(MainPage.this, UnityPlayerActivity.class);
+                        startActivity(intent);
+                    }
                     case R.id.navigation_tourpass: {
                         transaction.replace(R.id.frame_layout, createQR).commitAllowingStateLoss();
                         break;

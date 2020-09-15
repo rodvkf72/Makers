@@ -3,6 +3,20 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     buildToolsVersion '29.0.2'
+
+    //AR
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    aaptOptions {
+        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
+    }
+    packagingOptions {
+        doNotStrip '*/armeabi-v7a/*.so'
+        doNotStrip '*/arm64-v8a/*.so'
+    }
+
     defaultConfig {
         applicationId "com.example.capstone"
         minSdkVersion 25
@@ -20,6 +34,11 @@ android {
 }
 
 dependencies {
+    //AR
+    implementation 'com.google.ar:core:1.10.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(name: 'VuforiaWrapper', ext:'aar')
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

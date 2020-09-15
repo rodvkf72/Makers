@@ -11,6 +11,11 @@
         android:title="맵"/>
 
     <item
+        android:id="@+id/navigation_ar"
+        android:icon="@drawable/maps"
+        android:title="AR" />
+
+    <item
         android:id="@+id/navigation_tourpass"
         android:icon="@drawable/card"
         android:title="투어패스"/>
