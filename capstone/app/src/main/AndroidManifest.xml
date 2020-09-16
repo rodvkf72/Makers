@@ -8,12 +8,13 @@
 
     <uses-feature android:name="android.hardware.camera2" />
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission> <!-- 위치 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"></uses-permission> <!--포그라운드 서비스  -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- 카메라 허용 -->
     <uses-permission android:name="android.permission.INTERNET"></uses-permission> <!-- 인터넷 허용 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission> <!-- 네트워크 상태 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission> <!-- 와이파이 허용 -->
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
