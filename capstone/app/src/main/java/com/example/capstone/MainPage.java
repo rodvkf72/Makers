@@ -2,11 +2,9 @@ package com.example.capstone;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -32,6 +28,7 @@ public class MainPage extends AppCompatActivity {
     private Together chatFragment = new Together();
     private Recommend mapFragment = new Recommend();
     private Tourpass createQR = new Tourpass();
+    private AR unityAR = new AR();
     private Qna optionFragment = new Qna();
 
     int requestCode;
@@ -73,7 +70,7 @@ public class MainPage extends AppCompatActivity {
                     }
                     case R.id.navigation_ar: {
                         //하단 버튼 클릭 시 사용자 위치정보 확인
-                        if ( Build.VERSION.SDK_INT >= 23 &&
+                        /*if ( Build.VERSION.SDK_INT >= 23 &&
                                 ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
                             ActivityCompat.requestPermissions( MainPage.this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
                                     0 );
@@ -81,8 +78,10 @@ public class MainPage extends AppCompatActivity {
                         } else {
                             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, mLocationListener);
                             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
-                        }
+                        }*/
 
+                        transaction.replace(R.id.frame_layout, unityAR).commitAllowingStateLoss();
+                        break;
                         //AR이라 프래그먼트로 구현이 어려움
                         //Intent intent = new Intent(MainPage.this, UnityPlayerActivity.class);
                         //startActivity(intent);
