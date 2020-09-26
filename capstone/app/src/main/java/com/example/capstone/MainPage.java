@@ -28,7 +28,8 @@ public class MainPage extends AppCompatActivity {
     private Together chatFragment = new Together();
     private Recommend mapFragment = new Recommend();
     private Tourpass createQR = new Tourpass();
-    private AR unityAR = new AR();
+    private AR arFragment_btn = new AR();
+    private UnityPlayerActivity arFragment = new UnityPlayerActivity();
     private Qna optionFragment = new Qna();
 
     int requestCode;
@@ -80,7 +81,7 @@ public class MainPage extends AppCompatActivity {
                             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
                         }*/
 
-                        transaction.replace(R.id.frame_layout, unityAR).commitAllowingStateLoss();
+                        transaction.replace(R.id.frame_layout, arFragment).commitAllowingStateLoss();
                         break;
                         //AR이라 프래그먼트로 구현이 어려움
                         //Intent intent = new Intent(MainPage.this, UnityPlayerActivity.class);
