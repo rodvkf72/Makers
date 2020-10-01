@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,6 +40,9 @@ public class Area extends AppCompatActivity {
     ListView gu_listview;
     ListView time_listview;
     ListView sex_listview;
+
+    //텍스트 뷰
+    TextView area_tv;
 
     //어댑터
     ArrayAdapter area_adapter;
@@ -85,6 +89,9 @@ public class Area extends AppCompatActivity {
         time_listview = (ListView) findViewById(R.id.a_time);
         sex_listview = (ListView) findViewById(R.id.sex);
 
+        area_tv = (TextView) findViewById(R.id.area_explanation);
+        area_tv.setText("지역을 선택해 주세요.");
+
         area_listview.setAdapter(area_adapter);
 
 
@@ -94,6 +101,15 @@ public class Area extends AppCompatActivity {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 //gu_text = (String) parent.getItemAtPosition(position);
                 area_text = (String) parent.getItemAtPosition(position);
+                if (area_text.equals("서울")) {
+                    area_tv.setText("서울\n\n대한민국의 수도로서 도시적인 느낌을 받을 수 있습니다.");
+                } else if (area_text.equals("부산")) {
+                    area_tv.setText("부산\n\n해양도시로서 해운대, 광안리, 다대포 등이 유명하지만 이외에도 감천 문화마을, 영화 박물관 등 그 시대의 풍경을 감상할 수 있습니다.");
+                } else if (area_text.equals("대구")) {
+                    area_tv.setText("대구\n\n분지 지형의 도시로서 수성못, 김광석 거리 등이 유명합니다.");
+                } else if (area_text.equals("강원도")) {
+                    area_tv.setText("강원도\n\n산을 끼고 있는 도시로서 도시적인 느낌보다는 자연적이고 광활한 느낌을 받을 수 있습니다.");
+                }
                 //gu_listview.setAdapter(gu_adapter);
                 time_listview.setAdapter(time_adapter);
             }
@@ -113,6 +129,17 @@ public class Area extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 time_text = (String) parent.getItemAtPosition(position);
+                if (time_text.equals("당일")) {
+                    area_tv.setText("당일\n\n주변만 잠시 돌아보거나 가까운 거리일 경우에 적합합니다.");
+                } else if (time_text.equals("1박 2일")) {
+                    area_tv.setText("1박 2일\n\n여러 군데를 돌아다니지 않을 경우에 적합합니다.");
+                } else if (time_text.equals("2박 3일")) {
+                    area_tv.setText("2박 3일\n\n여러 군데를 관광하고 싶은 경우에 적합합니다.");
+                } else if (time_text.equals("3박 4일")) {
+                    area_tv.setText("3박 4일\n\n여러 군데를 자세하게 관광하고 싶은 경우에 적합합니다.");
+                } else if (time_text.equals("4일 이상")) {
+                    area_tv.setText("4일 이상\n\n관광지 이외에 해당 도시의 교통이나 문화를 즐기고 싶은 경우에 적합합니다.");
+                }
                 sex_listview.setAdapter(sex_adapter);
             }
         });

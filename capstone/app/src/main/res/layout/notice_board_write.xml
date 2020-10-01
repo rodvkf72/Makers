@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/write_area_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
         android:text="지역 선택"
         android:textColor="@color/white"
         android:background="@drawable/rounded_button_orange"
@@ -22,11 +22,11 @@
 
     <Button
         android:id="@+id/write_time_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:background="@drawable/rounded_button_orange"
         android:text="일정 선택"
         android:textColor="@color/white"
-        android:background="@drawable/rounded_button_orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.204"
@@ -38,7 +38,8 @@
         android:id="@+id/write_title"
         android:layout_width="350dp"
         android:layout_height="45dp"
-        android:background="@drawable/rounded_button_background"
+        android:background="@drawable/black_corner"
+
         android:ems="12"
         android:hint=" 제목 "
         android:inputType="textMultiLine|textNoSuggestions"
@@ -52,9 +53,9 @@
 
     <EditText
         android:id="@+id/write_main"
-        android:layout_width="346dp"
+        android:layout_width="350dp"
         android:layout_height="272dp"
-        android:background="@drawable/rounded_button_background"
+        android:background="@drawable/black_corner"
         android:ems="12"
         android:hint=" 내용 "
         android:inputType="textMultiLine|textNoSuggestions"
@@ -68,8 +69,8 @@
 
     <Button
         android:id="@+id/write_finish"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
         android:text="게시글 등록"
         android:textColor="@color/white"
         android:background="@drawable/rounded_button_orange"

@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">capstone</string>
-    <string name="team_name">민트초코라면</string>
+    <string name="team_name">Makers</string>
     <string name="game_view_content_description">Game view</string>
 </resources>
