@@ -33,8 +33,6 @@ func AreaSetting(w http.ResponseWriter, r *http.Request) {
 		}
 		//
 
-		fmt.Println(queryarea)
-
 		if resphonenum == "" || resarea == "" || restime == "" || ressex == "" {
 			fmt.Fprintf(w, "필수 입력사항입니다.")
 		} else {
@@ -80,7 +78,6 @@ func AreaInfo(w http.ResponseWriter, r *http.Request) {
 
 		result := AreaQuery(db, query)
 		fmt.Fprintf(w, string(result))
-		fmt.Println(string(result))
 	} else {
 		//테스트용 쿼리. 주소에 직접 접속하여 POST가 아니더라도 값을 확인하기 위해
 	}
