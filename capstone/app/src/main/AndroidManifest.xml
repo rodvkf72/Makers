@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.capstone">
 
     <meta-data android:name="firebase_analytics_collection_enabled" android:value="true" />
@@ -60,11 +61,14 @@
             android:screenOrientation="portrait" />
         <activity android:name=".DeleteContents"
             android:screenOrientation="portrait" />
+        <activity android:name=".API"
+            android:screenOrientation="portrait"/>
 
-        <!--AR-->
-        <activity android:name="com.example.capstone.UnityPlayerActivity"
+        <!--AR com.example.capstone-->
+        <activity android:name=".UnityPlayerActivity"
             android:screenOrientation="portrait"
-            android:process=":unityplayer"/>
+            android:process=":unityplayer"
+            tools:ignore="Instantiatable" />
 
         <service
             android:name=".MyFirebaseMessagingService">

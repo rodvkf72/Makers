@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -56,6 +57,13 @@ public class Area extends AppCompatActivity {
     String time_text = "";
     String sex_text = "";
 
+    //파싱된 데이터를 저장하는 변수
+    String title = "";
+    String contenttype = "";
+    String location = "";
+
+    ArrayList<ApiWord> apicontents = new ArrayList<ApiWord>();
+
     //인텐트로 받은 phone_num
     String id = "";
     String idt = "";
@@ -89,10 +97,22 @@ public class Area extends AppCompatActivity {
         time_listview = (ListView) findViewById(R.id.a_time);
         sex_listview = (ListView) findViewById(R.id.sex);
 
+        Button test_button = (Button) findViewById(R.id.test);
+
+        test_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(Area.this, API.class);
+                intent.putExtra("phone_num", id);
+                startActivity(intent);
+            }
+        });
+
         area_tv = (TextView) findViewById(R.id.area_explanation);
         area_tv.setText("지역을 선택해 주세요.");
 
         area_listview.setAdapter(area_adapter);
+
 
 
         //지역 리스트 클릭 시 일정 리스트가 보이도록 함
