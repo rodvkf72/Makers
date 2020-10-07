@@ -153,7 +153,6 @@ public class LogIn extends AppCompatActivity {
         }
     }
 
-
     //뒤로가기 버튼 두번 누를 시 종료
     public void onBackPressed(){
         long tempTime = System.currentTimeMillis();

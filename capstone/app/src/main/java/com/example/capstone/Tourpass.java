@@ -42,6 +42,21 @@ public class Tourpass extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.activity_create_qr, container, false);
+        //위치정보 테스트용. 잘 동작함.
+        /*
+        Double longitude;
+        Double latitude;
+
+        if (getArguments() != null) {
+            longitude = getArguments().getDouble("longitude");
+            latitude = getArguments().getDouble("latitude");
+        } else {
+            longitude = 0.0;
+            latitude = 0.0;
+        }
+
+        Toast.makeText(getActivity(), "longitude : " + longitude + "\n" + "latitude : " + latitude, Toast.LENGTH_SHORT).show();
+        */
 
         gintent = getActivity().getIntent();
         id = gintent.getExtras().getString("phone_num");

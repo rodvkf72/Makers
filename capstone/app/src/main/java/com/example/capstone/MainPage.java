@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -38,19 +41,32 @@ public class MainPage extends AppCompatActivity {
     int resultCode;
     Intent data;
 
+    double longitude;
+    double latitude;
+
     Button LogO;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainpage);
 
-        //위치정보 서비스
-        final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         //다른 액티비티에서의 변화가 있을 경우 즉시 반영시키기 위함
         onActivityResult(requestCode, resultCode, data);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
+
+        //위치정보 서비스
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if ( Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+            //ActivityCompat.requestPermissions( MainPage.this, new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+            Toast.makeText(MainPage.this, "위치정보 권한 거부 시 기능 사용에 제약이 있을 수 있습니다.", Toast.LENGTH_SHORT).show();
+        } else {
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, mLocationListener);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
+        }
+
 
         LogO = (Button)findViewById(R.id.logout);
 
@@ -73,15 +89,13 @@ public class MainPage extends AppCompatActivity {
                     }
                     case R.id.navigation_ar: {
                         //하단 버튼 클릭 시 사용자 위치정보 확인
-                        /*if ( Build.VERSION.SDK_INT >= 23 &&
+                        if ( Build.VERSION.SDK_INT >= 23 &&
                                 ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-                            ActivityCompat.requestPermissions( MainPage.this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                                    0 );
-                            Toast.makeText(MainPage.this, "위치정보 권한을 허용해 주세요.", Toast.LENGTH_SHORT).show();
+                            //ActivityCompat.requestPermissions( MainPage.this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  }, 0 );
                         } else {
                             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, mLocationListener);
                             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
-                        }*/
+                        }
 
                         transaction.replace(R.id.frame_layout, arFragment).commitAllowingStateLoss();
                         break;
@@ -138,18 +152,25 @@ public class MainPage extends AppCompatActivity {
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
             double altitude = location.getAltitude();
             float accuracy = location.getAccuracy();
             String provider = location.getProvider();
 
-            Toast.makeText(MainPage.this, "현재 위치 \n위도 " + latitude + "\n경도" + longitude, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainPage.this, "현재 위치 \n위도 " + latitude + "\n경도" + longitude, Toast.LENGTH_SHORT).show();
 
+            Bundle result = new Bundle();
+            result.putDouble("longitude", longitude);
+            result.putDouble("latitude", latitude);
+            createQR.setArguments(result);
+
+            /*
             Intent intent = new Intent(MainPage.this, UnityPlayerActivity.class);
             intent.putExtra("longitude", longitude);
             intent.putExtra("latitude", latitude);
             startActivity(intent);
+            */
         }
 
         @Override
