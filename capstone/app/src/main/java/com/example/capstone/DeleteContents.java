@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +48,7 @@ public class DeleteContents extends AppCompatActivity {
 
         contents_adapter = new TogetherAdapter(this, R.layout.together_simpleitem, contents);
         contents_listview = (ListView) findViewById(R.id.delete_listview);
+        Button backbtn = (Button) findViewById(R.id.del_back);
 
         gintent = getIntent();
         phone_num = gintent.getStringExtra("phone_num");
@@ -64,6 +66,12 @@ public class DeleteContents extends AppCompatActivity {
                 no = nos.get(position);
 
                 show(); //show함수를 부름(알림창 띄움)
+            }
+        });
+        backbtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                onBackPressed();
             }
         });
     }

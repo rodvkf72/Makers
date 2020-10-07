@@ -97,6 +97,8 @@ public class Area extends AppCompatActivity {
         time_listview = (ListView) findViewById(R.id.a_time);
         sex_listview = (ListView) findViewById(R.id.sex);
 
+        Button backbtn = (Button) findViewById(R.id.area_back);
+
         Button test_button = (Button) findViewById(R.id.test);
 
         test_button.setOnClickListener(new View.OnClickListener(){
@@ -104,7 +106,15 @@ public class Area extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(Area.this, API.class);
                 intent.putExtra("phone_num", id);
+                intent.putExtra("area", area_text);
                 startActivity(intent);
+            }
+        });
+
+        backbtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                onBackPressed();
             }
         });
 

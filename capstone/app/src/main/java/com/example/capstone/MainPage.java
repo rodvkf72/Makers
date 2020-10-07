@@ -1,6 +1,8 @@
 package com.example.capstone;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -105,11 +107,31 @@ public class MainPage extends AppCompatActivity {
         LogO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                show();
+            }
+        });
+    }
+
+    //로그아웃 팝업 알람
+    void show(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("로그아웃");
+        builder.setMessage("로그아웃 하시겠습니까?");
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(MainPage.this, LogIn.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.rightin_activity, R.anim.leftout_activity);
             }
         });
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
     }
 
     //위치정보 확인 리스너

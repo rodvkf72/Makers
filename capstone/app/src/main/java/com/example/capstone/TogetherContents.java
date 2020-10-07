@@ -1,6 +1,8 @@
 package com.example.capstone;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +35,15 @@ public class TogetherContents extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.togethercontents);
+
+        Button backbtn = (Button) findViewById(R.id.togethercontents_back);
+
+        backbtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                onBackPressed();
+            }
+        });
 
         phone_main = getIntent().getExtras().getString("phone_num");
         name_main = getIntent().getExtras().getString("name");

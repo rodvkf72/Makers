@@ -62,6 +62,14 @@ public class WriteContents extends AppCompatActivity {
         Button area_select = (Button)findViewById(R.id.write_area_select);
         Button time_select = (Button)findViewById(R.id.write_time_select);
         Button finish_button = (Button)findViewById(R.id.write_finish);
+        Button backbtn = (Button)findViewById(R.id.writecontents_back);
+
+        backbtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                onBackPressed();
+            }
+        });
 
         area_select.setOnClickListener(new Button.OnClickListener() {
             @Override
