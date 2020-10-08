@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"newcomers/backend"
+	"Makers/capstone_DB_GO/backend"
 
 	_ "github.com/go-sql-driver/mysql"
 )
