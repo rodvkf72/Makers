@@ -43,7 +43,7 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
         remove remark(//) of the subscriberToTopic(~)
          */
         //FirebaseMessaging.getInstance().subscribeToTopic("running_plus_fcm");
-        sendRegistrationToServer(token);
+        sendRegistrationToServer(token);  //나중에 이거 풀 것
     }
 
     private void sendRegistrationToServer(String token) {

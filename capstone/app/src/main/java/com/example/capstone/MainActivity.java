@@ -1,9 +1,13 @@
 package com.example.capstone;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +19,9 @@ import androidx.core.content.ContextCompat;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.kakao.auth.Session;
+
+import java.security.MessageDigest;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView mImageVIew;
@@ -31,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Session.getCurrentSession().checkAndImplicitOpen(); //자동 로그인
+
         /*
         memory over run..
         if want only once subscribed remark(//) the subscribeToTopic(~) line
@@ -38,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
          */
         FirebaseMessaging.getInstance().subscribeToTopic("newcomers_fcm");
         FirebaseInstanceId.getInstance().getToken();
+        getAppKeyHash();
 
         final ConstraintLayout CL = (ConstraintLayout)findViewById(R.id.constraintLayout);
 
@@ -91,4 +101,20 @@ public class MainActivity extends AppCompatActivity {
             foregroundServiceIntent = null;
         }
     }
+    private void getAppKeyHash() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String something = new String(Base64.encode(md.digest(), 0));
+                Log.e("Hash key", something);
+            }
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Log.e("name not found", e.toString());
+        }
+    }
 }
+
