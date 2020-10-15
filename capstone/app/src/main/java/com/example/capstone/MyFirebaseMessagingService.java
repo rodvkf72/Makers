@@ -57,7 +57,7 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
         Store token value in url when running app for the first time..
          */
         Request request = new Request.Builder()
-                .url("http://172.30.1.19:9090/바꿀 것")
+                .url("http://172.30.1.19:9090/token_insert/")
                 .post(body)
                 .build();
 

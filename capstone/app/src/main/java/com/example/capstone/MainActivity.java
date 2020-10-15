@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Session.getCurrentSession().checkAndImplicitOpen(); //자동 로그인
-
         /*
         memory over run..
         if want only once subscribed remark(//) the subscribeToTopic(~) line

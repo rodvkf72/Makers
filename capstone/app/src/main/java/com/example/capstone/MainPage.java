@@ -22,6 +22,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.kakao.auth.Session;
+import com.kakao.util.helper.log.Logger;
 
 public class MainPage extends AppCompatActivity {
     private long backPressedTime = 0;
@@ -45,6 +47,16 @@ public class MainPage extends AppCompatActivity {
     double latitude;
 
     Button LogO;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Logger.d(getLocalClassName(), "KAKAO_API onActivityResult");
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            Logger.d(getLocalClassName(), "KAKAO_API handleActivityResult");
+            return;
+        }
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +109,7 @@ public class MainPage extends AppCompatActivity {
                             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
                         }
 
-                        transaction.replace(R.id.frame_layout, arFragment).commitAllowingStateLoss();
+                        transaction.replace(R.id.frame_layout, arFragment_btn).commitAllowingStateLoss();
                         break;
                         //AR이라 프래그먼트로 구현이 어려움
                         //Intent intent = new Intent(MainPage.this, UnityPlayerActivity.class);

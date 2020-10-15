@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.kakao.auth.Session;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,6 +36,15 @@ public class LogIn extends AppCompatActivity {
     TextView tvid, tvpw, tvsignup;
 
     EditText etid, etpw;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+            Toast.makeText(getApplicationContext(),"Onresult Test",Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
 
     /*
     로그인 입니다.

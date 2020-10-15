@@ -2,6 +2,7 @@
 package com.example.capstone;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.unity3d.player.IUnityPlayerLifecycleEvents;
 import com.unity3d.player.UnityPlayer;
 
-public class UnityPlayerActivity extends Fragment/*Activity*/ implements IUnityPlayerLifecycleEvents
+public class UnityPlayerActivity extends Activity implements IUnityPlayerLifecycleEvents
 {
     private long backKeyPressedTime = 0;
     private Toast toast;
@@ -37,23 +38,23 @@ public class UnityPlayerActivity extends Fragment/*Activity*/ implements IUnityP
 
     // Setup activity layout
     @Override
-    /*protected*/public void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        String cmdLine = updateUnityCommandLineArguments(getActivity().getIntent().getStringExtra("unity"));
-        getActivity().getIntent().putExtra("unity", cmdLine);
+        String cmdLine = updateUnityCommandLineArguments(getIntent().getStringExtra("unity"));
+        getIntent().putExtra("unity", cmdLine);
 
-        mUnityPlayer = new UnityPlayer(/*this*/getContext(), this);
-        getActivity().requestWindowFeature(Window.FEATURE_NO_TITLE);    //프래그먼트 테스트용. 인텐트로 사용 시 super.onCreate 위에 붙여넣기
-        getActivity().setContentView(mUnityPlayer);
+        mUnityPlayer = new UnityPlayer(this, this);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);    //프래그먼트 테스트용. 인텐트로 사용 시 super.onCreate 위에 붙여넣기
+        setContentView(mUnityPlayer);
         mUnityPlayer.requestFocus();
     }
 
     // When Unity player unloaded move task to background
     @Override
     public void onUnityPlayerUnloaded() {
-        getActivity().moveTaskToBack(true);
+        moveTaskToBack(true);
     }
 
     // When Unity player quited kill process
@@ -62,20 +63,20 @@ public class UnityPlayerActivity extends Fragment/*Activity*/ implements IUnityP
         Process.killProcess(Process.myPid());
     }
 
-    //@Override
+    @Override
     protected void onNewIntent(Intent intent)
     {
         // To support deep linking, we need to make sure that the client can get access to
         // the last sent intent. The clients access this through a JNI api that allows them
         // to get the intent set on launch. To update that after launch we have to manually
         // replace the intent with the one caught here.
-        getActivity().setIntent(intent);
+        setIntent(intent);
         mUnityPlayer.newIntent(intent);
     }
 
     // Quit Unity
     @Override
-    /*protected*/public void onDestroy ()
+    protected void onDestroy ()
     {
         mUnityPlayer.destroy();
         super.onDestroy();
@@ -83,7 +84,7 @@ public class UnityPlayerActivity extends Fragment/*Activity*/ implements IUnityP
 
     // Pause Unity
     @Override
-    /*protected*/public void onPause()
+    protected void onPause()
     {
         super.onPause();
         mUnityPlayer.pause();
@@ -91,7 +92,7 @@ public class UnityPlayerActivity extends Fragment/*Activity*/ implements IUnityP
 
     // Resume Unity
     @Override
-    /*protected*/public void onResume()
+    protected void onResume()
     {
         super.onResume();
         mUnityPlayer.resume();
@@ -106,11 +107,11 @@ public class UnityPlayerActivity extends Fragment/*Activity*/ implements IUnityP
     }
 
     // Trim Memory Unity
-    //@Override
+    @Override
     public void onTrimMemory(int level)
     {
-        super.getActivity().onTrimMemory(level);
-        if (level == getActivity().TRIM_MEMORY_RUNNING_CRITICAL)
+        super.onTrimMemory(level);
+        if (level == TRIM_MEMORY_RUNNING_CRITICAL)
         {
             mUnityPlayer.lowMemory();
         }
@@ -125,44 +126,44 @@ public class UnityPlayerActivity extends Fragment/*Activity*/ implements IUnityP
     }
 
     // Notify Unity of the focus change.
-    //@Override
+    @Override
     public void onWindowFocusChanged(boolean hasFocus)
     {
-        super.getActivity().onWindowFocusChanged(hasFocus);
+        super.onWindowFocusChanged(hasFocus);
         mUnityPlayer.windowFocusChanged(hasFocus);
     }
 
     // For some reason the multiple keyevent type is not supported by the ndk.
     // Force event injection by overriding dispatchKeyEvent().
-    //@Override
+    @Override
     @SuppressLint("RestrictedApi")
     public boolean dispatchKeyEvent(KeyEvent event)
     {
         if (event.getAction() == KeyEvent.ACTION_MULTIPLE)
             return mUnityPlayer.injectEvent(event);
-        return super.getActivity().dispatchKeyEvent(event);
+        return super.dispatchKeyEvent(event);
     }
 
     // Pass any events not handled by (unfocused) views straight to UnityPlayer
-    //@Override
+    @Override
     public boolean onKeyUp(int keyCode, KeyEvent event)     { return mUnityPlayer.injectEvent(event); }
-    //@Override
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)   { return mUnityPlayer.injectEvent(event); }
-    //@Override
+    @Override
     public boolean onTouchEvent(MotionEvent event)          { return mUnityPlayer.injectEvent(event); }
     /*API12*/ public boolean onGenericMotionEvent(MotionEvent event)  { return mUnityPlayer.injectEvent(event); }
 
-    //@Override
+    @Override
     public void onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
             backKeyPressedTime = System.currentTimeMillis();
-            toast = Toast.makeText(/*this*/getContext(), "카메라를 종료하시려면 한번 더 누르세요.", Toast.LENGTH_SHORT);
+            toast = Toast.makeText(this, "카메라를 종료하시려면 한번 더 누르세요.", Toast.LENGTH_SHORT);
             toast.show();
             return;
         }
         if (System.currentTimeMillis() <= backKeyPressedTime + 2500) {
             mUnityPlayer.destroy();
-            getActivity().finish();
+            finish();
             toast.cancel();
         }
     }

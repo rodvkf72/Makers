@@ -1,5 +1,6 @@
 package com.example.capstone;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
+import com.kakao.util.helper.log.Logger;
 
 public class KakaoLogin extends AppCompatActivity {
 
@@ -24,15 +26,17 @@ public class KakaoLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        Toast.makeText(getApplicationContext(),"Oncreate Test",Toast.LENGTH_SHORT).show();
         sessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(sessionCallback);
-        //Session.getCurrentSession().checkAndImplicitOpen(); //자동 로그인
+        Session.getCurrentSession().checkAndImplicitOpen(); //자동 로그인
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
+            Toast.makeText(getApplicationContext(),"Onresult Test",Toast.LENGTH_SHORT).show();
             return;
         }
     }
@@ -50,7 +54,6 @@ public class KakaoLogin extends AppCompatActivity {
                 @Override
                 public void onFailure(ErrorResult errorResult) {
                     int result = errorResult.getErrorCode();
-
                     if(result == ApiErrorCode.CLIENT_ERROR_CODE) {
                         Toast.makeText(getApplicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
                         finish();
@@ -66,9 +69,11 @@ public class KakaoLogin extends AppCompatActivity {
 
                 @Override
                 public void onSuccess(MeV2Response result) {
-                    Intent intent = new Intent(getApplicationContext(), Signup.class);
-                    //intent.putExtra("name", result.getNickname());
-                    //intent.putExtra("profile", result.getProfileImagePath());
+                    Toast.makeText(getApplicationContext(),"Success Test",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainPage.class);
+                    intent.putExtra("name", result.getNickname());
+                    intent.putExtra("profile", result.getProfileImagePath());
+                    //setResult(RESULT_OK, intent);
                     startActivity(intent);
                     finish();
                 }
