@@ -262,7 +262,7 @@ public class WriteContents extends AppCompatActivity {
                     psdb.execute();
 
                     /*
-                    finish() 로 종료하였기에 이 전 액티비티로 되돌아가지만 setResult를 통하여 StartActivityForResult에 값울 전송했기에
+                    finish() 로 종료하였기에 이 전 액티비티로 되돌아가지만 setResult를 통하여 StartActivityForResult에 값을 전송했기에
                     최신화 된 상태를 가져옴. 즉, 이 전 액티비티가 새로고침 되는 셈. 따라서 게시글을 등록 하자마자 게시글 목록에 올라와 있는 것을 확인할 수 있음
                      */
                     Intent writeintent = new Intent();

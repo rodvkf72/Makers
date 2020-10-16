@@ -22,6 +22,14 @@ public class KakaoLogin extends AppCompatActivity {
     private SessionCallback sessionCallback;
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
@@ -30,15 +38,6 @@ public class KakaoLogin extends AppCompatActivity {
         sessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(sessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen(); //자동 로그인
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-            Toast.makeText(getApplicationContext(),"Onresult Test",Toast.LENGTH_SHORT).show();
-            return;
-        }
     }
 
     @Override
@@ -70,11 +69,11 @@ public class KakaoLogin extends AppCompatActivity {
                 @Override
                 public void onSuccess(MeV2Response result) {
                     Toast.makeText(getApplicationContext(),"Success Test",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainPage.class);
+                    Intent intent = new Intent(getApplicationContext(), LogIn.class);
                     intent.putExtra("name", result.getNickname());
                     intent.putExtra("profile", result.getProfileImagePath());
-                    //setResult(RESULT_OK, intent);
-                    startActivity(intent);
+                    setResult(RESULT_OK, intent);
+                    //startActivity(intent);
                     finish();
                 }
             });

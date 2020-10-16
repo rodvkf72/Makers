@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.kakao.auth.Session;
+import com.kakao.usermgmt.LoginButton;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,18 +32,24 @@ public class LogIn extends AppCompatActivity {
     String id = "";
     String pass = "";
 
-    Button log;
-    Button sign;
+    Button log, sign, kakao;
+    LoginButton btn_kakao_login;
     TextView tvid, tvpw, tvsignup;
 
     EditText etid, etpw;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-            Toast.makeText(getApplicationContext(),"Onresult Test",Toast.LENGTH_SHORT).show();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return;
+        } switch (requestCode) {
+            case 0 : {
+                Toast.makeText(getApplicationContext(), "Onresult Test", Toast.LENGTH_SHORT).show();
+                Intent test = new Intent();
+                test.putExtra("1", "result");
+                setResult(RESULT_OK, test);
+            }
         }
     }
 
@@ -65,6 +72,7 @@ public class LogIn extends AppCompatActivity {
         tvsignup = (TextView)findViewById(R.id.sign_up);
 
         log = (Button)findViewById(R.id.login);
+        kakao = (Button)findViewById(R.id.kakao_btn);
 
         //회원가입 버튼 클릭 시
         tvsignup.setOnClickListener(new View.OnClickListener(){
@@ -90,6 +98,14 @@ public class LogIn extends AppCompatActivity {
                 //overridePendingTransition(R.anim.alphain_activity, R.anim.alphaout_activity);
             }
         });
+
+        kakao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btn_kakao_login.performClick();
+            }
+        });
+        btn_kakao_login = (LoginButton) findViewById(R.id.btn_kakao_login);
     }
 
     //로그인 데이터베이스 연동
