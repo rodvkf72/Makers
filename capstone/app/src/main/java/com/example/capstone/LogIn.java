@@ -13,8 +13,15 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.kakao.auth.ApiErrorCode;
+import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.LoginButton;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.util.exception.KakaoException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +33,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class LogIn extends AppCompatActivity {
+
+    private LogIn.SessionCallback sessionCallback;
+
     private long backPressedTime = 0;
     private final long FINISH_INTERVAL_TIME = 2000;
 
@@ -40,17 +50,11 @@ public class LogIn extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
         if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             return;
-        } switch (requestCode) {
-            case 0 : {
-                Toast.makeText(getApplicationContext(), "Onresult Test", Toast.LENGTH_SHORT).show();
-                Intent test = new Intent();
-                test.putExtra("1", "result");
-                setResult(RESULT_OK, test);
-            }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /*
@@ -64,6 +68,9 @@ public class LogIn extends AppCompatActivity {
     protected  void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        sessionCallback = new LogIn.SessionCallback();
+        Session.getCurrentSession().addCallback(sessionCallback);
 
         etid = (EditText)findViewById(R.id.editid);
         etpw = (EditText)findViewById(R.id.editpw);
@@ -103,6 +110,7 @@ public class LogIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 btn_kakao_login.performClick();
+                Session.getCurrentSession().checkAndImplicitOpen(); //자동 로그인
             }
         });
         btn_kakao_login = (LoginButton) findViewById(R.id.btn_kakao_login);
@@ -191,6 +199,51 @@ public class LogIn extends AppCompatActivity {
         } else {
             backPressedTime = tempTime;
             Toast.makeText(getApplicationContext(), "종료를 원하시면 한번 더 누르세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(sessionCallback);
+    }
+
+    class SessionCallback implements ISessionCallback {
+        @Override
+        public void onSessionOpened() {
+            UserManagement.getInstance().me(new MeV2ResponseCallback() {
+                @Override
+                public void onFailure(ErrorResult errorResult) {
+                    int result = errorResult.getErrorCode();
+                    if(result == ApiErrorCode.CLIENT_ERROR_CODE) {
+                        Toast.makeText(getApplicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(),"로그인 도중 오류가 발생했습니다: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onSessionClosed(ErrorResult errorResult) {
+                    Toast.makeText(getApplicationContext(),"세션이 닫혔습니다. 다시 시도해 주세요: "+errorResult.getErrorMessage(),Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(MeV2Response result) {
+                    Toast.makeText(getApplicationContext(),"Success Test",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), MainPage.class);
+                    intent.putExtra("name", result.getNickname());
+                    intent.putExtra("profile", result.getProfileImagePath());
+                    setResult(RESULT_OK, intent);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
+
+        @Override
+        public void onSessionOpenFailed(KakaoException e) {
+            Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: "+e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 }
