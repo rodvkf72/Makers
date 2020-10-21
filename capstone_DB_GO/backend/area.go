@@ -5,6 +5,10 @@ import (
 	"net/http"
 )
 
+/*
+ 사용자의 지역 설정
+ 파이어베이스 푸시 메시지를 보내기 위한 토픽 관리도 포함
+*/
 func AreaSetting(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -68,6 +72,10 @@ func AreaSetting(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+ 구글 맵 지역 정보 출력
+ 커스텀된 이미지 및 평균 선호도 출력
+*/
 func AreaInfo(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -83,6 +91,9 @@ func AreaInfo(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+ 왜 만들었는지 기억 안남. 확인 필요.
+*/
 func AreaAverage(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 

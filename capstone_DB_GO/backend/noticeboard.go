@@ -5,6 +5,9 @@ import (
 	"net/http"
 )
 
+/*
+ 게시판 권한이 있는지 확인
+*/
 func NoticeboardCheck(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -38,6 +41,9 @@ func NoticeboardContentCheck(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+ 선택된 게시글 출력
+*/
 func NoticeboardContents(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -62,6 +68,9 @@ func NoticeboardContents(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+ 게시글 삭제 기능
+*/
 func NoticeboardDelete(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -75,6 +84,11 @@ func NoticeboardDelete(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+ 게시글을 검색
+ 게시글 삭제의 경우 자신의 게시글만 보이도록 전화번호 값만 가져와서 검색하고
+ 게시글을 볼 때는 지역, 시간, 성별을 확인
+*/
 func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -87,10 +101,6 @@ func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 		resarea := r.FormValue("area_text")
 		restime := r.FormValue("time_text")
 
-		/*
-			게시글을 삭제할 때는 전화번호 값만 가져와서 검색하고
-			게시글을 볼 때는 지역, 시간, 성별을 확인함
-		*/
 		if (restime == "") || (ressex == "") {
 			query = "SELECT * FROM noticeboard WHERE phone_num = " + "'" + resphonenum + "'" + "ORDER BY no DESC;"
 		} else {
@@ -109,6 +119,9 @@ func NoticeboardFind(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+ 작성된 게시글 삽입
+*/
 func NoticeboardInsert(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	if r.Method == "POST" {

@@ -11,6 +11,9 @@ import (
 	"google.golang.org/api/option"
 )
 
+/*
+ 안드로이드 푸시 알람 메인 함수
+*/
 func SendPushAlarm(w http.ResponseWriter, r *http.Request) {
 	//block the GET type.. and send push alarm to topic
 	if r.Method == "POST" {
@@ -37,6 +40,9 @@ func initializeAppDefault() *firebase.App {
 	return app
 }
 
+/*
+ 토픽에 맞게 푸시 알람을 실질적으로 전송하는 부분
+*/
 func sendToTopic(ctx context.Context, client *messaging.Client, selectedarea string) {
 	// [START send_to_topic_golang]
 	// The topic name can be optionally prefixed with "/topics/".
@@ -79,12 +85,12 @@ func sendToTopic(ctx context.Context, client *messaging.Client, selectedarea str
 	messages := []*messaging.Message{
 		{
 			Notification: &messaging.Notification{
-				Title: title + " 지역 게시글이 등록 되었습니다.",
-				Body:  body + " 지역 게시글이 등록 되었습니다.",
+				Title: title + " 지역 새 게시글이 등록 되었습니다.",
+				Body:  body + " 지역 게시판을 확인하세요.",
 			},
 			Data: map[string]string{
 				"title": title + " 지역 게시글이 등록 되었습니다.",
-				"body":  body + " 지역 게시글이 등록 되었습니다.",
+				"body":  body + " 지역 게시판을 확인하세요.",
 			},
 			Topic: topic,
 		},
@@ -100,6 +106,9 @@ func sendToTopic(ctx context.Context, client *messaging.Client, selectedarea str
 	// [END send_to_topic_golang]
 }
 
+/*
+ 프로젝트 ID에 대한 토큰 초기화
+*/
 func initializeAppWithRefreshToken() *firebase.App {
 	// [START initialize_app_refresh_token_golang]
 	opt := option.WithCredentialsFile("path/to/refreshToken.json")

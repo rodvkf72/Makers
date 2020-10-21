@@ -5,6 +5,9 @@ import (
 	"net/http"
 )
 
+/*
+ 로그인 기능
+*/
 func Login(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
@@ -25,6 +28,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/*
+ 회원가입 기능
+*/
 func SingUp(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
