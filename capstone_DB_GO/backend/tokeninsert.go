@@ -1,6 +1,19 @@
 package backend
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/labstack/echo"
+)
+
+func Echo_Tokeninsert(c echo.Context) error {
+	restoken := c.FormValue("Token")
+	query := "INSERT INTO users(Token) VALUES(" + "'" + restoken + "'" + ") ON DUPLICATE KEY UPDATE Token=" + "'" + restoken + "'" + ";"
+
+	InsertQuery(db, query)
+	return c.HTML(http.StatusOK, fmt.Sprint("Token"))
+}
 
 /*
  토큰 값을 삽입

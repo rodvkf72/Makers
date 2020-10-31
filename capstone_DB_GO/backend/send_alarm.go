@@ -8,8 +8,20 @@ import (
 
 	firebase "firebase.google.com/go"
 	"firebase.google.com/go/messaging"
+	"github.com/labstack/echo"
 	"google.golang.org/api/option"
 )
+
+func Echo_Sendpushalarm(c echo.Context) error {
+	var areaselectquery = "SELECT area FROM noticeboard ORDER BY no DESC LIMIT 1"
+	areaselect := SelectQuery(db, areaselectquery, "area")
+	opt := option.WithCredentialsFile("newcomers-521cb-firebase-adminsdk-ggg4x-09b1c5355c.json")
+	app, _ := firebase.NewApp(context.Background(), nil, opt)
+	ctx := context.Background()
+	client, _ := app.Messaging(ctx)
+	sendToTopic(ctx, client, areaselect)
+	return c.HTML(http.StatusOK, fmt.Sprint("sending ~ "))
+}
 
 /*
  안드로이드 푸시 알람 메인 함수
@@ -102,7 +114,7 @@ func sendToTopic(ctx context.Context, client *messaging.Client, selectedarea str
 		log.Fatalln(err)
 	}
 	// Response is a message ID string.
-	fmt.Println("Successfully sent message:", br.SuccessCount)
+	fmt.Println("Successfully send message:", br.SuccessCount)
 	// [END send_to_topic_golang]
 }
 

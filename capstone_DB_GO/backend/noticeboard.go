@@ -3,7 +3,76 @@ package backend
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/labstack/echo"
 )
+
+func Echo_Noticeboardcheck(c echo.Context) error {
+	resphonenum := c.FormValue("chkphonenum")
+	query := "SELECT * FROM noticeboard_setting WHERE phone_num = " + "'" + resphonenum + "'" + ";"
+	result := CheckQuery(db, query)
+	return c.HTML(http.StatusOK, fmt.Sprint(string(result)))
+}
+
+func Echo_Noticeboardcontentcheck(c echo.Context) error {
+	resphonenum := c.FormValue("cudb_phonenum")
+	query := "SELECT * FROM info WHERE phone_num = " + "'" + resphonenum + "'" + ";"
+	result := ContentCheckQuery(db, query)
+	return c.HTML(http.StatusOK, fmt.Sprint(string(result)))
+}
+
+func Echo_Noticeboardcontents(c echo.Context) error {
+	rescontent := c.FormValue("u_contents_title")
+	query := "SELECT * FROM noticeboard WHERE title = " + "'" + rescontent + "'" + ";"
+	result := FindsQuery(db, query)
+	return c.HTML(http.StatusOK, fmt.Sprint(string(result)))
+}
+
+func Echo_Noticeboarddelete(c echo.Context) error {
+	resno := c.FormValue("num")
+	query := "DELETE FROM noticeboard WHERE no =" + "'" + resno + "'" + ";"
+	DeleteQuery(db, query)
+	return c.HTML(http.StatusOK, fmt.Sprint("delete"))
+}
+
+func Echo_Noticeboardfind(c echo.Context) error {
+	var query string
+
+	resphonenum := c.FormValue("phone_num")
+	ressex := c.FormValue("sex_text")
+	resarea := c.FormValue("area_text")
+	restime := c.FormValue("time_text")
+
+	if (restime == "") || (ressex == "") {
+		query = "SELECT * FROM noticeboard WHERE phone_num = " + "'" + resphonenum + "'" + "ORDER BY no DESC;"
+	} else {
+		query = "SELECT * FROM noticeboard WHERE area = " + "'" + resarea + "'" + "AND sex = " + "'" + ressex + "'" + "ORDER BY no DESC;"
+	}
+	jsondata := FindsQuery(db, query)
+	return c.HTML(http.StatusOK, fmt.Sprint(string(jsondata)))
+}
+
+func Echo_Noticeboardinsert(c echo.Context) error {
+	var insertstring string
+
+	resphonenum := c.FormValue("enroll_phonenum")
+	resname := c.FormValue("enroll_name")
+	resemail := c.FormValue("enroll_email")
+	ressex := c.FormValue("enroll_sex")
+	restitle := c.FormValue("enroll_contents_title")
+	resmain := c.FormValue("enroll_contents")
+	resarea := c.FormValue("enroll_area")
+	restime := c.FormValue("enroll_time")
+
+	if resphonenum == "" || resname == "" || resemail == "" || ressex == "" || restitle == "" || resmain == "" || resarea == "" || restime == "" {
+		return c.HTML(http.StatusOK, fmt.Sprint("fail"))
+	} else {
+		insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + ");"
+		InsertQuery(db, insertstring)
+		return c.HTML(http.StatusOK, fmt.Sprint("complete"))
+		//http.Redirect(w, r, "/send_alarm/", http.StatusFound)
+	}
+}
 
 /*
  게시판 권한이 있는지 확인
