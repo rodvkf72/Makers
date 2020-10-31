@@ -17,6 +17,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -31,6 +33,7 @@ public class API extends AppCompatActivity {
     String location = "";
     String area = "";
     String url = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=RRZuhOlOrDgZ7l6GUJVh3u2PS9sQXljCcjBKi4Uv0cDKBeUw2s9TFscjx6D%2FNlxzkUnc2xW8stIUfqnrK84tPg%3D%3D&MobileApp=AppTest&MobileOS=ETC";
+    //String url = getString(R.string.api_url);
 
     ListView api_contents_listview;
     ApiAdapter api_contents_adapter;

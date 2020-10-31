@@ -145,7 +145,8 @@ public class WriteContents extends AppCompatActivity {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/write_contents_check.php");
-                URL url = new URL("http://172.30.1.19:9090/noticeboard_content_check/");
+                //URL url = new URL("http://172.30.1.19:9090/noticeboard_content_check/");
+                URL url = new URL(getString(R.string.writecontents_addr1));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -214,7 +215,8 @@ public class WriteContents extends AppCompatActivity {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/write_contents_enrollment.php");  //PHP 코드
-                URL url = new URL("http://172.30.1.19:9090/noticeboard_insert/");  //GO 코드
+                //URL url = new URL("http://172.30.1.19:9090/noticeboard_insert/");  //GO 코드
+                URL url = new URL(getString(R.string.writecontents_addr2));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
@@ -289,7 +291,8 @@ public class WriteContents extends AppCompatActivity {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/write_contents_enrollment.php");
-                URL url = new URL("http://172.30.1.19:9090/send_alarm/");
+                //URL url = new URL("http://172.30.1.19:9090/send_alarm/");
+                URL url = new URL(getString(R.string.writecontents_addr3));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");

@@ -98,7 +98,8 @@ public class Qna extends Fragment {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/TourpassSetting.php"); //이거 바꿔라
-                URL url = new URL("http://172.30.1.19:9090/tourpass_setting/");
+                //URL url = new URL("http://172.30.1.19:9090/tourpass_setting/");
+                URL url = new URL(getString(R.string.qna_addr));
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 conn.setRequestMethod("POST");
