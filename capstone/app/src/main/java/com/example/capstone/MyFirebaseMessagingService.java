@@ -58,7 +58,7 @@ public class MyFirebaseMessagingService extends com.google.firebase.messaging.Fi
          */
         Request request = new Request.Builder()
                 //.url("http://172.30.1.19:9090/token_insert/")
-                .url(getString(R.string.firebase_addr))
+                .url(getString(R.string.ip) + getString(R.string.firebase_addr))
                 .post(body)
                 .build();
 

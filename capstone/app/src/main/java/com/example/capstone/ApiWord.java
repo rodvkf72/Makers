@@ -11,7 +11,9 @@ public class ApiWord {
     public String getContents() {
         return contents;
     }
-    public String getLocation() { return location; }
+    public String getLocation() {
+        return location;
+    }
 
 
     /*

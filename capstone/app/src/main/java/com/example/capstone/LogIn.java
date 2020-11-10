@@ -127,7 +127,7 @@ public class LogIn extends AppCompatActivity {
             try {
                 // 서버연결
                 //URL url = new URL("http://192.168.0.53/capstone/Login.php");
-                URL url = new URL(getString(R.string.login_addr));
+                URL url = new URL(getString(R.string.ip) + getString(R.string.login_addr));
                 //URL url = new URL("http://172.30.1.19:9090/login/");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
