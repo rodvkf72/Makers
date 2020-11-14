@@ -82,6 +82,7 @@ func main() {
 	http.HandleFunc("/tourpass_setting/", backend.TourpassSetting)
 	http.HandleFunc("/send_alarm/", backend.SendPushAlarm)
 	http.HandleFunc("/token_insert/", backend.TokenInsert)
+	http.HandleFunc("/find_pw/", backend.FindPW)
 
 	log.Println("Listening on : 9090...")
 	err := http.ListenAndServe(":9090", nil)

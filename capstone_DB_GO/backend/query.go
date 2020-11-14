@@ -80,7 +80,7 @@ type Areas struct {
 }
 
 func SelectQuery(db dbInfo, query string, choose string) string {
-	var area, phone_num, login, signup, tourpass, result string
+	var area, phone_num, login, signup, tourpass, pass, result string
 
 	dataSource := db.user + ":" + db.pwd + "@tcp(" + db.url + ")/" + db.database
 	conn, err := sql.Open(db.engine, dataSource)
@@ -122,6 +122,13 @@ func SelectQuery(db dbInfo, query string, choose string) string {
 			if err != nil {
 				log.Fatal(err)
 			}
+			result = tourpass
+		case "findpw":
+			err := rows.Scan(&pass)
+			if err != nil {
+				log.Fatal(err)
+			}
+			result = pass
 		}
 	}
 	return result

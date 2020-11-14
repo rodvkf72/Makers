@@ -81,6 +81,16 @@ public class LogIn extends AppCompatActivity {
         log = (Button)findViewById(R.id.login);
         kakao = (Button)findViewById(R.id.kakao_btn);
 
+        //비밀번호 찾기 클릭 시
+        tvpw.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(LogIn.this, Findpw.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.rightin_activity, R.anim.leftout_activity);
+            }
+        });
+
         //회원가입 버튼 클릭 시
         tvsignup.setOnClickListener(new View.OnClickListener(){
             @Override

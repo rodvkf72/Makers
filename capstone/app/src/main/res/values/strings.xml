@@ -9,6 +9,7 @@
     <string name="area_addr">/area_setting/</string>
     <string name="delete_addr1">/noticeboard_find/</string>
     <string name="delete_addr2">/noticeboard_delete/</string>
+    <string name="find_pw">/find_pw/</string>
     <string name="login_addr">/login/</string>
     <string name="firebase_addr">/token_insert/</string>
     <string name="qna_addr">/tourpass_setting/</string>

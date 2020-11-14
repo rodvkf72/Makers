@@ -64,6 +64,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".API"
             android:screenOrientation="portrait" />
+        <activity android:name=".Findpw"
+            android:screenOrientation="portrait" />
 
         <!--AR com.example.capstone-->
         <activity android:name=".UnityPlayerActivity"
