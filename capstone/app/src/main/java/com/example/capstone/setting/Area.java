@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.setting;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,6 +13,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.capstone.MainPage;
+import com.example.capstone.R;
+import com.example.capstone.api.API;
+import com.example.capstone.api.ApiWord;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.BufferedReader;

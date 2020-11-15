@@ -36,7 +36,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".App"
+        android:name=".login.App"
         android:networkSecurityConfig="@xml/networksecurityconfig">
 
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key" />
@@ -48,40 +48,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LogIn"
+        <activity android:name=".login.LogIn"
             android:screenOrientation="portrait" />
-        <activity android:name=".Signup"
+        <activity android:name=".login.Signup"
             android:screenOrientation="portrait" />
         <activity android:name=".MainPage"
             android:screenOrientation="portrait" />
-        <activity android:name=".Area"
+        <activity android:name=".setting.Area"
             android:screenOrientation="portrait" />
-        <activity android:name=".TogetherContents"
+        <activity android:name=".together.TogetherContents"
             android:screenOrientation="portrait" />
-        <activity android:name=".WriteContents"
+        <activity android:name=".together.WriteContents"
             android:screenOrientation="portrait" />
-        <activity android:name=".DeleteContents"
+        <activity android:name=".together.DeleteContents"
             android:screenOrientation="portrait" />
-        <activity android:name=".API"
+        <activity android:name=".api.API"
             android:screenOrientation="portrait" />
-        <activity android:name=".Findpw"
+        <activity android:name=".login.Findpw"
             android:screenOrientation="portrait" />
 
         <!--AR com.example.capstone-->
-        <activity android:name=".UnityPlayerActivity"
+        <activity android:name=".ar.UnityPlayerActivity"
             android:screenOrientation="portrait"
             android:process=":unityplayer"
             tools:ignore="Instantiatable" />
 
         <service
-            android:name=".MyFirebaseMessagingService">
+            android:name=".pushmessage.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
         <service
-            android:name=".MyJobService"
+            android:name=".pushmessage.MyJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
@@ -89,7 +89,7 @@
         </service>
 
         <service
-            android:name=".UndeadService">
+            android:name=".pushmessage.UndeadService">
         </service>
 
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>

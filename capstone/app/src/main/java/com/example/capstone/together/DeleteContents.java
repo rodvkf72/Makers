@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.together;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.capstone.together.listview.CustomWord;
+import com.example.capstone.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

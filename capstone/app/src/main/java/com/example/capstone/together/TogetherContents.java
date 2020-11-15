@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.together;
 
 import android.os.Bundle;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.capstone.R;
 
 public class TogetherContents extends AppCompatActivity {
     TextView recommend_text;

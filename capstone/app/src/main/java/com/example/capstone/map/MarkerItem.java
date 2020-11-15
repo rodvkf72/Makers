@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.map;
 
 //마커부분. Getter Setter 라고 보면 됨
 public class MarkerItem {

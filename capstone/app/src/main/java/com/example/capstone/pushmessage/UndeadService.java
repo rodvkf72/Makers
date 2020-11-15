@@ -1,10 +1,7 @@
-package com.example.capstone;
+package com.example.capstone.pushmessage;
 
 
-import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Application;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,16 +9,13 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
+import com.example.capstone.MainActivity;
+import com.example.capstone.R;
 
 import java.util.Calendar;
 

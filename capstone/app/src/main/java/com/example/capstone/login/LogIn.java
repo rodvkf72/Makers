@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.login;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.capstone.MainPage;
+import com.example.capstone.R;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;

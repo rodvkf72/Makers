@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.together.listview;
 
 public class CustomItem {
     String areaname;

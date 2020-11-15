@@ -1,9 +1,10 @@
-package com.example.capstone;
+package com.example.capstone.map;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.capstone.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;

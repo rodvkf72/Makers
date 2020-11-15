@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.together;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.capstone.together.listview.CustomWord;
+import com.example.capstone.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

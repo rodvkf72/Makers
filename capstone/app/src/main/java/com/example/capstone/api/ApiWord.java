@@ -1,9 +1,9 @@
-package com.example.capstone;
+package com.example.capstone.api;
 
-//하나의 리스트 뷰에 두 가지 텍스트를 보여주기 위한 클래스
-public class CustomWord {
+public class ApiWord {
     private String title;
     private String contents;
+    private String location;
 
     public String getTitle() {
         return title;
@@ -11,6 +11,10 @@ public class CustomWord {
     public String getContents() {
         return contents;
     }
+    public String getLocation() {
+        return location;
+    }
+
 
     /*
     public void setTitle(String title) {
@@ -21,8 +25,9 @@ public class CustomWord {
     }
     */
 
-    public CustomWord(String t, String c) {
+    public ApiWord(String t, String c, String l) {
         title = t;
         contents = c;
+        location = l;
     }
 }

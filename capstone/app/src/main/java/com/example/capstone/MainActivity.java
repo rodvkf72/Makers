@@ -17,9 +17,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.capstone.login.LogIn;
+import com.example.capstone.pushmessage.UndeadService;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.kakao.auth.Session;
 
 import java.security.MessageDigest;
 

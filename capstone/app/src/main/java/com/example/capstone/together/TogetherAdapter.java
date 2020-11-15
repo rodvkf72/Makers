@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.together;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.example.capstone.together.listview.CustomWord;
+import com.example.capstone.R;
 
 import java.util.ArrayList;
 

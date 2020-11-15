@@ -21,6 +21,13 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.capstone.ar.AR;
+import com.example.capstone.ar.UnityPlayerActivity;
+import com.example.capstone.login.LogIn;
+import com.example.capstone.map.Recommend;
+import com.example.capstone.qr.Tourpass;
+import com.example.capstone.setting.Qna;
+import com.example.capstone.together.Together;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kakao.auth.Session;
 import com.kakao.util.helper.log.Logger;

@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.pushmessage;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,6 +9,8 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.capstone.MainActivity;
+import com.example.capstone.R;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.RemoteMessage;
 

@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.pushmessage;
 
 import android.util.Log;
 

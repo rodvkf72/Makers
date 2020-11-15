@@ -1,4 +1,4 @@
-package com.example.capstone;
+package com.example.capstone.login;
 
 import android.app.Application;
 import android.content.Context;
