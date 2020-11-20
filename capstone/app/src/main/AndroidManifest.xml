@@ -37,6 +37,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".login.App"
+        android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/networksecurityconfig">
 
         <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key" />

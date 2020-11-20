@@ -27,6 +27,7 @@ type Noticeboard struct {
 	Content   string `json:"content"`
 	Area      string `json:"area"`
 	Time_t    string `json:"time_t"`
+	Image     []byte `json:"image"`
 }
 
 type Noticeboards struct {
@@ -184,6 +185,7 @@ func UpdateQuery(db dbInfo, query string) {
 
 func FindsQuery(db dbInfo, query string) []byte {
 	var no, phone_num, name, email, sex, title, content, area, time_t string
+	var image []byte
 
 	//Noticeboard 구조체 배열 선언
 	var n []Noticeboard
@@ -198,11 +200,11 @@ func FindsQuery(db dbInfo, query string) []byte {
 	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(&no, &phone_num, &name, &email, &sex, &title, &content, &area, &time_t)
+		err := rows.Scan(&no, &phone_num, &name, &email, &sex, &title, &content, &area, &time_t, &image)
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			structdata := Noticeboard{no, phone_num, name, email, sex, title, content, area, time_t}
+			structdata := Noticeboard{no, phone_num, name, email, sex, title, content, area, time_t, image}
 
 			n = append(n, structdata)
 		}
@@ -214,6 +216,7 @@ func FindsQuery(db dbInfo, query string) []byte {
 		result 변수는 Noticeboard 구조체 이므로 []byte 형식의 전달이 불가함
 		따라서 마샬링을 통해 json으로 변환하고 []byte 타입으로 리턴
 	*/
+
 	returnresult, _ := json.Marshal(result)
 
 	//마샬링 된 변수값 리턴

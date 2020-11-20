@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,7 +54,7 @@ public class MainPage extends AppCompatActivity {
     double longitude;
     double latitude;
 
-    Button LogO;
+    TextView LogO;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -87,7 +88,7 @@ public class MainPage extends AppCompatActivity {
         }
 
 
-        LogO = (Button)findViewById(R.id.logout);
+        LogO = (TextView)findViewById(R.id.logout);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frame_layout, chatFragment).commitAllowingStateLoss();
@@ -116,6 +117,7 @@ public class MainPage extends AppCompatActivity {
                             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
                         }
 
+                        //Toast.makeText(MainPage.this, "현재 위치 \n위도 " + latitude + "\n경도" + longitude, Toast.LENGTH_SHORT).show();
                         transaction.replace(R.id.frame_layout, arFragment_btn).commitAllowingStateLoss();
                         break;
                         //AR이라 프래그먼트로 구현이 어려움
@@ -182,7 +184,7 @@ public class MainPage extends AppCompatActivity {
             Bundle result = new Bundle();
             result.putDouble("longitude", longitude);
             result.putDouble("latitude", latitude);
-            createQR.setArguments(result);
+            arFragment_btn.setArguments(result);
 
             /*
             Intent intent = new Intent(MainPage.this, UnityPlayerActivity.class);

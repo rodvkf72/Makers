@@ -2,14 +2,21 @@ package com.example.capstone.together;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -43,8 +51,37 @@ public class WriteContents extends AppCompatActivity {
     String selected_time_item = "";
     String title = "";
     String main = "";
+    Bitmap selected_image;
+    String string_selected_image;
 
     EditText write_title, write_main;
+
+    ImageView iv;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch(requestCode) {
+            case 10:
+                if(resultCode == RESULT_OK) {
+                    Uri uri = data.getData();
+                    try {
+                        selected_image = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                        string_selected_image = BitmapToString(selected_image);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if (uri != null) {
+                        iv.setImageURI(uri);
+                        string_selected_image = "";
+                    }
+                } else {
+                    //이미지 선택 안했을 시 문구
+                }
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +102,22 @@ public class WriteContents extends AppCompatActivity {
         Button time_select = (Button)findViewById(R.id.write_time_select);
         Button finish_button = (Button)findViewById(R.id.write_finish);
         Button backbtn = (Button)findViewById(R.id.writecontents_back);
+        Button imgbtn = (Button)findViewById(R.id.upload_image);
+        iv = findViewById(R.id.imgv);
 
         backbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v){
                 onBackPressed();
+            }
+        });
+
+        imgbtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 10);
             }
         });
 
@@ -212,7 +260,7 @@ public class WriteContents extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             // 인풋 파라메터값 생성
             String param = "enroll_phonenum=" + gphonenum + "&enroll_name=" + write_name + "&enroll_email=" + write_email
-                    + "&enroll_sex=" + write_sex + "&enroll_contents_title=" + title + "&enroll_contents=" + main + "&enroll_area=" + selected_area_item + "&enroll_time=" + selected_time_item + "";
+                    + "&enroll_sex=" + write_sex + "&enroll_contents_title=" + title + "&enroll_contents=" + main + "&enroll_area=" + selected_area_item + "&enroll_time=" + selected_time_item + "&enroll_image=" + string_selected_image +"";
             Log.e("POST", param);
             try {
                 // 서버연결
@@ -330,5 +378,13 @@ public class WriteContents extends AppCompatActivity {
         @Override
         protected void onPostExecute(String data) {
         }
+    }
+
+    public static String BitmapToString(Bitmap bitmap) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
+        byte[] bytes = baos.toByteArray();
+        String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
+        return temp;
     }
 }

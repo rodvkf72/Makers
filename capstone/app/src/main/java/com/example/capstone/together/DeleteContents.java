@@ -3,8 +3,11 @@ package com.example.capstone.together;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,6 +38,8 @@ public class DeleteContents extends AppCompatActivity {
     String phone_num = "";
     String notice_board = "";
     String no = "";
+    String img = "";
+    Bitmap bmap;
     //String contents_text = "";
 
     CustomWord contents_text;
@@ -162,9 +167,11 @@ public class DeleteContents extends AppCompatActivity {
                 for (int i = 0; i < results.length(); i++){
                     JSONObject content = results.getJSONObject(i);
                     //여기서 필요한 부분만 가져오고 조건식 입력
+                    //img = content.getString(("img"));
+                    bmap = StringToBitMap(content.getString("image"));
                     no = content.getString("no");
                     notice_board = content.getString("title");
-                    contents.add(new CustomWord(no, notice_board));
+                    contents.add(new CustomWord(bmap, no, notice_board));
                     nos.add(no.toString());
                 }
             } catch (Exception e){
@@ -246,5 +253,16 @@ public class DeleteContents extends AppCompatActivity {
         deleteintent.putExtra("1", "result");
         setResult(RESULT_OK, deleteintent);
         finish();
+    }
+
+    public static Bitmap StringToBitMap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }

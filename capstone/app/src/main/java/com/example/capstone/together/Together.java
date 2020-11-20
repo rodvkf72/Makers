@@ -1,14 +1,18 @@
 package com.example.capstone.together;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +25,7 @@ import com.example.capstone.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,6 +41,8 @@ import java.util.ArrayList;
 public class Together extends Fragment {
     View view;
 
+    Bitmap getBlob;
+    String notice_board_image = "";
     String notice_board_title = "";
     String notice_board_contents = "";
     String id = "";
@@ -64,6 +71,8 @@ public class Together extends Fragment {
     Intent gintent;
     String gphonenum = "";
     int result = 0;
+
+    TextView write_button, delete_button;
 
     TextView tv;
     //Intent gintent = getActivity().getIntent();
@@ -94,8 +103,10 @@ public class Together extends Fragment {
         gintent = getActivity().getIntent();
         gphonenum = gintent.getExtras().getString("phone_num");
 
-        Button write_button = (Button) view.findViewById(R.id.Write);
-        Button delete_button = (Button) view.findViewById(R.id.Delete);
+        //Button write_button = (Button) view.findViewById(R.id.Write);
+        //Button delete_button = (Button) view.findViewById(R.id.Delete);
+        write_button = (TextView) view.findViewById(R.id.Write);
+        delete_button = (TextView) view.findViewById(R.id.Delete);
 
         //contents_adapter = new ArrayAdapter(getActivity(), R.layout.simpleitem, contents);
         //contents_adapter = new ArrayAdapter(getActivity(), R.layout.custom_layout, contents);
@@ -105,7 +116,7 @@ public class Together extends Fragment {
         CheckDB chkDB = new CheckDB();
         chkDB.execute();
 
-        write_button.setOnClickListener(new Button.OnClickListener() {
+        write_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 if(authority == null || authority.equals("")) {
@@ -120,7 +131,7 @@ public class Together extends Fragment {
             }
         });
 
-        delete_button.setOnClickListener(new Button.OnClickListener() {
+        delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 Intent deleteintent = new Intent(getActivity(), DeleteContents.class);
@@ -304,9 +315,11 @@ public class Together extends Fragment {
                     여기서 필요한 부분만 가져오고 조건식 입력
                     게시글의 제목만 가지고 와서 보여줌
                      */
+                    //notice_board_image = content.getString("image");
+                    getBlob = StringToBitMap(content.getString("image"));
                     notice_board_title = content.getString("title");
                     notice_board_contents = content.getString("content");
-                    contents.add(new CustomWord(notice_board_title, notice_board_contents));
+                    contents.add(new CustomWord(getBlob, notice_board_title, notice_board_contents));
                 }
             } catch (Exception e){
                 e.printStackTrace();
@@ -314,6 +327,17 @@ public class Together extends Fragment {
             //contents_listview.setAdapter(contents_adapter);
             contents_listview.setAdapter(t_adapter);
             //contents_adapter.notifyDataSetChanged();
+        }
+    }
+
+    public static Bitmap StringToBitMap(String encodedString) {
+        try {
+            byte[] encodeByte = Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch (Exception e) {
+            e.getMessage();
+            return null;
         }
     }
 
