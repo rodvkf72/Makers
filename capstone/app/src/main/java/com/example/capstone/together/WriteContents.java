@@ -2,6 +2,7 @@ package com.example.capstone.together;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -47,17 +49,20 @@ public class WriteContents extends AppCompatActivity {
 
     final int[] selected_area_item_radio = {0};
     final int[] selected_time_item_radio = {0};
+    final int[] selected_party_item_radio = {0};
     String selected_area_item = "";
     String selected_time_item = "";
+    String selected_party_item = "";
     String title = "";
     String main = "";
-    Bitmap selected_image;
-    String string_selected_image;
+    //Bitmap selected_image;
+    //String string_selected_image;
 
     EditText write_title, write_main;
 
-    ImageView iv;
+    //ImageView iv;
 
+    /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -68,12 +73,15 @@ public class WriteContents extends AppCompatActivity {
                     Uri uri = data.getData();
                     try {
                         selected_image = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+                        selected_image = resize(selected_image);
                         string_selected_image = BitmapToString(selected_image);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     if (uri != null) {
                         iv.setImageURI(uri);
+                        string_selected_image = BitmapToString(selected_image);
+                    } else {
                         string_selected_image = "";
                     }
                 } else {
@@ -82,6 +90,7 @@ public class WriteContents extends AppCompatActivity {
                 break;
         }
     }
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +111,12 @@ public class WriteContents extends AppCompatActivity {
         Button time_select = (Button)findViewById(R.id.write_time_select);
         Button finish_button = (Button)findViewById(R.id.write_finish);
         Button backbtn = (Button)findViewById(R.id.writecontents_back);
+
+        Button partybtn = (Button) findViewById(R.id.partycount);
+        /*
         Button imgbtn = (Button)findViewById(R.id.upload_image);
         iv = findViewById(R.id.imgv);
+        */
 
         backbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -112,6 +125,31 @@ public class WriteContents extends AppCompatActivity {
             }
         });
 
+        partybtn.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String[] party_count = new String[] {
+                        "2인", "3인", "4인", "5인"
+                };
+                Arrays.sort(party_count);
+
+                AlertDialog.Builder partycount_dialog = new AlertDialog.Builder(WriteContents.this);
+                partycount_dialog.setTitle("같이 갈 인원을 정하세요")
+                        .setSingleChoiceItems(party_count, 0, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                selected_party_item_radio[0] = which;
+                            }
+                        })
+                        .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                selected_party_item = party_count[selected_party_item_radio[0]];
+                            }
+                        }).create().show();
+            }
+        });
+        /*
         imgbtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,6 +158,7 @@ public class WriteContents extends AppCompatActivity {
                 startActivityForResult(intent, 10);
             }
         });
+        */
 
         area_select.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -260,7 +299,7 @@ public class WriteContents extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             // 인풋 파라메터값 생성
             String param = "enroll_phonenum=" + gphonenum + "&enroll_name=" + write_name + "&enroll_email=" + write_email
-                    + "&enroll_sex=" + write_sex + "&enroll_contents_title=" + title + "&enroll_contents=" + main + "&enroll_area=" + selected_area_item + "&enroll_time=" + selected_time_item + "&enroll_image=" + string_selected_image +"";
+                    + "&enroll_sex=" + write_sex + "&enroll_contents_title=" + title + "&enroll_contents=" + main + "&enroll_area=" + selected_area_item + "&enroll_time=" + selected_time_item + "&enroll_partycount=" + selected_party_item + /*"&enroll_image=" + string_selected_image + */"";
             Log.e("POST", param);
             try {
                 // 서버연결
@@ -380,6 +419,7 @@ public class WriteContents extends AppCompatActivity {
         }
     }
 
+    /*
     public static String BitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 70, baos);
@@ -387,4 +427,20 @@ public class WriteContents extends AppCompatActivity {
         String temp = Base64.encodeToString(bytes, Base64.DEFAULT);
         return temp;
     }
+
+    private Bitmap resize(Bitmap bm){
+        Configuration config=getResources().getConfiguration();
+        if(config.smallestScreenWidthDp>=800)
+            bm = Bitmap.createScaledBitmap(bm, 400, 240, true);
+        else if(config.smallestScreenWidthDp>=600)
+            bm = Bitmap.createScaledBitmap(bm, 300, 180, true);
+        else if(config.smallestScreenWidthDp>=400)
+            bm = Bitmap.createScaledBitmap(bm, 200, 120, true);
+        else if(config.smallestScreenWidthDp>=360)
+            bm = Bitmap.createScaledBitmap(bm, 180, 108, true);
+        else
+            bm = Bitmap.createScaledBitmap(bm, 160, 96, true);
+        return bm;
+    }
+    */
 }

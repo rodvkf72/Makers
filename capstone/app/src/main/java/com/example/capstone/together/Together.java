@@ -53,6 +53,7 @@ public class Together extends Fragment {
     String contents_text = "";
     String authority = "";
 
+    String no_main = "";
     String phone_main = "";
     String name_main = "";
     String email_main = "";
@@ -316,10 +317,10 @@ public class Together extends Fragment {
                     게시글의 제목만 가지고 와서 보여줌
                      */
                     //notice_board_image = content.getString("image");
-                    getBlob = StringToBitMap(content.getString("image"));
+                    //getBlob = StringToBitMap(content.getString("image"));
                     notice_board_title = content.getString("title");
                     notice_board_contents = content.getString("content");
-                    contents.add(new CustomWord(getBlob, notice_board_title, notice_board_contents));
+                    contents.add(new CustomWord(/*getBlob,*/ notice_board_title, notice_board_contents));
                 }
             } catch (Exception e){
                 e.printStackTrace();
@@ -401,6 +402,7 @@ public class Together extends Fragment {
                 for (int i = 0; i < results.length(); i++){
                     JSONObject content = results.getJSONObject(i);
                     //나온 정보들을 각 변수에 저장
+                    no_main = content.getString("no");
                     phone_main = content.getString("phone_num");
                     name_main = content.getString("name");
                     email_main = content.getString("email");
@@ -415,6 +417,8 @@ public class Together extends Fragment {
             }
             //저장된 정보들을 intent로 전송
             Intent tintent = new Intent(getActivity(), TogetherContents.class);
+            tintent.putExtra("user_phone", gphonenum);
+            tintent.putExtra("no", no_main);
             tintent.putExtra("phone_num", phone_main);
             tintent.putExtra("name", name_main);
             tintent.putExtra("email", email_main);

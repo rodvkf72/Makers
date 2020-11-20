@@ -168,10 +168,10 @@ public class DeleteContents extends AppCompatActivity {
                     JSONObject content = results.getJSONObject(i);
                     //여기서 필요한 부분만 가져오고 조건식 입력
                     //img = content.getString(("img"));
-                    bmap = StringToBitMap(content.getString("image"));
+                    //bmap = StringToBitMap(content.getString("image"));
                     no = content.getString("no");
                     notice_board = content.getString("title");
-                    contents.add(new CustomWord(bmap, no, notice_board));
+                    contents.add(new CustomWord(/*bmap,*/ no, notice_board));
                     nos.add(no.toString());
                 }
             } catch (Exception e){

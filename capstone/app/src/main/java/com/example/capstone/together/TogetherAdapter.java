@@ -39,7 +39,7 @@ public class TogetherAdapter extends ArrayAdapter<CustomWord> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.together_simpleitem, parent, false);
         }
-        ImageView image = (ImageView) convertView.findViewById(R.id.content_image);
+        //ImageView image = (ImageView) convertView.findViewById(R.id.content_image);
         TextView title = (TextView) convertView.findViewById(R.id.text_view_1);
         TextView content = (TextView) convertView.findViewById(R.id.text_view_2);
 
@@ -50,7 +50,7 @@ public class TogetherAdapter extends ArrayAdapter<CustomWord> {
         Glide.with(convertView.getContext()).load(test).apply(RequestOptions.timeoutOf(5*6*1000)).into(image);
          */
 
-        image.setImageBitmap(word.getBmap());
+        //image.setImageBitmap(word.getBmap());
         title.setText(word.getTitle());
         content.setText(word.getContents());
 
