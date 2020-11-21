@@ -4,21 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/partycount"
-        android:layout_width="70dp"
-        android:layout_height="40dp"
-        android:text="참여 인원"
-        android:textColor="@color/white"
-        android:background="@drawable/rounded_button_orange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.796"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.046" />
+    android:layout_height="match_parent"
+    android:background="#0E6DD5FA">
 
     <Button
         android:id="@+id/writecontents_back"
@@ -27,8 +14,10 @@
         android:layout_width="70dp"
         android:layout_height="40dp"
         android:text="뒤로가기"
-        android:textColor="@color/white"
-        android:background="@drawable/rounded_button_orange"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        android:fontFamily="@font/bung"
+        style="?android:borderlessButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
@@ -38,31 +27,51 @@
 
     <Button
         android:id="@+id/write_area_select"
-        android:layout_width="70dp"
+        style="?android:borderlessButtonStyle"
+        android:layout_width="80dp"
         android:layout_height="40dp"
+        android:fontFamily="@font/bung"
         android:text="지역 선택"
-        android:textColor="@color/white"
-        android:background="@drawable/rounded_button_orange"
+        android:textColor="@color/black"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.789"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.149" />
+        app:layout_constraintVertical_bias="0.195" />
+
+    <Button
+        android:id="@+id/partycount"
+        style="?android:borderlessButtonStyle"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:fontFamily="@font/bung"
+        android:text="참여 인원"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.818"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.195" />
 
     <Button
         android:id="@+id/write_time_select"
-        android:layout_width="70dp"
+        style="?android:borderlessButtonStyle"
+        android:layout_width="80dp"
         android:layout_height="40dp"
-        android:background="@drawable/rounded_button_orange"
+        android:fontFamily="@font/bung"
         android:text="일정 선택"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.204"
+        app:layout_constraintHorizontal_bias="0.202"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.195" />
 
     <EditText
         android:id="@+id/write_title"
@@ -99,16 +108,18 @@
 
     <Button
         android:id="@+id/write_finish"
+        style="?android:borderlessButtonStyle"
         android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:text="게시글 등록"
-        android:textColor="@color/white"
-        android:background="@drawable/rounded_button_orange"
+        android:layout_height="50dp"
+        android:fontFamily="@font/bung"
+        android:text="등 록"
+        android:textColor="@color/black"
+        android:textSize="23dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.875" />
+        app:layout_constraintVertical_bias="0.855" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
