@@ -1,13 +1,18 @@
 package com.example.capstone.map;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -42,6 +47,7 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
     TextView recommend_text;
     private MapView mapView = null;
     private GoogleMap mMap = null;
+    private Button btn;
 
     /*
     Java는 동적배열 생성이 안되므로 정적배열로 여유있게 100개의 배열을 생성함
@@ -70,6 +76,31 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         view = inflater.inflate(R.layout.recommend, container, false);
         mapView = (MapView)view.findViewById(R.id.map);
         //recommend_text = (TextView) view.findViewById(R.id.recommend_tv);
+
+        //도움말 팝업
+        btn = view.findViewById(R.id.btn);
+        btn.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                final Dialog dialog = new Dialog(v.getContext());
+
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.recommend_popup_layout);
+                dialog.show();
+
+                final Button cancel = (Button) dialog.findViewById(R.id.confirm);
+
+                // 확인 버튼
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view)
+                    {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
 
         //지역정보를 데이터베이스에 접속하여 가져옴
         AreaInfoDB aidb = new AreaInfoDB();
@@ -139,6 +170,13 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         // 구글 맵 객체 불러옴
         mMap = googleMap;
 
+        Bundle bundle = getArguments();
+        double latitude = bundle.getDouble("latitude", 1);
+        double longitude = bundle.getDouble("longitude", 1);
+
+        Toast.makeText(getContext(), "현재 위치 \n위도 " + latitude + "\n경도" + longitude, Toast.LENGTH_SHORT).show();
+
+
         //마커를 어레이 리스트로 생성하여 계속해서 추가 가능
         List<MarkerItem> markerItemList = new ArrayList<MarkerItem>();
 
@@ -153,23 +191,30 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         markerItemList.add(new MarkerItem(35.078443, 129.080377, title[7], contents[7], preferenceratio[7]));   //국립 해양박물관
         markerItemList.add(new MarkerItem(35.052593, 128.960761, title[8], contents[8], preferenceratio[8]));   //아미산 전망대
         markerItemList.add(new MarkerItem(35.063311, 129.019297, title[9], contents[9], preferenceratio[9]));   //암남 공원
+        markerItemList.add(new MarkerItem(latitude, longitude, "현재 위치", "테스트", "테스트"));   //현재 위치
 
         //마커를 생성
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 11; i++) {
             LatLng location = new LatLng(markerItemList.get(i).getLat(), markerItemList.get(i).getLon());
 
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(location);
             markerOptions.title(markerItemList.get(i).getPlaceTitle());
             markerOptions.snippet(markerItemList.get(i).getPlaceInfo() + "\n\n" + "선호율 : " + markerItemList.get(i).getPreferenceRatio() + "%");
+            if(i==0 || i==2 || i==6) markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)); // 바닷가(파란색)
+            if(i==1 || i==3 || i==4 || i==5 || i==7) markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)); // 문화, 역사(빨간색)
+            if(i==8 || i==9) markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)); // 산책로(초록색)
+            if(i==10) markerOptions.icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.current_lotation)));
             //markerOptions.snippet("선호율 : " + String.valueOf(markerItemList.get(i).getPreferenceRatio()) + "%");
 
+            /*
             int drawableId = getResources().getIdentifier("pic" + (i + 1), "drawable", "com.example.capstone");
 
             BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(drawableId);
             Bitmap b = bitmapdraw.getBitmap();
             Bitmap smallMarker = Bitmap.createScaledBitmap(b, 150, 150, false);
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+             */
 
             mMap.addMarker(markerOptions);
         }

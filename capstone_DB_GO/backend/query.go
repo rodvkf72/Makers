@@ -18,16 +18,17 @@ type dbInfo struct {
 }
 
 type Noticeboard struct {
-	No        string `json:"no"`
-	Phone_num string `json:"phone_num"`
-	Name      string `json:"name"`
-	Email     string `json:"email"`
-	Sex       string `json:"sex"`
-	Title     string `json:"title"`
-	Content   string `json:"content"`
-	Area      string `json:"area"`
-	Time_t    string `json:"time_t"`
-	Image     []byte `json:"image"`
+	No          string `json:"no"`
+	Phone_num   string `json:"phone_num"`
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	Sex         string `json:"sex"`
+	Title       string `json:"title"`
+	Content     string `json:"content"`
+	Area        string `json:"area"`
+	Time_t      string `json:"time_t"`
+	Partycount  string `json:"partycount"`
+	PartyPeople string `json:"partypeople"`
 }
 
 type Noticeboards struct {
@@ -81,7 +82,7 @@ type Areas struct {
 }
 
 func SelectQuery(db dbInfo, query string, choose string) string {
-	var area, phone_num, login, signup, tourpass, pass, result string
+	var area, phone_num, login, signup, tourpass, pass, result, party, partypeople string
 
 	dataSource := db.user + ":" + db.pwd + "@tcp(" + db.url + ")/" + db.database
 	conn, err := sql.Open(db.engine, dataSource)
@@ -130,6 +131,18 @@ func SelectQuery(db dbInfo, query string, choose string) string {
 				log.Fatal(err)
 			}
 			result = pass
+		case "party":
+			err := rows.Scan(&party)
+			if err != nil {
+				log.Fatal(err)
+			}
+			result = party
+		case "partypeople":
+			err := rows.Scan(&partypeople)
+			if err != nil {
+				log.Fatal(err)
+			}
+			result = partypeople
 		}
 	}
 	return result
@@ -141,6 +154,7 @@ func InsertQuery(db dbInfo, query string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	result, err := conn.Exec(query)
 
 	if err != nil {
@@ -184,8 +198,7 @@ func UpdateQuery(db dbInfo, query string) {
 }
 
 func FindsQuery(db dbInfo, query string) []byte {
-	var no, phone_num, name, email, sex, title, content, area, time_t string
-	var image []byte
+	var no, phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople string
 
 	//Noticeboard 구조체 배열 선언
 	var n []Noticeboard
@@ -200,11 +213,11 @@ func FindsQuery(db dbInfo, query string) []byte {
 	defer rows.Close()
 
 	for rows.Next() {
-		err := rows.Scan(&no, &phone_num, &name, &email, &sex, &title, &content, &area, &time_t, &image)
+		err := rows.Scan(&no, &phone_num, &name, &email, &sex, &title, &content, &area, &time_t, &partycount, &partypeople)
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			structdata := Noticeboard{no, phone_num, name, email, sex, title, content, area, time_t, image}
+			structdata := Noticeboard{no, phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople}
 
 			n = append(n, structdata)
 		}

@@ -83,9 +83,10 @@ func main() {
 	http.HandleFunc("/send_alarm/", backend.SendPushAlarm)
 	http.HandleFunc("/token_insert/", backend.TokenInsert)
 	http.HandleFunc("/find_pw/", backend.FindPW)
+	http.HandleFunc("/partification/", backend.Partification)
 
-	log.Println("Listening on : 9090...")
-	err := http.ListenAndServe(":9090", nil)
+	log.Println("Listening on : 9091...")
+	err := http.ListenAndServe(":9091", nil)
 	if err != nil {
 		log.Fatal("ListenAndServer : ", err)
 	} else {

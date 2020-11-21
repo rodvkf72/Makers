@@ -184,7 +184,8 @@ public class MainPage extends AppCompatActivity {
             Bundle result = new Bundle();
             result.putDouble("longitude", longitude);
             result.putDouble("latitude", latitude);
-            arFragment_btn.setArguments(result);
+            createQR.setArguments(result);
+            mapFragment.setArguments(result);
 
             /*
             Intent intent = new Intent(MainPage.this, UnityPlayerActivity.class);

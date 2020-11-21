@@ -3,6 +3,8 @@ package backend
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/labstack/echo"
 )
@@ -63,11 +65,14 @@ func Echo_Noticeboardinsert(c echo.Context) error {
 	resmain := c.FormValue("enroll_contents")
 	resarea := c.FormValue("enroll_area")
 	restime := c.FormValue("enroll_time")
+	respartycount := c.FormValue("enroll_partycount")
+	//bimage, _ := base64.StdEncoding.DecodeString(resimage)
+	//bimage := MysqlRealEscapeString(resimage)
 
 	if resphonenum == "" || resname == "" || resemail == "" || ressex == "" || restitle == "" || resmain == "" || resarea == "" || restime == "" {
 		return c.HTML(http.StatusOK, fmt.Sprint("fail"))
 	} else {
-		insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + ");"
+		insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t, partycount) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + respartycount + "'" + ");"
 		InsertQuery(db, insertstring)
 		return c.HTML(http.StatusOK, fmt.Sprint("complete"))
 		//http.Redirect(w, r, "/send_alarm/", http.StatusFound)
@@ -203,17 +208,76 @@ func NoticeboardInsert(w http.ResponseWriter, r *http.Request) {
 		resmain := r.FormValue("enroll_contents")
 		resarea := r.FormValue("enroll_area")
 		restime := r.FormValue("enroll_time")
-		resimg := r.FormValue("enroll_image")
+		respartycount := r.FormValue("enroll_partycount")
+		/*
+			resimg := r.FormValue("enroll_image")
+			bimg, _ := base64.StdEncoding.DecodeString(resimg)
+			resimg = string(bimg)
+		*/
 
 		if resphonenum == "" || resname == "" || resemail == "" || ressex == "" || restitle == "" || resmain == "" || resarea == "" || restime == "" {
 			fmt.Fprintf(w, "fail")
 		} else {
-			insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t, image) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + resimg + "'" + ");"
+			insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + respartycount + "'" + "," + "'" + "people : " + "'" + ");"
 			InsertQuery(db, insertstring)
 			fmt.Fprintf(w, "complete")
 			//http.Redirect(w, r, "/send_alarm/", http.StatusFound)
 		}
 	} else {
 		fmt.Fprintf(w, "fail")
+	}
+}
+
+func MysqlRealEscapeString(value string) string {
+	replace := map[string]string{"\\": "\\\\", "'": `\'`, "\\0": "\\\\0", "\n": "\\n", "\r": "\\r", `"`: `\"`, "\x1a": "\\Z"}
+
+	for b, a := range replace {
+		value = strings.Replace(value, b, a, -1)
+	}
+
+	return value
+}
+
+func Partification(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+	if r.Method == "POST" {
+		resno := r.FormValue("no")
+		resphone := r.FormValue("phone_num")
+		resuserphone := r.FormValue("user_phone")
+
+		selquery := "SELECT phone_num FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
+		selphone := SelectQuery(db, selquery, "phone_num")
+
+		if resuserphone == selphone {
+			fmt.Fprintf(w, "자신의 파티에는 가입할 수 없습니다.")
+		} else if resphone == "" {
+			fmt.Fprintf(w, "등록자 번호가 없습니다.")
+		} else if resphone == "" {
+			fmt.Fprintf(w, "사용자의 번호가 없습니다.")
+		} else {
+			partyquery := "SELECT partycount FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
+			partycount := SelectQuery(db, partyquery, "party")
+			ipartycount, _ := strconv.Atoi(partycount)
+
+			partypeoplequery := "SELECT partypeople FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
+			partypeople := SelectQuery(db, partypeoplequery, "partypeople")
+
+			if strings.Contains(partypeople, resuserphone) {
+				fmt.Fprintf(w, "이미 등록되어 있습니다.")
+			} else if strings.Contains(partypeople, resphone) {
+				fmt.Fprintf(w, "자신의 파티에는 가입할 수 없습니다.")
+			} else if ipartycount <= 0 {
+				fmt.Fprintf(w, "남은 자리가 없습니다..")
+			} else {
+				spartycount := strconv.Itoa(ipartycount - 1)
+				partyinsertquery := "UPDATE noticeboard SET party=" + "'" + spartycount + "'" + "WHERE no=" + "'" + resno + "'" + ";"
+				UpdateQuery(db, partyinsertquery)
+
+				partypeoplequery := "INSERT INTO noticeboard (partypeople) VALUE (" + "'" + resuserphone + "'" + ");"
+				InsertQuery(db, partypeoplequery)
+
+				fmt.Fprintf(w, "파티에 등록 되었습니다.")
+			}
+		}
 	}
 }
