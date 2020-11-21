@@ -43,6 +43,20 @@ func Echo_Signup(c echo.Context) error {
 	}
 }
 
+func Echo_FindPW(c echo.Context) error {
+	resname := c.FormValue("u_name")
+	resnum := c.FormValue("u_num")
+
+	if c.Request().Method == "POST" {
+		query := "SELECT pass FROM info WHERE name = " + "'" + resname + "'" + " AND phone_num = " + "'" + resnum + "'" + ";"
+		result := SelectQuery(db, query, "findpw")
+		//fmt.Println(string(result))
+		return c.HTML(http.StatusOK, fmt.Sprint(string(result)))
+	} else {
+		return c.HTML(http.StatusOK, fmt.Sprint(c, "비밀번호를 찾지 못했습니다."))
+	}
+}
+
 /*
  로그인 기능
 */
@@ -92,5 +106,23 @@ func SingUp(w http.ResponseWriter, r *http.Request) {
 
 			InsertQuery(db, insertquery)
 		}
+	}
+}
+
+func FindPW(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
+
+	resname := r.FormValue("u_name")
+	resnum := r.FormValue("u_num")
+
+	//go lang json 방식(marshal) 참고
+	if r.Method == "POST" {
+		query := "SELECT pass FROM info WHERE name = " + "'" + resname + "'" + " AND phone_num = " + "'" + resnum + "'" + ";"
+		//query := "SELECT title, content, image FROM area"
+
+		result := SelectQuery(db, query, "findpw")
+		fmt.Fprintf(w, string(result))
+	} else {
+
 	}
 }

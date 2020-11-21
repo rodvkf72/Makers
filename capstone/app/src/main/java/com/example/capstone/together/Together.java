@@ -308,9 +308,10 @@ public class Together extends Fragment {
             try{
                 System.out.println("test :" + data);
                 contents.clear();
+
                 JSONObject root = new JSONObject(data);
                 JSONArray results = new JSONArray(root.getString("results"));
-                for (int i = 0; i < results.length(); i++){
+                for (int i = 0; i < results.length(); i++) {
                     JSONObject content = results.getJSONObject(i);
                     /*
                     여기서 필요한 부분만 가져오고 조건식 입력
@@ -322,6 +323,7 @@ public class Together extends Fragment {
                     notice_board_contents = content.getString("content");
                     contents.add(new CustomWord(/*getBlob,*/ notice_board_title, notice_board_contents));
                 }
+
             } catch (Exception e){
                 e.printStackTrace();
             }

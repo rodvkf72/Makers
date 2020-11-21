@@ -77,6 +77,10 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         mapView = (MapView)view.findViewById(R.id.map);
         //recommend_text = (TextView) view.findViewById(R.id.recommend_tv);
 
+        //지역정보를 데이터베이스에 접속하여 가져옴
+        AreaInfoDB aidb = new AreaInfoDB();
+        aidb.execute();
+
         //도움말 팝업
         btn = view.findViewById(R.id.btn);
         btn.setOnClickListener(new Button.OnClickListener(){
@@ -101,10 +105,6 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
                 });
             }
         });
-
-        //지역정보를 데이터베이스에 접속하여 가져옴
-        AreaInfoDB aidb = new AreaInfoDB();
-        aidb.execute();
 
         mapView.getMapAsync(this);
 

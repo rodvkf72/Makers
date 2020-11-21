@@ -148,6 +148,31 @@ func SelectQuery(db dbInfo, query string, choose string) string {
 	return result
 }
 
+func CountSelectQuery(db dbInfo, query string, choose string) int {
+	var partypeoplecount, result int
+
+	dataSource := db.user + ":" + db.pwd + "@tcp(" + db.url + ")/" + db.database
+	conn, err := sql.Open(db.engine, dataSource)
+	if err != nil {
+		log.Fatal(err)
+	}
+	rows, err := conn.Query(query)
+
+	defer rows.Close()
+
+	for rows.Next() {
+		switch choose {
+		case "partypeoplecount":
+			err := rows.Scan(&partypeoplecount)
+			if err != nil {
+				log.Fatal(err)
+			}
+			result = partypeoplecount
+		}
+	}
+	return result
+}
+
 func InsertQuery(db dbInfo, query string) {
 	dataSource := db.user + ":" + db.pwd + "@tcp(" + db.url + ")/" + db.database
 	conn, err := sql.Open(db.engine, dataSource)

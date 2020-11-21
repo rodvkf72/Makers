@@ -13,14 +13,18 @@ import (
 )
 
 func Echo_Sendpushalarm(c echo.Context) error {
-	var areaselectquery = "SELECT area FROM noticeboard ORDER BY no DESC LIMIT 1"
-	areaselect := SelectQuery(db, areaselectquery, "area")
-	opt := option.WithCredentialsFile("newcomers-521cb-firebase-adminsdk-ggg4x-09b1c5355c.json")
-	app, _ := firebase.NewApp(context.Background(), nil, opt)
-	ctx := context.Background()
-	client, _ := app.Messaging(ctx)
-	sendToTopic(ctx, client, areaselect)
-	return c.HTML(http.StatusOK, fmt.Sprint("sending ~ "))
+	if c.Request().Method == "POST" {
+		var areaselectquery = "SELECT area FROM noticeboard ORDER BY no DESC LIMIT 1"
+		areaselect := SelectQuery(db, areaselectquery, "area")
+		opt := option.WithCredentialsFile("newcomers-521cb-firebase-adminsdk-ggg4x-09b1c5355c.json")
+		app, _ := firebase.NewApp(context.Background(), nil, opt)
+		ctx := context.Background()
+		client, _ := app.Messaging(ctx)
+		sendToTopic(ctx, client, areaselect)
+		return c.HTML(http.StatusOK, fmt.Sprint("sending ~ "))
+	} else {
+		return c.HTML(http.StatusOK, fmt.Sprint("sending fail :( "))
+	}
 }
 
 /*

@@ -72,10 +72,62 @@ func Echo_Noticeboardinsert(c echo.Context) error {
 	if resphonenum == "" || resname == "" || resemail == "" || ressex == "" || restitle == "" || resmain == "" || resarea == "" || restime == "" {
 		return c.HTML(http.StatusOK, fmt.Sprint("fail"))
 	} else {
-		insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t, partycount) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + respartycount + "'" + ");"
+		insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + respartycount + "'" + "," + "'" + "people : " + "'" + ");"
 		InsertQuery(db, insertstring)
 		return c.HTML(http.StatusOK, fmt.Sprint("complete"))
 		//http.Redirect(w, r, "/send_alarm/", http.StatusFound)
+	}
+}
+
+func Echo_Partification(c echo.Context) error {
+	if c.Request().Method == "POST" {
+		resno := c.FormValue("no")
+		resphone := c.FormValue("phone_num")
+		resuserphone := c.FormValue("user_phone")
+
+		selquery := "SELECT phone_num FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
+		selphone := SelectQuery(db, selquery, "phone_num")
+
+		if resuserphone == selphone {
+			return c.HTML(http.StatusOK, fmt.Sprint("자신의 파티에는 가입할 수 없습니다."))
+		} else if resphone == "" {
+			return c.HTML(http.StatusOK, fmt.Sprint("등록자 번호가 없습니다.."))
+		} else if resphone == "" {
+			return c.HTML(http.StatusOK, fmt.Sprint("사용자의 번호가 없습니다."))
+		} else {
+			partyquery := "SELECT partycount FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
+			partycount := SelectQuery(db, partyquery, "party")
+			partycount = partycount[0:1]
+			ipartycount, _ := strconv.Atoi(partycount)
+
+			partypeoplequery1 := "SELECT count(partypeople) FROM party WHERE no=" + "'" + resno + "'" + ";"
+			partypeoplecount := CountSelectQuery(db, partypeoplequery1, "partypeople")
+			if ipartycount <= partypeoplecount {
+				return c.HTML(http.StatusOK, fmt.Sprint("남은 자리가 없습니다.."))
+			} else {
+				partypeoplequery2 := "SELECT partypeople FROM party WHERE no=" + "'" + resno + "'" + ";"
+				partypeople := SelectQuery(db, partypeoplequery2, "partypeople")
+
+				if strings.Contains(partypeople, resuserphone) {
+					return c.HTML(http.StatusOK, fmt.Sprint("이미 등록되어 있습니다."))
+				} else if strings.Contains(partypeople, resphone) {
+					return c.HTML(http.StatusOK, fmt.Sprint("자신의 파티에는 가입할 수 없습니다."))
+				} else if ipartycount <= 0 {
+					return c.HTML(http.StatusOK, fmt.Sprint("남은 자리가 없습니다.."))
+				} else {
+					//spartycount := strconv.Itoa(ipartycount - 1)
+					//partyinsertquery := "UPDATE noticeboard SET partycount=" + "'" + spartycount + "'" + "WHERE no=" + "'" + resno + "'" + ";"
+					//UpdateQuery(db, partyinsertquery)
+
+					partypeoplequery3 := "INSERT INTO party (no, partypeople) VALUE (" + "'" + resno + "'" + "," + "'" + resuserphone + "'" + ");"
+					InsertQuery(db, partypeoplequery3)
+
+					return c.HTML(http.StatusOK, fmt.Sprint("파티에 등록 되었습니다."))
+				}
+			}
+		}
+	} else {
+		return c.HTML(http.StatusOK, fmt.Sprint("정상적인 방법으로 등록하세요."))
 	}
 }
 
@@ -257,26 +309,33 @@ func Partification(w http.ResponseWriter, r *http.Request) {
 		} else {
 			partyquery := "SELECT partycount FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
 			partycount := SelectQuery(db, partyquery, "party")
+			partycount = partycount[0:1]
 			ipartycount, _ := strconv.Atoi(partycount)
 
-			partypeoplequery := "SELECT partypeople FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
-			partypeople := SelectQuery(db, partypeoplequery, "partypeople")
-
-			if strings.Contains(partypeople, resuserphone) {
-				fmt.Fprintf(w, "이미 등록되어 있습니다.")
-			} else if strings.Contains(partypeople, resphone) {
-				fmt.Fprintf(w, "자신의 파티에는 가입할 수 없습니다.")
-			} else if ipartycount <= 0 {
+			partypeoplequery1 := "SELECT count(partypeople) FROM party WHERE no=" + "'" + resno + "'" + ";"
+			partypeoplecount := CountSelectQuery(db, partypeoplequery1, "partypeople")
+			if ipartycount <= partypeoplecount {
 				fmt.Fprintf(w, "남은 자리가 없습니다..")
 			} else {
-				spartycount := strconv.Itoa(ipartycount - 1)
-				partyinsertquery := "UPDATE noticeboard SET party=" + "'" + spartycount + "'" + "WHERE no=" + "'" + resno + "'" + ";"
-				UpdateQuery(db, partyinsertquery)
+				partypeoplequery2 := "SELECT partypeople FROM party WHERE no=" + "'" + resno + "'" + ";"
+				partypeople := SelectQuery(db, partypeoplequery2, "partypeople")
 
-				partypeoplequery := "INSERT INTO noticeboard (partypeople) VALUE (" + "'" + resuserphone + "'" + ");"
-				InsertQuery(db, partypeoplequery)
+				if strings.Contains(partypeople, resuserphone) {
+					fmt.Fprintf(w, "이미 등록되어 있습니다.")
+				} else if strings.Contains(partypeople, resphone) {
+					fmt.Fprintf(w, "자신의 파티에는 가입할 수 없습니다.")
+				} else if ipartycount <= 0 {
+					fmt.Fprintf(w, "남은 자리가 없습니다..")
+				} else {
+					//spartycount := strconv.Itoa(ipartycount - 1)
+					//partyinsertquery := "UPDATE noticeboard SET partycount=" + "'" + spartycount + "'" + "WHERE no=" + "'" + resno + "'" + ";"
+					//UpdateQuery(db, partyinsertquery)
 
-				fmt.Fprintf(w, "파티에 등록 되었습니다.")
+					partypeoplequery3 := "INSERT INTO party (no, partypeople) VALUE (" + "'" + resno + "'" + "," + "'" + resuserphone + "'" + ");"
+					InsertQuery(db, partypeoplequery3)
+
+					fmt.Fprintf(w, "파티에 등록 되었습니다.")
+				}
 			}
 		}
 	}

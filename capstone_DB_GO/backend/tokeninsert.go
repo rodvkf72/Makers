@@ -8,11 +8,14 @@ import (
 )
 
 func Echo_Tokeninsert(c echo.Context) error {
-	restoken := c.FormValue("Token")
-	query := "INSERT INTO users(Token) VALUES(" + "'" + restoken + "'" + ") ON DUPLICATE KEY UPDATE Token=" + "'" + restoken + "'" + ";"
-
-	InsertQuery(db, query)
-	return c.HTML(http.StatusOK, fmt.Sprint("Token"))
+	if c.Request().Method == "POST" {
+		restoken := c.FormValue("Token")
+		query := "INSERT INTO users(Token) VALUES(" + "'" + restoken + "'" + ") ON DUPLICATE KEY UPDATE Token=" + "'" + restoken + "'" + ";"
+		InsertQuery(db, query)
+		return c.HTML(http.StatusOK, fmt.Sprint("Token Insert"))
+	} else {
+		return c.HTML(http.StatusOK, fmt.Sprint("Token Insert Fail"))
+	}
 }
 
 /*

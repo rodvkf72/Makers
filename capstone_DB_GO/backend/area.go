@@ -36,11 +36,11 @@ func Echo_Areasetting(c echo.Context) error {
 	if queryphonenum == resphonenum {
 		query = "UPDATE noticeboard_setting SET area = " + "'" + resarea + "'" + ", time_t = " + "'" + restime + "'" + ", sex = " + "'" + ressex + "'" + "WHERE phone_num=" + "'" + resphonenum + "'" + ";"
 		UpdateQuery(db, query)
-		c.String(0, queryarea)
+		return c.String(0, queryarea)
 	} else {
 		query = "INSERT INTO noticeboard_setting VALUES (" + "'" + resphonenum + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + ressex + "'" + "," + "'" + "'" + ");"
 		InsertQuery(db, query)
-		c.String(0, queryarea)
+		return c.String(0, queryarea)
 	}
 	//영어로 바꾸어 데이터베이스에 저장
 	if resarea == "부산" {
@@ -58,7 +58,7 @@ func Echo_Areasetting(c echo.Context) error {
 func Echo_Areainfo(c echo.Context) error {
 	query := "SELECT area.title, area.content, area.image, COALESCE(AVG(evaluation.preference), 1) FROM area LEFT JOIN evaluation ON area.title = evaluation.area_detail GROUP BY area.title ORDER BY area.no"
 	result := AreaQuery(db, query)
-	return c.String(http.StatusOK, fmt.Sprint(string(result)))
+	return c.HTML(http.StatusOK, fmt.Sprint(string(result)))
 	//return c.HTML(http.StatusOK, fmt.Sprint(string(result)))
 }
 
