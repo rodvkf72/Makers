@@ -107,12 +107,12 @@ public class WriteContents extends AppCompatActivity {
         write_title = (EditText)findViewById(R.id.write_title);
         write_main = (EditText)findViewById(R.id.write_main);
 
-        Button area_select = (Button)findViewById(R.id.write_area_select);
-        Button time_select = (Button)findViewById(R.id.write_time_select);
-        Button finish_button = (Button)findViewById(R.id.write_finish);
-        Button backbtn = (Button)findViewById(R.id.writecontents_back);
+        TextView area_select = (TextView)findViewById(R.id.write_area_select);
+        TextView time_select = (TextView)findViewById(R.id.write_time_select);
+        TextView finish_button = (TextView)findViewById(R.id.write_finish);
+        TextView backbtn = (TextView)findViewById(R.id.writecontents_back);
 
-        Button partybtn = (Button) findViewById(R.id.partycount);
+        TextView partybtn = (TextView) findViewById(R.id.partycount);
         /*
         Button imgbtn = (Button)findViewById(R.id.upload_image);
         iv = findViewById(R.id.imgv);
