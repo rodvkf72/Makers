@@ -183,6 +183,7 @@ public class TogetherContents extends AppCompatActivity {
         @Override
         protected void onPostExecute(String data) {
             try {
+                FirebaseMessaging.getInstance().subscribeToTopic(no_main);
                 Toast.makeText(getApplicationContext(), data, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();

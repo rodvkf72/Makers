@@ -42,6 +42,8 @@ public class TogetherAdapter extends ArrayAdapter<CustomWord> {
         //ImageView image = (ImageView) convertView.findViewById(R.id.content_image);
         TextView title = (TextView) convertView.findViewById(R.id.text_view_1);
         TextView content = (TextView) convertView.findViewById(R.id.text_view_2);
+        TextView party = (TextView) convertView.findViewById(R.id.text_view_3);
+        TextView count = (TextView) convertView.findViewById(R.id.text_view_4);
 
         /*
         img = word.getImage();
@@ -53,6 +55,8 @@ public class TogetherAdapter extends ArrayAdapter<CustomWord> {
         //image.setImageBitmap(word.getBmap());
         title.setText(word.getTitle());
         content.setText(word.getContents());
+        party.setText(word.getParty());
+        count.setText(word.getCount());
 
         return convertView;
     }

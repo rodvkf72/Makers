@@ -41,15 +41,15 @@ import java.util.ArrayList;
 public class Together extends Fragment {
     View view;
 
-    Bitmap getBlob;
-    String notice_board_image = "";
     String notice_board_title = "";
     String notice_board_contents = "";
-    String id = "";
+    String notice_board_party = "";
+    String notice_board_partycount = "";
+    //String id = "";
     String area_t = "";
     String time_t = "";
     String sex_t = "";
-    String contents_title = "";
+    //String contents_title = "";
     String contents_text = "";
     String authority = "";
 
@@ -321,7 +321,9 @@ public class Together extends Fragment {
                     //getBlob = StringToBitMap(content.getString("image"));
                     notice_board_title = content.getString("title");
                     notice_board_contents = content.getString("content");
-                    contents.add(new CustomWord(/*getBlob,*/ notice_board_title, notice_board_contents));
+                    notice_board_party = content.getString("partyno");
+                    notice_board_partycount = content.getString("partycount");
+                    contents.add(new CustomWord( notice_board_title, notice_board_contents, notice_board_party, notice_board_partycount));
                 }
 
             } catch (Exception e){

@@ -19,8 +19,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.capstone.ar.AR;
 import com.example.capstone.ar.UnityPlayerActivity;
@@ -32,6 +35,8 @@ import com.example.capstone.together.Together;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kakao.auth.Session;
 import com.kakao.util.helper.log.Logger;
+
+import me.relex.circleindicator.CircleIndicator3;
 
 public class MainPage extends AppCompatActivity {
     private long backPressedTime = 0;

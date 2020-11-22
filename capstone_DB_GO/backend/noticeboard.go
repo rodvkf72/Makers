@@ -55,8 +55,6 @@ func Echo_Noticeboardfind(c echo.Context) error {
 }
 
 func Echo_Noticeboardinsert(c echo.Context) error {
-	var insertstring string
-
 	resphonenum := c.FormValue("enroll_phonenum")
 	resname := c.FormValue("enroll_name")
 	resemail := c.FormValue("enroll_email")
@@ -72,9 +70,13 @@ func Echo_Noticeboardinsert(c echo.Context) error {
 	if resphonenum == "" || resname == "" || resemail == "" || ressex == "" || restitle == "" || resmain == "" || resarea == "" || restime == "" {
 		return c.HTML(http.StatusOK, fmt.Sprint("fail"))
 	} else {
-		insertstring = "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + respartycount + "'" + "," + "'" + "people : " + "'" + ");"
+		insertstring := "INSERT INTO noticeboard(phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople) VALUES (" + "'" + resphonenum + "'" + "," + "'" + resname + "'" + "," + "'" + resemail + "'" + "," + "'" + ressex + "'" + "," + "'" + restitle + "'" + "," + "'" + resmain + "'" + "," + "'" + resarea + "'" + "," + "'" + restime + "'" + "," + "'" + respartycount + "'" + "," + "'" + "people : " + "'" + ");"
 		InsertQuery(db, insertstring)
-		return c.HTML(http.StatusOK, fmt.Sprint("complete"))
+		selectmequery := "SELECT no FROM noticeboard WHERE phone_num=" + "'" + resphonenum + "'" + ";"
+		resno := SelectQuery(db, selectmequery, "area")
+		insertmequery := "INSERT INTO party (no, partypeople) VALUE (" + "'" + resno + "'" + "," + "'" + resphonenum + "'" + ");"
+		InsertQuery(db, insertmequery)
+		return c.HTML(http.StatusOK, fmt.Sprint(resno))
 		//http.Redirect(w, r, "/send_alarm/", http.StatusFound)
 	}
 }
@@ -92,7 +94,7 @@ func Echo_Partification(c echo.Context) error {
 			return c.HTML(http.StatusOK, fmt.Sprint("자신의 파티에는 가입할 수 없습니다."))
 		} else if resphone == "" {
 			return c.HTML(http.StatusOK, fmt.Sprint("등록자 번호가 없습니다.."))
-		} else if resphone == "" {
+		} else if resuserphone == "" {
 			return c.HTML(http.StatusOK, fmt.Sprint("사용자의 번호가 없습니다."))
 		} else {
 			partyquery := "SELECT partycount FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
@@ -110,8 +112,6 @@ func Echo_Partification(c echo.Context) error {
 
 				if strings.Contains(partypeople, resuserphone) {
 					return c.HTML(http.StatusOK, fmt.Sprint("이미 등록되어 있습니다."))
-				} else if strings.Contains(partypeople, resphone) {
-					return c.HTML(http.StatusOK, fmt.Sprint("자신의 파티에는 가입할 수 없습니다."))
 				} else if ipartycount <= 0 {
 					return c.HTML(http.StatusOK, fmt.Sprint("남은 자리가 없습니다.."))
 				} else {
@@ -121,6 +121,13 @@ func Echo_Partification(c echo.Context) error {
 
 					partypeoplequery3 := "INSERT INTO party (no, partypeople) VALUE (" + "'" + resno + "'" + "," + "'" + resuserphone + "'" + ");"
 					InsertQuery(db, partypeoplequery3)
+
+					partycountcheckquery := "SELECT partycount FROM noticeboard WHERE no=" + "'" + resno + "'" + ";"
+					partycountcheck := SelectQuery(db, partycountcheckquery, "partycount")
+					partycountcheck = partycountcheck[0:1]
+					if partycount == partycountcheck {
+						Echo_Partysendpushalarm(c, resno)
+					}
 
 					return c.HTML(http.StatusOK, fmt.Sprint("파티에 등록 되었습니다."))
 				}

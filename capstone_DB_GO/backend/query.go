@@ -29,6 +29,7 @@ type Noticeboard struct {
 	Time_t      string `json:"time_t"`
 	Partycount  string `json:"partycount"`
 	PartyPeople string `json:"partypeople"`
+	Partyno     string `json:"partyno"`
 }
 
 type Noticeboards struct {
@@ -82,7 +83,7 @@ type Areas struct {
 }
 
 func SelectQuery(db dbInfo, query string, choose string) string {
-	var area, phone_num, login, signup, tourpass, pass, result, party, partypeople string
+	var area, phone_num, login, signup, tourpass, pass, result, party, partycount, partypeople string
 
 	dataSource := db.user + ":" + db.pwd + "@tcp(" + db.url + ")/" + db.database
 	conn, err := sql.Open(db.engine, dataSource)
@@ -137,6 +138,12 @@ func SelectQuery(db dbInfo, query string, choose string) string {
 				log.Fatal(err)
 			}
 			result = party
+		case "partycount":
+			err := rows.Scan(&partycount)
+			if err != nil {
+				log.Fatal(err)
+			}
+			result = partycount
 		case "partypeople":
 			err := rows.Scan(&partypeople)
 			if err != nil {
@@ -239,11 +246,25 @@ func FindsQuery(db dbInfo, query string) []byte {
 
 	for rows.Next() {
 		err := rows.Scan(&no, &phone_num, &name, &email, &sex, &title, &content, &area, &time_t, &partycount, &partypeople)
+
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			structdata := Noticeboard{no, phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople}
+			var structdata Noticeboard
+			var partyno string
+			partyquery := "SELECT count(partypeople) FROM party WHERE no =" + "'" + no + "'" + ";"
+			rows2, _ := conn.Query(partyquery)
+			defer rows2.Close()
+			for rows2.Next() {
+				err2 := rows2.Scan(&partyno)
 
+				if err2 != nil {
+					log.Fatal(err2)
+				} else {
+					structdata = Noticeboard{no, phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople, partyno}
+				}
+			}
+			//structdata = Noticeboard{no, phone_num, name, email, sex, title, content, area, time_t, partycount, partypeople, partyno}
 			n = append(n, structdata)
 		}
 	}

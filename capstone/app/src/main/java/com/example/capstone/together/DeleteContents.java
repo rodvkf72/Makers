@@ -38,7 +38,8 @@ public class DeleteContents extends AppCompatActivity {
     String phone_num = "";
     String notice_board = "";
     String no = "";
-    String img = "";
+    String party = "";
+    String count = "";
     Bitmap bmap;
     //String contents_text = "";
 
@@ -54,12 +55,12 @@ public class DeleteContents extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.noticeboard_delete);
 
+        gintent = getIntent();
+        phone_num = gintent.getStringExtra("phone_num");
+
         contents_adapter = new TogetherAdapter(this, R.layout.together_simpleitem, contents);
         contents_listview = (ListView) findViewById(R.id.delete_listview);
         Button backbtn = (Button) findViewById(R.id.del_back);
-
-        gintent = getIntent();
-        phone_num = gintent.getStringExtra("phone_num");
 
         //로그인 된 사용자가 작성한 게시글을 모두 불러옴
         DeleteFindDB dfdb = new DeleteFindDB();
@@ -171,7 +172,9 @@ public class DeleteContents extends AppCompatActivity {
                     //bmap = StringToBitMap(content.getString("image"));
                     no = content.getString("no");
                     notice_board = content.getString("title");
-                    contents.add(new CustomWord(/*bmap,*/ no, notice_board));
+                    party = content.getString("partyno");
+                    count = content.getString("partycount");
+                    contents.add(new CustomWord(no, notice_board, party, count));
                     nos.add(no.toString());
                 }
             } catch (Exception e){

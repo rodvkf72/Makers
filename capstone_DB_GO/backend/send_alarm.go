@@ -20,11 +20,19 @@ func Echo_Sendpushalarm(c echo.Context) error {
 		app, _ := firebase.NewApp(context.Background(), nil, opt)
 		ctx := context.Background()
 		client, _ := app.Messaging(ctx)
-		sendToTopic(ctx, client, areaselect)
+		sendToTopic(ctx, client, areaselect, "0")
 		return c.HTML(http.StatusOK, fmt.Sprint("sending ~ "))
 	} else {
 		return c.HTML(http.StatusOK, fmt.Sprint("sending fail :( "))
 	}
+}
+
+func Echo_Partysendpushalarm(c echo.Context, resno string) {
+	opt := option.WithCredentialsFile("newcomers-521cb-firebase-adminsdk-ggg4x-09b1c5355c.json")
+	app, _ := firebase.NewApp(context.Background(), nil, opt)
+	ctx := context.Background()
+	client, _ := app.Messaging(ctx)
+	sendToTopic(ctx, client, "None", resno)
 }
 
 /*
@@ -40,7 +48,7 @@ func SendPushAlarm(w http.ResponseWriter, r *http.Request) {
 		app, _ := firebase.NewApp(context.Background(), nil, opt)
 		ctx := context.Background()
 		client, _ := app.Messaging(ctx)
-		sendToTopic(ctx, client, areaselect)
+		sendToTopic(ctx, client, areaselect, "0")
 	}
 	//http.Redirect(w, r, "/", http.StatusFound)
 }
@@ -59,54 +67,52 @@ func initializeAppDefault() *firebase.App {
 /*
  토픽에 맞게 푸시 알람을 실질적으로 전송하는 부분
 */
-func sendToTopic(ctx context.Context, client *messaging.Client, selectedarea string) {
+func sendToTopic(ctx context.Context, client *messaging.Client, selectedarea string, resno string) {
 	// [START send_to_topic_golang]
 	// The topic name can be optionally prefixed with "/topics/".
 	//topic := selectedtopic
 	//topic := "newcomers_fcm"
 
 	var topic string
-
 	var title string
 	var body string
 
-	if selectedarea == "부산" {
-		topic = "busan"
-		title = "부산"
-		body = "부산"
-	} else if selectedarea == "서울" {
-		topic = "seoul"
-		title = "서울"
-		body = "서울"
-	} else if selectedarea == "대구" {
-		topic = "daegu"
-		title = "대구"
-		body = "대구"
-	}
-
-	/*
-		if selectedtopic == "busan" {
-			title = "부산"
-			body = "부산"
-		} else if selectedtopic == "seoul" {
-			title = "서울"
-			body = "서울"
-		} else if selectedtopic == "daegu" {
-			title = "대구"
-			body = "대구"
+	if resno == "0" {
+		var areatitle string = " 지역 새 게시글이 등록되었습니다."
+		var areabody string = " 지역 게시판을 확인하세요."
+		if selectedarea == "부산" {
+			topic = "busan"
+			title = "부산" + areatitle
+			body = "부산" + areabody
+		} else if selectedarea == "서울" {
+			topic = "seoul"
+			title = "서울" + areatitle
+			body = "서울" + areabody
+		} else if selectedarea == "대구" {
+			topic = "daegu"
+			title = "대구" + areatitle
+			body = "대구" + areabody
 		}
-	*/
+	} else if selectedarea == "None" {
+		var resnotitle string = " 번 게시글 파티원이 모두 모였습니다."
+		var resnobody string = " 번 게시글 파티원을 확인하세요."
+		topic = resno
+		title = resno + resnotitle
+		body = resno + resnobody
+	} else {
+
+	}
 
 	// See documentation on defining a message payload.
 	messages := []*messaging.Message{
 		{
 			Notification: &messaging.Notification{
-				Title: title + " 지역 새 게시글이 등록 되었습니다.",
-				Body:  body + " 지역 게시판을 확인하세요.",
+				Title: title,
+				Body:  body,
 			},
 			Data: map[string]string{
-				"title": title + " 지역 게시글이 등록 되었습니다.",
-				"body":  body + " 지역 게시판을 확인하세요.",
+				"title": title,
+				"body":  body,
 			},
 			Topic: topic,
 		},

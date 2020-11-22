@@ -4,10 +4,10 @@ import android.graphics.Bitmap;
 
 //하나의 리스트 뷰에 두 가지 텍스트를 보여주기 위한 클래스
 public class CustomWord {
-    //private String image;
     private String title;
     private String contents;
-    //private Bitmap bmap;
+    private String party;
+    private String count;
 
     //public String getImage() { return image; }
     public String getTitle() {
@@ -16,7 +16,8 @@ public class CustomWord {
     public String getContents() {
         return contents;
     }
-    //public Bitmap getBmap() { return bmap; }
+    public String getParty() { return party; }
+    public String getCount() { return count; }
 
     /*
     public void setImage(String image) {
@@ -37,9 +38,10 @@ public class CustomWord {
         contents = c;
     }
      */
-    public CustomWord(/*Bitmap b,*/ String t, String c) {
-        //bmap = b;
+    public CustomWord(String t, String c, String p, String cnt) {
         title = t;
         contents = c;
+        party = p;
+        count = cnt;
     }
 }

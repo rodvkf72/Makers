@@ -23,6 +23,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.capstone.R;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -349,6 +350,7 @@ public class WriteContents extends AppCompatActivity {
             try {
                 if((!data.equals("fail") && (!data.equals(null)))){
                     //게시글이 저장될 경우 파이어베이스 클라우드 메시지(FCM)을 실행. 조건에 맞는 사람에게 해당 게시글이 등록되었다고 푸시알림 전송
+                    FirebaseMessaging.getInstance().subscribeToTopic(data);
                     PushSendDB psdb = new PushSendDB();
                     psdb.execute();
 
