@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -29,12 +30,17 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 //QR코드
 public class Tourpass extends Fragment {
     private View view;
     private ImageView iv;
     private String ID;
+    private TextView tv_time;
+    private TextView tv_price;
+    private TextView tv_product;
 
     Intent gintent;
     String id = "";
@@ -64,6 +70,9 @@ public class Tourpass extends Fragment {
 
         iv = (ImageView)view.findViewById(R.id.qrcode);
         ID = id + "님 환영합니다.";
+        tv_time = (TextView)view.findViewById(R.id.textView5);
+        tv_price = (TextView)view.findViewById(R.id.textView6);
+        tv_product = (TextView)view.findViewById(R.id.textView4);
 
         //투어패스 구매자인지 확인
         TourpassCheckDB TCDB = new TourpassCheckDB();
@@ -155,6 +164,18 @@ public class Tourpass extends Fragment {
                         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                         Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                         iv.setImageBitmap(bitmap);
+                        // 현재시간을 msec 으로 구한다.
+                        long now = System.currentTimeMillis();
+                        // 현재시간을 date 변수에 저장한다.
+                        Date date = new Date(now);
+                        // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
+                        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분");
+                        // nowDate 변수에 값을 저장한다.
+                        String formatDate = sdfNow.format(date);
+                        tv_time.setText(formatDate); // 구매 시간
+                        tv_price.setText("5,000원"); // 구매 가격
+                        tv_product.setText("‧ 부산투어패스 1일권"); // 구매 상품
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }

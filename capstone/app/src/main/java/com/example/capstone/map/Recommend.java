@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -48,6 +49,10 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
     private MapView mapView = null;
     private GoogleMap mMap = null;
     private Button btn;
+
+    double latitude = 35.14551;
+    double longitude = 129.03648;
+
 
     /*
     Java는 동적배열 생성이 안되므로 정적배열로 여유있게 100개의 배열을 생성함
@@ -76,6 +81,10 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         view = inflater.inflate(R.layout.recommend, container, false);
         mapView = (MapView)view.findViewById(R.id.map);
         //recommend_text = (TextView) view.findViewById(R.id.recommend_tv);
+
+        Bundle bundle = this.getArguments();
+        latitude = bundle.getDouble("latitude");
+        longitude = bundle.getDouble("longitude");
 
         //지역정보를 데이터베이스에 접속하여 가져옴
         AreaInfoDB aidb = new AreaInfoDB();
@@ -167,15 +176,19 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        if (this.getArguments() != null) {
+            Bundle bundle = this.getArguments();
+            latitude = bundle.getDouble("latitude");
+            longitude = bundle.getDouble("longitude");
+        } else {
+
+        }
+
         // 구글 맵 객체 불러옴
         mMap = googleMap;
 
-        Bundle bundle = getArguments();
-        double latitude = bundle.getDouble("latitude", 1);
-        double longitude = bundle.getDouble("longitude", 1);
-
-        Toast.makeText(getContext(), "현재 위치 \n위도 " + latitude + "\n경도" + longitude, Toast.LENGTH_SHORT).show();
-
+        //Toast.makeText(getContext(), "현재 위치 \n위도 " + latitude + "\n경도" + longitude, Toast.LENGTH_SHORT).show();
 
         //마커를 어레이 리스트로 생성하여 계속해서 추가 가능
         List<MarkerItem> markerItemList = new ArrayList<MarkerItem>();
@@ -191,7 +204,8 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         markerItemList.add(new MarkerItem(35.078443, 129.080377, title[7], contents[7], preferenceratio[7]));   //국립 해양박물관
         markerItemList.add(new MarkerItem(35.052593, 128.960761, title[8], contents[8], preferenceratio[8]));   //아미산 전망대
         markerItemList.add(new MarkerItem(35.063311, 129.019297, title[9], contents[9], preferenceratio[9]));   //암남 공원
-        markerItemList.add(new MarkerItem(latitude, longitude, "현재 위치", "테스트", "테스트"));   //현재 위치
+        markerItemList.add(new MarkerItem(35.14551, 129.03648, "현재 위치", "테스트", "테스트"));   //현재 위치
+
 
         //마커를 생성
         for(int i = 0; i < 11; i++) {
@@ -222,8 +236,16 @@ public class Recommend extends Fragment implements OnMapReadyCallback {
         mMap.setInfoWindowAdapter(adapter);
 
         //기본 좌표 및 카메라 줌
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(35.078280, 129.045331)));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+        LatLng lng = new LatLng(35.14551, 129.03648);
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(lng)
+                .zoom(11)
+                .bearing(0)
+                .tilt(30)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(lng));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
     }
 
     //지역정보를 가져오기 위한 데이터베이스

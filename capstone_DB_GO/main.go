@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Makers/capstone_DB_GO/backend"
+	"backend"
 	"html/template"
 	"io"
 	"net/http"

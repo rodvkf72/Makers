@@ -56,8 +56,8 @@ public class MainPage extends AppCompatActivity {
     int resultCode;
     Intent data;
 
-    double longitude;
-    double latitude;
+    double longitude = 35.14551;
+    double latitude = 129.03648;
 
     TextView LogO;
 
@@ -83,15 +83,6 @@ public class MainPage extends AppCompatActivity {
         //위치정보 서비스
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if ( Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-            //ActivityCompat.requestPermissions( MainPage.this, new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 0);
-            Toast.makeText(MainPage.this, "위치정보 권한 거부 시 기능 사용에 제약이 있을 수 있습니다.", Toast.LENGTH_SHORT).show();
-        } else {
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, mLocationListener);
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
-        }
-
 
         LogO = (TextView)findViewById(R.id.logout);
 
@@ -109,20 +100,24 @@ public class MainPage extends AppCompatActivity {
                         break;
                     }
                     case R.id.navigation_map: {
+                        if ( Build.VERSION.SDK_INT >= 23 &&
+                                ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+                            //ActivityCompat.requestPermissions( MainPage.this, new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 0);
+                            Toast.makeText(MainPage.this, "위치정보 권한 거부 시 기능 사용에 제약이 있을 수 있습니다.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, mLocationListener);
+                            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
+
+                            Bundle result = new Bundle();
+                            result.putDouble("longitude", longitude);
+                            result.putDouble("latitude", latitude);
+                            createQR.setArguments(result);
+                            mapFragment.setArguments(result);
+                        }
                         transaction.replace(R.id.frame_layout, mapFragment).commitAllowingStateLoss();
                         break;
                     }
                     case R.id.navigation_ar: {
-                        //하단 버튼 클릭 시 사용자 위치정보 확인
-                        if ( Build.VERSION.SDK_INT >= 23 &&
-                                ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-                            //ActivityCompat.requestPermissions( MainPage.this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  }, 0 );
-                        } else {
-                            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, mLocationListener);
-                            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 100, 1, mLocationListener);
-                        }
-
-                        //Toast.makeText(MainPage.this, "현재 위치 \n위도 " + latitude + "\n경도" + longitude, Toast.LENGTH_SHORT).show();
                         transaction.replace(R.id.frame_layout, arFragment_btn).commitAllowingStateLoss();
                         break;
                         //AR이라 프래그먼트로 구현이 어려움
@@ -186,11 +181,13 @@ public class MainPage extends AppCompatActivity {
 
             //Toast.makeText(MainPage.this, "현재 위치 \n위도 " + latitude + "\n경도" + longitude, Toast.LENGTH_SHORT).show();
 
+            /*
             Bundle result = new Bundle();
             result.putDouble("longitude", longitude);
             result.putDouble("latitude", latitude);
             createQR.setArguments(result);
             mapFragment.setArguments(result);
+            */
 
             /*
             Intent intent = new Intent(MainPage.this, UnityPlayerActivity.class);

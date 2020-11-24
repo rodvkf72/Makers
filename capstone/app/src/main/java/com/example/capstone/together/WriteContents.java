@@ -56,6 +56,9 @@ public class WriteContents extends AppCompatActivity {
     String selected_party_item = "";
     String title = "";
     String main = "";
+    String selected_area_item_view = "";
+    String selected_time_item_view = "";
+    String selected_party_item_view = "";
     //Bitmap selected_image;
     //String string_selected_image;
 
@@ -114,6 +117,10 @@ public class WriteContents extends AppCompatActivity {
         TextView backbtn = (TextView)findViewById(R.id.writecontents_back);
 
         TextView partybtn = (TextView) findViewById(R.id.partycount);
+
+        TextView selected_area_item_view = (TextView)findViewById(R.id.write_area_select_view);
+        TextView selected_time_itme_view = (TextView)findViewById(R.id.write_time_select_view);
+        TextView selected_party_item_view = (TextView)findViewById(R.id.partycount_view);
         /*
         Button imgbtn = (Button)findViewById(R.id.upload_image);
         iv = findViewById(R.id.imgv);
@@ -146,6 +153,7 @@ public class WriteContents extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 selected_party_item = party_count[selected_party_item_radio[0]];
+                                selected_party_item_view.setText(selected_party_item);
                             }
                         }).create().show();
             }
@@ -181,6 +189,7 @@ public class WriteContents extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 selected_area_item = area_items[selected_area_item_radio[0]];
+                                selected_area_item_view.setText(selected_area_item);
                             }
                         }).create().show();
             }
@@ -206,6 +215,7 @@ public class WriteContents extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 selected_time_item = time_items[selected_time_item_radio[0]];
+                                selected_time_itme_view.setText(selected_time_item);
                             }
                         }).create().show();
             }
