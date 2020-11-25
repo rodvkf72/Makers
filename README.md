@@ -37,23 +37,19 @@
 
  ## 개발환경
  
- App
+ <b>App</b>
  - Android Studio - 4.0.1
  - Unity - 2019.4.15
-<br>
-<br>
 
- Server
+ <b>Server</b>
  - GO - 1.15.1
  - Echo Framework - 4.1.17
- <br>
- <br>
  
- Database
+ <b>Database</b>
  - MySQL - 8.0.19
  - MySQL Workbench 8.0 CE
  
- Service
+ <b>Service</b>
  - FCM
  - Google Map
  
