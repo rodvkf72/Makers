@@ -1,14 +1,60 @@
 # Makers
 
- We make the travel application
+ 여행 애플리케이션 입니다.
+ <br>
+ <br>
+ 
+ | 역할 | 학과 | 학번 | 이름 |
+| :- | - | :-: | -: |
+| 팀 장 | 소프트웨어공학과 | 20143226 | 김광호 |
+| 팀원1 | 소프트웨어공학과 | 2014 | 이동준 |
+| 팀원2 | 소프트웨어공학과 | 2014 | 박승득 |
+| 팀원3 | 소프트웨어공학과 | 2014 | 신은철 |
+ <br>
+ <br>
+ 
+ ## 개요
+ - 소셜 미디어를 통해 여행 정보를 얻는 추세  
+ - 모바일 애플리케이션 사용 빈도 증가  
+ - 동행자가 없어 여행을 가지 않는 사람이 상당수  
+ <br>
+ 
+ 위와 같은 이유로 여행정보 획득, 동행자 확보를 만족하는 애플리케이션을 제작하기로 하였습니다.
+ <br>
+ <br>
 
- The difference with other application is
-# 1. Tourist attractions statistics by age group
-# 2. Travel meeting board
-# 3. AR tourist destination information
+ ## 차이점
+ <br>
+ 
+ 1. 관광지 선호도
+ 2. 다모임(동행 모집) 게시판
+ 3. AR 관광지 정보/인증 시스템
+<br>
 
- But this is the development stage
+ 입니다. 그러나 AR의 경우에는 Unity + C# 관련 지식 부족으로 인해 AR 스캔만 구현된 상태입니다.
+<br>
+<br>
 
- When the conversion to php -> go is finished, the php file will be deleted.
+ ## 개발환경
+ 
+ App
+ - Android Studio - 4.0.1
+ - Unity - 2019.4.15
+<br>
+<br>
 
-# looooooooooool
+ Server
+ - GO - 1.15.1
+ - Echo Framework - 4.1.17
+ <br>
+ <br>
+ 
+ Database
+ - MySQL - 8.0.19
+ - MySQL Workbench 8.0 CE
+ 
+ Service
+ - FCM
+ - Google Map
+ 
+ 
