@@ -31,7 +31,7 @@
  3. AR 관광지 정보/인증 시스템
 <br>
 
- 입니다. 그러나 AR의 경우에는 Unity + C# 관련 지식 부족으로 인해 AR 스캔만 구현된 상태입니다.
+ * AR의 경우에는 Unity + C# 관련 지식 부족으로 인해 AR 스캔만 구현된 상태입니다. *
 <br>
 <br>
 
@@ -52,5 +52,8 @@
  <b>Service</b>
  - FCM
  - Google Map
+ - Vuforia
+ <br>
+ <br>
  
- 
+ ## 
