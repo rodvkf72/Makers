@@ -7,10 +7,30 @@
  | 역할 | 학과 | 학번 | 이름 |
 | :- | - | :-: | -: |
 | 팀 장 | 소프트웨어공학과 | 20143226 | 김광호 |
-|                test                       |
 | 팀원1 | 소프트웨어공학과 | 2014 | 이동준 |
 | 팀원2 | 소프트웨어공학과 | 2014 | 박승득 |
 | 팀원3 | 소프트웨어공학과 | 2014 | 신은철 |
+ <br>
+ <br>
+ 
+ ## 개발환경
+ 
+ <b>App</b>
+ - Android Studio - 4.0.1
+ - Unity - 2019.4.15
+
+ <b>Server</b>
+ - GO - 1.15.1
+ - Echo Framework - 4.1.17
+ 
+ <b>Database</b>
+ - MySQL - 8.0.19
+ - MySQL Workbench 8.0 CE
+ 
+ <b>Service</b>
+ - FCM
+ - Google Map
+ - Vuforia
  <br>
  <br>
  
@@ -35,26 +55,15 @@
 <b>AR의 경우에는 Unity + C# 관련 지식 부족으로 인해 AR 스캔만 구현된 상태입니다.</b>
 <br>
 <br>
-
- ## 개발환경
  
- <b>App</b>
- - Android Studio - 4.0.1
- - Unity - 2019.4.15
-
- <b>Server</b>
- - GO - 1.15.1
- - Echo Framework - 4.1.17
+ ## 주요 기능 및 시스템 설명
+ <b>- 서버 구축</b>
  
- <b>Database</b>
- - MySQL - 8.0.19
- - MySQL Workbench 8.0 CE
- 
- <b>Service</b>
- - FCM
- - Google Map
- - Vuforia
- <br>
+ 서버 구축은 GO를 사용하였습니다. GO를 선택한 이유는 다음과 같습니다.
+  - 개인적으로 공부중인 언어
+  - 고정적인 서버를 둘 경우 서버 다운, 오류 발생 시 즉각적인 조치를 취할 수 없음 -> WAS 없이 구동이 간편한 서버를 찾게 됨
+  - 자체적인 서버 기능 확보
+ 그리고 Echo Framework를 적용하여 서버 접속에 대한 로그 기능, 크리티컬한 에러 이외의 패닉 에러같은 경우 서버를 다운시키지 않고 계속 동작하게끔 하는 리커버리 기능을 사용하였습니다.
  <br>
  
- ## 
+ <b>- </b>
